@@ -6,8 +6,16 @@ from multiprocessing import Pool
 from collections import defaultdict
 
 class CallNode:
-    def __init__(self, function, output=None, dependencies=None,
-                 async=False, remap={}):
+    """CallNode objects wrap a function for use in a CallGraph.
+
+    :param function: The function (or callable object) to be called when the output is needed or an input changes
+    :param output: A name (or list of names if the function returns a tuple) to bind the function output to. If not given, defaults to the name of the function
+    :param async: True if the function can be called in a background process
+    :param remap: A dictionary mapping function parameter names to scope names
+    :param as_needed: True if the function should not be called when its inputs change, but only as something that needs its value is called
+    """
+    def __init__(self, function, output=None,
+                 async=False, remap={}, as_needed=False):
         # set self.outputs,dependencies for given
         # module
         if output is None:
@@ -15,23 +23,18 @@ class CallNode:
         if not isinstance(output, list):
             output = [output]
 
-        if dependencies is None:
-            sig = inspect.signature(function)
-            dependencies = [name for name in sig.parameters
-                            if sig.parameters[name] != inspect.Parameter.empty]
-        elif isinstance(dependencies, dict):
-            sig = inspect.signature(function)
-            dependencies = [dependencies.get(name, name) for name in sig.parameters
-                            if sig.parameters[name] != inspect.Parameter.empty]
+        sig = inspect.signature(function)
+        dependencies = [name for name in sig.parameters]
 
         self.function = function
         self.outputs = output
         self.dependencies = dependencies
         self.async = async
         self.remap = dict(remap)
+        self.as_needed = as_needed
 
     def __repr__(self):
-        return 'CallNode({}, output={}, dependencies={}, async={}, remap={})'.format(self.function, self.outputs, self.dependencies, self.async, self.remap)
+        return 'CallNode({}, output={}, async={}, remap={}, as_needed={})'.format(self.function, self.outputs, self.async, self.remap, self.as_needed)
 
 class CallGraph:
     def __init__(self):
@@ -122,8 +125,6 @@ class CallGraph:
                 toGrab.extend(deps[val])
 
             rollingDeps[dep] = set(rolling)
-            for name in dep.outputs:
-                rollingDepNames[name] = set(rolling)
 
         for dep in list(revdeps):
             rolling = []
@@ -135,8 +136,12 @@ class CallGraph:
                 toGrab.extend(revdeps[val])
 
             rollingRevdeps[dep] = set(rolling)
-            for name in dep.outputs:
-                rollingRevdepNames[name] = set(rolling)
+
+        for mod in modules:
+            for name in mod.outputs:
+                rollingDepNames[name] = rollingDeps[mod]
+                if not mod.as_needed:
+                    rollingRevdepNames[name] = rollingRevdeps[mod]
 
         for name in list(opendeps):
             rollingRevdepNames[name].update(opendeps[name])
@@ -167,8 +172,8 @@ class CallGraph:
         computed = set()
 
         for mod in [mod for mod in self.modules if mod in allCalls]:
-            kwargs = {mod.remap.get(dep, dep): self.scope[dep]
-                      for dep in mod.dependencies if dep in self.scope}
+            kwargs = {dep: self.scope[mod.remap.get(dep, dep)]
+                      for dep in mod.dependencies if mod.remap.get(dep, dep) in self.scope}
 
             try:
                 if async and mod.async:
@@ -187,7 +192,7 @@ class CallGraph:
             if len(mod.outputs) > 1:
                 for (retname, val) in zip(mod.outputs, outs):
                     self.scope[retname] = val
-            else:
+            elif len(mod.outputs):
                 self.scope[mod.outputs[0]] = outs
 
             computed.update(mod.outputs)
@@ -219,6 +224,7 @@ class CallGraph:
         for arg in args:
             self.dirty.remove(arg)
 
-    def inject(self, **kwargs):
-        self.scope.update(kwargs)
-        self.dirty.update([key for key in kwargs])
+    def inject(self, *args, **kwargs):
+        for arg in list(args) + [kwargs]:
+            self.scope.update(arg)
+            self.dirty.update([key for key in arg])
