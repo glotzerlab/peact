@@ -98,7 +98,7 @@ class CallGraph:
         providers = {}
 
         for mod in modules:
-            for dep in mod.dependencies:
+            for dep in [mod.remap.get(d, d) for d in mod.dependencies]:
                 if dep in providers:
                     deps[mod].append(providers[dep])
                     revdeps[providers[dep]].append(mod)
@@ -158,7 +158,7 @@ class CallGraph:
             self.pool = None
         self.modules = modules
         for mod in modules:
-            self.dirty.update(mod.dependencies)
+            self.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])
             self.dirty.update(mod.outputs)
 
     def pump(self, names=None, async=False):
@@ -179,6 +179,8 @@ class CallGraph:
                 if async and mod.async:
                     thunk = self.pool.apply_async(mod.function, (), kwargs)
                     yield thunk
+                    while not thunk.ready():
+                        yield thunk
                     outs = thunk.get()
                 else:
                     outs = mod.function(**kwargs)
