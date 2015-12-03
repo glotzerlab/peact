@@ -37,6 +37,13 @@ class CallNode:
         return 'CallNode({}, output={}, async={}, remap={}, as_needed={})'.format(self.function, self.outputs, self.async, self.remap, self.as_needed)
 
 class CallGraph:
+    """Handles the reactivity for a set of :py:class:`CallNode` objects.
+
+    Each `CallNode` has a set of input (dependency) and output
+    names. Nodes are added to the graph via
+    :py:meth:`peact.CallGraph.register`.
+
+    """
     def __init__(self):
         self.modules = []
         self.moduleLists = []
@@ -55,15 +62,32 @@ class CallGraph:
         self.printedExceptions = set()
 
     def register(self, function, *args, **kwargs):
+        """Register a function as part of this graph. Takes the same
+        parameters as :py:class:`peact.CallNode`.
+
+        :return: The given function
+        """
         node = CallNode(function, *args, **kwargs)
         self.moduleLists.append([node])
         return function
 
     def register_deferred(self, target):
+        """Registers a list object. This list should contain
+        :py:class:`peact.CallNode` objects and will be consulted
+        dynamically every time :py:meth:`peact.CallGraph.rebuild` is
+        called.
+
+        :param target: List object containing :py:class:`peact.CallNode` objects
+        """
         self.moduleLists.append(target)
         return target
 
     def unregister(self, function, rebuild=True):
+        """Remove the given function from the call graph.
+
+        :param function: The function which should be removed
+        :param rebuild: If True, immediately rebuild the call graph
+        """
         index = [i for (i, mod) in enumerate(self.moduleLists)
                  if len(mod) == 1 and mod[0].function == function][0]
         del self.modules[index]
@@ -71,6 +95,12 @@ class CallGraph:
             self.rebuild()
 
     def unregister_deferred(self, target, rebuild=True):
+        """Remove the given dynamic `CallNode` provider from the graph.
+
+        :param target: The list object which should be removed
+        :param rebuild: If True, immediately rebuild the call graph
+        """
+
         index = [i for (i, mod) in enumerate(self.moduleLists)
                  if mod is target][0]
         del self.modules[index]
@@ -78,10 +108,14 @@ class CallGraph:
             self.rebuild()
 
     def clear(self):
-        self.modules = []
+        """Remove all modules from the call graph"""
+        self.moduleLists = []
         self.rebuild()
 
     def rebuild(self):
+        """Build the dependency graph for all modules currently in the graph,
+        as well as data structures for efficient dispatch of data.
+        """
         outputs = set()
         modules = []
 
@@ -162,6 +196,17 @@ class CallGraph:
             self.dirty.update(mod.outputs)
 
     def pump(self, names=None, async=False):
+        """Step through the graph, calling all modules whose input has changed
+        or output is required.
+
+        Example::
+
+           for _ in graph.pump():
+               pass
+
+        :param names: iterable of names to force computation of; if None, default to the set of "dirty" quantities
+        :param async: If True, yield intermediate results whenever an asynchronous module is encountered
+        """
         if names is None:
             names = list(self.dirty)
 
@@ -203,6 +248,10 @@ class CallGraph:
             self.dirty.discard(name)
 
     def pump_tick(self):
+        """Perform a single element of work every time it is called. Intended
+        for embedding :py:meth:`peact.CallNode.pump` into another
+        event loop.
+        """
         if self.pumping is None:
             self.pumping = self.pump(async=True)
         else:
@@ -212,6 +261,13 @@ class CallGraph:
                 self.pumping = None
 
     def pump_restore(self, names=None, async=False, kwargs={}):
+        """Evaluate the graph for a set of given names. Restores the current
+        state afterward.
+
+        :param names: List of quantity names to compute
+        :param async: If True, compute asynchronously
+        :param kwargs: List of quantities to inject into the scope before computing
+        """
         scope = dict(self.scope)
         self.inject(**kwargs)
         self.pump(names, async)
@@ -219,14 +275,18 @@ class CallGraph:
         return result
 
     def mark(self, *args):
-        """Marks a property for recomputation"""
+        """Marks a quantity for recomputation"""
         self.dirty.update(args)
 
     def unmark(self, *args):
+        """Voids a recomputation request for a quantity."""
         for arg in args:
             self.dirty.remove(arg)
 
     def inject(self, *args, **kwargs):
+        """Puts a value or set of values into the list of stored quantities
+        and marks it as having changed.
+        """
         for arg in list(args) + [kwargs]:
             self.scope.update(arg)
             self.dirty.update([key for key in arg])
