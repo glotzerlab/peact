@@ -482,7 +482,7 @@ struct __pyx_defaults1 {
 /* "peact/_peact.pyx":115
  *         self.rebuild()
  * 
- *     def rebuild(self):             # <<<<<<<<<<<<<<
+ *     def rebuild(self, mark_dirty=True):             # <<<<<<<<<<<<<<
  *         """Build the dependency graph for all modules currently in the graph,
  *         as well as data structures for efficient dispatch of data.
  */
@@ -492,7 +492,7 @@ struct __pyx_obj_5peact_6_peact___pyx_scope_struct__rebuild {
 };
 
 
-/* "peact/_peact.pyx":189
+/* "peact/_peact.pyx":191
  *         self.rollingDeps = rollingDepNames
  *         self.rollingRevdeps = rollingRevdepNames
  *         if any(mod.async for mod in modules):             # <<<<<<<<<<<<<<
@@ -506,8 +506,8 @@ struct __pyx_obj_5peact_6_peact___pyx_scope_struct_1_genexpr {
 };
 
 
-/* "peact/_peact.pyx":198
- *             self.dirty.update(mod.outputs)
+/* "peact/_peact.pyx":202
+ *                 self.dirty.update(mod.outputs)
  * 
  *     def pump(self, names=None, async=False):             # <<<<<<<<<<<<<<
  *         """Step through the graph, calling all modules whose input has changed
@@ -1065,6 +1065,7 @@ static char __pyx_k_metaclass[] = "__metaclass__";
 static char __pyx_k_providers[] = "providers";
 static char __pyx_k_pump_tick[] = "pump_tick";
 static char __pyx_k_signature[] = "signature";
+static char __pyx_k_mark_dirty[] = "mark_dirty";
 static char __pyx_k_parameters[] = "parameters";
 static char __pyx_k_unregister[] = "unregister";
 static char __pyx_k_apply_async[] = "apply_async";
@@ -1164,6 +1165,7 @@ static PyObject *__pyx_n_s_key;
 static PyObject *__pyx_n_s_kwargs;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_mark;
+static PyObject *__pyx_n_s_mark_dirty;
 static PyObject *__pyx_n_s_metaclass;
 static PyObject *__pyx_n_s_mod;
 static PyObject *__pyx_n_s_mods;
@@ -1233,7 +1235,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_6unregister(CYTHON_UNUSED Py
 static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_8unregister_deferred(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_target, PyObject *__pyx_v_rebuild); /* proto */
 static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_10clear(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_7rebuild_genexpr(PyObject *__pyx_self); /* proto */
-static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_mark_dirty); /* proto */
 static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_14pump(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_names, PyObject *__pyx_v_async); /* proto */
 static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_17pump_tick(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_27__defaults__(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
@@ -1261,12 +1263,13 @@ static PyObject *__pyx_tuple__17;
 static PyObject *__pyx_tuple__18;
 static PyObject *__pyx_tuple__20;
 static PyObject *__pyx_tuple__22;
-static PyObject *__pyx_tuple__24;
+static PyObject *__pyx_tuple__23;
 static PyObject *__pyx_tuple__25;
-static PyObject *__pyx_tuple__27;
-static PyObject *__pyx_tuple__29;
-static PyObject *__pyx_tuple__31;
-static PyObject *__pyx_tuple__33;
+static PyObject *__pyx_tuple__26;
+static PyObject *__pyx_tuple__28;
+static PyObject *__pyx_tuple__30;
+static PyObject *__pyx_tuple__32;
+static PyObject *__pyx_tuple__34;
 static PyObject *__pyx_codeobj__3;
 static PyObject *__pyx_codeobj__5;
 static PyObject *__pyx_codeobj__7;
@@ -1276,12 +1279,12 @@ static PyObject *__pyx_codeobj__13;
 static PyObject *__pyx_codeobj__16;
 static PyObject *__pyx_codeobj__19;
 static PyObject *__pyx_codeobj__21;
-static PyObject *__pyx_codeobj__23;
-static PyObject *__pyx_codeobj__26;
-static PyObject *__pyx_codeobj__28;
-static PyObject *__pyx_codeobj__30;
-static PyObject *__pyx_codeobj__32;
-static PyObject *__pyx_codeobj__34;
+static PyObject *__pyx_codeobj__24;
+static PyObject *__pyx_codeobj__27;
+static PyObject *__pyx_codeobj__29;
+static PyObject *__pyx_codeobj__31;
+static PyObject *__pyx_codeobj__33;
+static PyObject *__pyx_codeobj__35;
 
 /* "peact/_peact.pyx":17
  *     :param as_needed: True if the function should not be called when its inputs change, but only as something that needs its value is called
@@ -3135,7 +3138,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_10clear(CYTHON_UNUSED PyObje
  *         self.moduleLists = []
  *         self.rebuild()             # <<<<<<<<<<<<<<
  * 
- *     def rebuild(self):
+ *     def rebuild(self, mark_dirty=True):
  */
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_rebuild); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
@@ -3185,20 +3188,71 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_10clear(CYTHON_UNUSED PyObje
 /* "peact/_peact.pyx":115
  *         self.rebuild()
  * 
- *     def rebuild(self):             # <<<<<<<<<<<<<<
+ *     def rebuild(self, mark_dirty=True):             # <<<<<<<<<<<<<<
  *         """Build the dependency graph for all modules currently in the graph,
  *         as well as data structures for efficient dispatch of data.
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_13rebuild(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
-static char __pyx_doc_5peact_6_peact_9CallGraph_12rebuild[] = "CallGraph.rebuild(self)\nBuild the dependency graph for all modules currently in the graph,\n        as well as data structures for efficient dispatch of data.\n        ";
-static PyMethodDef __pyx_mdef_5peact_6_peact_9CallGraph_13rebuild = {"rebuild", (PyCFunction)__pyx_pw_5peact_6_peact_9CallGraph_13rebuild, METH_O, __pyx_doc_5peact_6_peact_9CallGraph_12rebuild};
-static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_13rebuild(PyObject *__pyx_self, PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_13rebuild(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5peact_6_peact_9CallGraph_12rebuild[] = "CallGraph.rebuild(self, mark_dirty=True)\nBuild the dependency graph for all modules currently in the graph,\n        as well as data structures for efficient dispatch of data.\n\n        :param mark_dirty: If True, mark all properties in the graph as needing a recomputation\n        ";
+static PyMethodDef __pyx_mdef_5peact_6_peact_9CallGraph_13rebuild = {"rebuild", (PyCFunction)__pyx_pw_5peact_6_peact_9CallGraph_13rebuild, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5peact_6_peact_9CallGraph_12rebuild};
+static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_13rebuild(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_self = 0;
+  PyObject *__pyx_v_mark_dirty = 0;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("rebuild (wrapper)", 0);
-  __pyx_r = __pyx_pf_5peact_6_peact_9CallGraph_12rebuild(__pyx_self, ((PyObject *)__pyx_v_self));
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_self,&__pyx_n_s_mark_dirty,0};
+    PyObject* values[2] = {0,0};
+    values[1] = ((PyObject *)((PyObject *)Py_True));
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_self)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_mark_dirty);
+          if (value) { values[1] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "rebuild") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_self = values[0];
+    __pyx_v_mark_dirty = values[1];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("rebuild", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("peact._peact.CallGraph.rebuild", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_5peact_6_peact_9CallGraph_12rebuild(__pyx_self, __pyx_v_self, __pyx_v_mark_dirty);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
@@ -3206,7 +3260,7 @@ static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_13rebuild(PyObject *__pyx_se
 }
 static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_7rebuild_2generator1(__pyx_CoroutineObject *__pyx_generator, PyObject *__pyx_sent_value); /* proto */
 
-/* "peact/_peact.pyx":189
+/* "peact/_peact.pyx":191
  *         self.rollingDeps = rollingDepNames
  *         self.rollingRevdeps = rollingRevdepNames
  *         if any(mod.async for mod in modules):             # <<<<<<<<<<<<<<
@@ -3232,7 +3286,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_7rebuild_genexpr(PyObject *_
   __Pyx_INCREF(((PyObject *)__pyx_cur_scope->__pyx_outer_scope));
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_outer_scope);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_5peact_6_peact_9CallGraph_7rebuild_2generator1, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_CallGraph_rebuild_locals_genexpr); if (unlikely(!gen)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_5peact_6_peact_9CallGraph_7rebuild_2generator1, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_CallGraph_rebuild_locals_genexpr); if (unlikely(!gen)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -3268,28 +3322,28 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_7rebuild_2generator1(__pyx_C
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_modules)) { __Pyx_RaiseClosureNameError("modules"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
+  if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_modules)) { __Pyx_RaiseClosureNameError("modules"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
   if (unlikely(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_modules == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __pyx_t_1 = __pyx_cur_scope->__pyx_outer_scope->__pyx_v_modules; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
   for (;;) {
     if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_COMPILING_IN_CPYTHON
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_XGOTREF(__pyx_cur_scope->__pyx_v_mod);
     __Pyx_XDECREF_SET(__pyx_cur_scope->__pyx_v_mod, __pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_async); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_async); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (__pyx_t_4) {
       __Pyx_XDECREF(__pyx_r);
@@ -3325,12 +3379,12 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_7rebuild_2generator1(__pyx_C
 /* "peact/_peact.pyx":115
  *         self.rebuild()
  * 
- *     def rebuild(self):             # <<<<<<<<<<<<<<
+ *     def rebuild(self, mark_dirty=True):             # <<<<<<<<<<<<<<
  *         """Build the dependency graph for all modules currently in the graph,
  *         as well as data structures for efficient dispatch of data.
  */
 
-static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self) {
+static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_mark_dirty) {
   struct __pyx_obj_5peact_6_peact___pyx_scope_struct__rebuild *__pyx_cur_scope;
   CYTHON_UNUSED PyObject *__pyx_v_outputs = NULL;
   PyObject *__pyx_v_mods = NULL;
@@ -3379,47 +3433,47 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
   }
   __Pyx_GOTREF(__pyx_cur_scope);
 
-  /* "peact/_peact.pyx":119
- *         as well as data structures for efficient dispatch of data.
+  /* "peact/_peact.pyx":121
+ *         :param mark_dirty: If True, mark all properties in the graph as needing a recomputation
  *         """
  *         outputs = set()             # <<<<<<<<<<<<<<
  *         modules = []
  * 
  */
-  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 121; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_outputs = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "peact/_peact.pyx":120
+  /* "peact/_peact.pyx":122
  *         """
  *         outputs = set()
  *         modules = []             # <<<<<<<<<<<<<<
  * 
  *         for mods in self.moduleLists:
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 122; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_cur_scope->__pyx_v_modules = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "peact/_peact.pyx":122
+  /* "peact/_peact.pyx":124
  *         modules = []
  * 
  *         for mods in self.moduleLists:             # <<<<<<<<<<<<<<
  *             modules.extend(mods)
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_moduleLists); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 122; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_moduleLists); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
     __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_3 = 0;
     __pyx_t_4 = NULL;
   } else {
-    __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 122; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 122; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -3427,17 +3481,17 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 122; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 122; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 122; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 122; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -3447,7 +3501,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 122; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
@@ -3456,16 +3510,16 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
     __Pyx_XDECREF_SET(__pyx_v_mods, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "peact/_peact.pyx":123
+    /* "peact/_peact.pyx":125
  * 
  *         for mods in self.moduleLists:
  *             modules.extend(mods)             # <<<<<<<<<<<<<<
  * 
  *         # build the dependency graph
  */
-    __pyx_t_5 = __Pyx_PyList_Extend(__pyx_cur_scope->__pyx_v_modules, __pyx_v_mods); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 123; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyList_Extend(__pyx_cur_scope->__pyx_v_modules, __pyx_v_mods); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 125; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "peact/_peact.pyx":122
+    /* "peact/_peact.pyx":124
  *         modules = []
  * 
  *         for mods in self.moduleLists:             # <<<<<<<<<<<<<<
@@ -3475,14 +3529,14 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":126
+  /* "peact/_peact.pyx":128
  * 
  *         # build the dependency graph
  *         deps = defaultdict(list)             # <<<<<<<<<<<<<<
  *         revdeps = defaultdict(list)
  *         # opendeps[name] is a list of modules which depend on name
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_defaultdict); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_defaultdict); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_6 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_1))) {
@@ -3495,16 +3549,16 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
     }
   }
   if (!__pyx_t_6) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, ((PyObject *)(&PyList_Type))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, ((PyObject *)(&PyList_Type))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
   } else {
-    __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
     __Pyx_INCREF(((PyObject *)(&PyList_Type)));
     __Pyx_GIVEREF(((PyObject *)(&PyList_Type)));
     PyTuple_SET_ITEM(__pyx_t_7, 0+1, ((PyObject *)(&PyList_Type)));
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   }
@@ -3512,14 +3566,14 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
   __pyx_v_deps = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":127
+  /* "peact/_peact.pyx":129
  *         # build the dependency graph
  *         deps = defaultdict(list)
  *         revdeps = defaultdict(list)             # <<<<<<<<<<<<<<
  *         # opendeps[name] is a list of modules which depend on name
  *         # when nothing which provides name has been added to the graph
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_defaultdict); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 127; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_defaultdict); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_7 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_1))) {
@@ -3532,16 +3586,16 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
     }
   }
   if (!__pyx_t_7) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, ((PyObject *)(&PyList_Type))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 127; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, ((PyObject *)(&PyList_Type))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
   } else {
-    __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 127; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_7); __pyx_t_7 = NULL;
     __Pyx_INCREF(((PyObject *)(&PyList_Type)));
     __Pyx_GIVEREF(((PyObject *)(&PyList_Type)));
     PyTuple_SET_ITEM(__pyx_t_6, 0+1, ((PyObject *)(&PyList_Type)));
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 127; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
@@ -3549,14 +3603,14 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
   __pyx_v_revdeps = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":131
+  /* "peact/_peact.pyx":133
  *         # when nothing which provides name has been added to the graph
  *         # previously; these should be notified when name is injected
  *         opendeps = defaultdict(list)             # <<<<<<<<<<<<<<
  *         providers = {}
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_defaultdict); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_defaultdict); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_6 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_1))) {
@@ -3569,16 +3623,16 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
     }
   }
   if (!__pyx_t_6) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, ((PyObject *)(&PyList_Type))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, ((PyObject *)(&PyList_Type))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
   } else {
-    __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
     __Pyx_INCREF(((PyObject *)(&PyList_Type)));
     __Pyx_GIVEREF(((PyObject *)(&PyList_Type)));
     PyTuple_SET_ITEM(__pyx_t_7, 0+1, ((PyObject *)(&PyList_Type)));
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   }
@@ -3586,19 +3640,19 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
   __pyx_v_opendeps = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":132
+  /* "peact/_peact.pyx":134
  *         # previously; these should be notified when name is injected
  *         opendeps = defaultdict(list)
  *         providers = {}             # <<<<<<<<<<<<<<
  * 
  *         for mod in modules:
  */
-  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_providers = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":134
+  /* "peact/_peact.pyx":136
  *         providers = {}
  * 
  *         for mod in modules:             # <<<<<<<<<<<<<<
@@ -3609,32 +3663,32 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
   for (;;) {
     if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_2)) break;
     #if CYTHON_COMPILING_IN_CPYTHON
-    __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #else
-    __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_mod, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "peact/_peact.pyx":135
+    /* "peact/_peact.pyx":137
  * 
  *         for mod in modules:
  *             for dep in [mod.remap.get(d, d) for d in mod.dependencies]:             # <<<<<<<<<<<<<<
  *                 if dep in providers:
  *                     deps[mod].append(providers[dep])
  */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_mod, __pyx_n_s_dependencies); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_mod, __pyx_n_s_dependencies); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     if (likely(PyList_CheckExact(__pyx_t_7)) || PyTuple_CheckExact(__pyx_t_7)) {
       __pyx_t_6 = __pyx_t_7; __Pyx_INCREF(__pyx_t_6); __pyx_t_8 = 0;
       __pyx_t_4 = NULL;
     } else {
-      __pyx_t_8 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_7); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_8 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_7); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_4 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     for (;;) {
@@ -3642,17 +3696,17 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
         if (likely(PyList_CheckExact(__pyx_t_6))) {
           if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_6)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_7 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_8); __Pyx_INCREF(__pyx_t_7); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_7 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_8); __Pyx_INCREF(__pyx_t_7); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_7 = PySequence_ITEM(__pyx_t_6, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_7 = PySequence_ITEM(__pyx_t_6, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_7);
           #endif
         } else {
           if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_6)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_7 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_8); __Pyx_INCREF(__pyx_t_7); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_7 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_8); __Pyx_INCREF(__pyx_t_7); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_7 = PySequence_ITEM(__pyx_t_6, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_7 = PySequence_ITEM(__pyx_t_6, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_7);
           #endif
         }
@@ -3662,7 +3716,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           }
           break;
         }
@@ -3670,9 +3724,9 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
       }
       __Pyx_XDECREF_SET(__pyx_v_d, __pyx_t_7);
       __pyx_t_7 = 0;
-      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_mod, __pyx_n_s_remap); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_mod, __pyx_n_s_remap); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_9);
-      __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_get); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_get); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __pyx_t_9 = NULL;
@@ -3687,7 +3741,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
           __pyx_t_11 = 1;
         }
       }
-      __pyx_t_12 = PyTuple_New(2+__pyx_t_11); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_12 = PyTuple_New(2+__pyx_t_11); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_12);
       if (__pyx_t_9) {
         __Pyx_GIVEREF(__pyx_t_9); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_9); __pyx_t_9 = NULL;
@@ -3698,11 +3752,11 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
       __Pyx_INCREF(__pyx_v_d);
       __Pyx_GIVEREF(__pyx_v_d);
       PyTuple_SET_ITEM(__pyx_t_12, 1+__pyx_t_11, __pyx_v_d);
-      __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_12, NULL); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_12, NULL); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_7))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_7))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -3711,56 +3765,56 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
     for (;;) {
       if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_6)) break;
       #if CYTHON_COMPILING_IN_CPYTHON
-      __pyx_t_1 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       #else
-      __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
       #endif
       __Pyx_XDECREF_SET(__pyx_v_dep, __pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "peact/_peact.pyx":136
+      /* "peact/_peact.pyx":138
  *         for mod in modules:
  *             for dep in [mod.remap.get(d, d) for d in mod.dependencies]:
  *                 if dep in providers:             # <<<<<<<<<<<<<<
  *                     deps[mod].append(providers[dep])
  *                     revdeps[providers[dep]].append(mod)
  */
-      __pyx_t_13 = (__Pyx_PyDict_ContainsTF(__pyx_v_dep, __pyx_v_providers, Py_EQ)); if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_13 = (__Pyx_PyDict_ContainsTF(__pyx_v_dep, __pyx_v_providers, Py_EQ)); if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __pyx_t_14 = (__pyx_t_13 != 0);
       if (__pyx_t_14) {
 
-        /* "peact/_peact.pyx":137
+        /* "peact/_peact.pyx":139
  *             for dep in [mod.remap.get(d, d) for d in mod.dependencies]:
  *                 if dep in providers:
  *                     deps[mod].append(providers[dep])             # <<<<<<<<<<<<<<
  *                     revdeps[providers[dep]].append(mod)
  *                 else:
  */
-        __pyx_t_1 = PyObject_GetItem(__pyx_v_deps, __pyx_v_mod); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+        __pyx_t_1 = PyObject_GetItem(__pyx_v_deps, __pyx_v_mod); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_7 = __Pyx_PyDict_GetItem(__pyx_v_providers, __pyx_v_dep); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+        __pyx_t_7 = __Pyx_PyDict_GetItem(__pyx_v_providers, __pyx_v_dep); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
         __Pyx_GOTREF(__pyx_t_7);
-        __pyx_t_5 = __Pyx_PyObject_Append(__pyx_t_1, __pyx_t_7); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_5 = __Pyx_PyObject_Append(__pyx_t_1, __pyx_t_7); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-        /* "peact/_peact.pyx":138
+        /* "peact/_peact.pyx":140
  *                 if dep in providers:
  *                     deps[mod].append(providers[dep])
  *                     revdeps[providers[dep]].append(mod)             # <<<<<<<<<<<<<<
  *                 else:
  *                     opendeps[dep].append(mod)
  */
-        __pyx_t_7 = __Pyx_PyDict_GetItem(__pyx_v_providers, __pyx_v_dep); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+        __pyx_t_7 = __Pyx_PyDict_GetItem(__pyx_v_providers, __pyx_v_dep); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
         __Pyx_GOTREF(__pyx_t_7);
-        __pyx_t_1 = PyObject_GetItem(__pyx_v_revdeps, __pyx_t_7); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+        __pyx_t_1 = PyObject_GetItem(__pyx_v_revdeps, __pyx_t_7); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-        __pyx_t_5 = __Pyx_PyObject_Append(__pyx_t_1, __pyx_v_mod); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_5 = __Pyx_PyObject_Append(__pyx_t_1, __pyx_v_mod); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "peact/_peact.pyx":136
+        /* "peact/_peact.pyx":138
  *         for mod in modules:
  *             for dep in [mod.remap.get(d, d) for d in mod.dependencies]:
  *                 if dep in providers:             # <<<<<<<<<<<<<<
@@ -3770,7 +3824,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
         goto __pyx_L11;
       }
 
-      /* "peact/_peact.pyx":140
+      /* "peact/_peact.pyx":142
  *                     revdeps[providers[dep]].append(mod)
  *                 else:
  *                     opendeps[dep].append(mod)             # <<<<<<<<<<<<<<
@@ -3778,14 +3832,14 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
  *                 providers[out] = mod
  */
       /*else*/ {
-        __pyx_t_1 = PyObject_GetItem(__pyx_v_opendeps, __pyx_v_dep); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+        __pyx_t_1 = PyObject_GetItem(__pyx_v_opendeps, __pyx_v_dep); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_5 = __Pyx_PyObject_Append(__pyx_t_1, __pyx_v_mod); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_5 = __Pyx_PyObject_Append(__pyx_t_1, __pyx_v_mod); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       }
       __pyx_L11:;
 
-      /* "peact/_peact.pyx":135
+      /* "peact/_peact.pyx":137
  * 
  *         for mod in modules:
  *             for dep in [mod.remap.get(d, d) for d in mod.dependencies]:             # <<<<<<<<<<<<<<
@@ -3795,22 +3849,22 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
     }
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "peact/_peact.pyx":141
+    /* "peact/_peact.pyx":143
  *                 else:
  *                     opendeps[dep].append(mod)
  *             for out in mod.outputs:             # <<<<<<<<<<<<<<
  *                 providers[out] = mod
  * 
  */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_mod, __pyx_n_s_outputs); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_mod, __pyx_n_s_outputs); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     if (likely(PyList_CheckExact(__pyx_t_6)) || PyTuple_CheckExact(__pyx_t_6)) {
       __pyx_t_1 = __pyx_t_6; __Pyx_INCREF(__pyx_t_1); __pyx_t_8 = 0;
       __pyx_t_4 = NULL;
     } else {
-      __pyx_t_8 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_6); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_8 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_6); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_4 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     for (;;) {
@@ -3818,17 +3872,17 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
         if (likely(PyList_CheckExact(__pyx_t_1))) {
           if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_6 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_6); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_6 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_6); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_6 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_6 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_6);
           #endif
         } else {
           if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_6); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_6); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_6 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_6 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_6);
           #endif
         }
@@ -3838,7 +3892,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           }
           break;
         }
@@ -3847,16 +3901,16 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
       __Pyx_XDECREF_SET(__pyx_v_out, __pyx_t_6);
       __pyx_t_6 = 0;
 
-      /* "peact/_peact.pyx":142
+      /* "peact/_peact.pyx":144
  *                     opendeps[dep].append(mod)
  *             for out in mod.outputs:
  *                 providers[out] = mod             # <<<<<<<<<<<<<<
  * 
  *         # rollingDeps and rollingRevdeps are indexed by module id
  */
-      if (unlikely(PyDict_SetItem(__pyx_v_providers, __pyx_v_out, __pyx_v_mod) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(PyDict_SetItem(__pyx_v_providers, __pyx_v_out, __pyx_v_mod) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "peact/_peact.pyx":141
+      /* "peact/_peact.pyx":143
  *                 else:
  *                     opendeps[dep].append(mod)
  *             for out in mod.outputs:             # <<<<<<<<<<<<<<
@@ -3866,7 +3920,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "peact/_peact.pyx":134
+    /* "peact/_peact.pyx":136
  *         providers = {}
  * 
  *         for mod in modules:             # <<<<<<<<<<<<<<
@@ -3876,14 +3930,14 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":145
+  /* "peact/_peact.pyx":147
  * 
  *         # rollingDeps and rollingRevdeps are indexed by module id
  *         rollingDeps = defaultdict(set)             # <<<<<<<<<<<<<<
  *         rollingRevdeps = defaultdict(set)
  *         # rollingDepNames and rollingRevdepNames are indexed by output
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_defaultdict); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_defaultdict); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_6 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_1))) {
@@ -3896,16 +3950,16 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
     }
   }
   if (!__pyx_t_6) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, ((PyObject *)(&PySet_Type))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, ((PyObject *)(&PySet_Type))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
   } else {
-    __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
     __Pyx_INCREF(((PyObject *)(&PySet_Type)));
     __Pyx_GIVEREF(((PyObject *)(&PySet_Type)));
     PyTuple_SET_ITEM(__pyx_t_7, 0+1, ((PyObject *)(&PySet_Type)));
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   }
@@ -3913,14 +3967,14 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
   __pyx_v_rollingDeps = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":146
+  /* "peact/_peact.pyx":148
  *         # rollingDeps and rollingRevdeps are indexed by module id
  *         rollingDeps = defaultdict(set)
  *         rollingRevdeps = defaultdict(set)             # <<<<<<<<<<<<<<
  *         # rollingDepNames and rollingRevdepNames are indexed by output
  *         # name, not module id
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_defaultdict); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_defaultdict); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 148; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_7 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_1))) {
@@ -3933,16 +3987,16 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
     }
   }
   if (!__pyx_t_7) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, ((PyObject *)(&PySet_Type))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, ((PyObject *)(&PySet_Type))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 148; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
   } else {
-    __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 148; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_7); __pyx_t_7 = NULL;
     __Pyx_INCREF(((PyObject *)(&PySet_Type)));
     __Pyx_GIVEREF(((PyObject *)(&PySet_Type)));
     PyTuple_SET_ITEM(__pyx_t_6, 0+1, ((PyObject *)(&PySet_Type)));
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 148; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
@@ -3950,14 +4004,14 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
   __pyx_v_rollingRevdeps = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":149
+  /* "peact/_peact.pyx":151
  *         # rollingDepNames and rollingRevdepNames are indexed by output
  *         # name, not module id
  *         rollingDepNames = defaultdict(set)             # <<<<<<<<<<<<<<
  *         rollingRevdepNames = defaultdict(set)
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_defaultdict); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_defaultdict); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_6 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_1))) {
@@ -3970,16 +4024,16 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
     }
   }
   if (!__pyx_t_6) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, ((PyObject *)(&PySet_Type))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, ((PyObject *)(&PySet_Type))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
   } else {
-    __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
     __Pyx_INCREF(((PyObject *)(&PySet_Type)));
     __Pyx_GIVEREF(((PyObject *)(&PySet_Type)));
     PyTuple_SET_ITEM(__pyx_t_7, 0+1, ((PyObject *)(&PySet_Type)));
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   }
@@ -3987,14 +4041,14 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
   __pyx_v_rollingDepNames = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":150
+  /* "peact/_peact.pyx":152
  *         # name, not module id
  *         rollingDepNames = defaultdict(set)
  *         rollingRevdepNames = defaultdict(set)             # <<<<<<<<<<<<<<
  * 
  *         for dep in list(deps):
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_defaultdict); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_defaultdict); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 152; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_7 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_1))) {
@@ -4007,16 +4061,16 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
     }
   }
   if (!__pyx_t_7) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, ((PyObject *)(&PySet_Type))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, ((PyObject *)(&PySet_Type))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 152; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
   } else {
-    __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 152; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_7); __pyx_t_7 = NULL;
     __Pyx_INCREF(((PyObject *)(&PySet_Type)));
     __Pyx_GIVEREF(((PyObject *)(&PySet_Type)));
     PyTuple_SET_ITEM(__pyx_t_6, 0+1, ((PyObject *)(&PySet_Type)));
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 152; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
@@ -4024,56 +4078,56 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
   __pyx_v_rollingRevdepNames = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":152
+  /* "peact/_peact.pyx":154
  *         rollingRevdepNames = defaultdict(set)
  * 
  *         for dep in list(deps):             # <<<<<<<<<<<<<<
  *             rolling = []
  *             toGrab = list(deps[dep])
  */
-  __pyx_t_2 = PySequence_List(__pyx_v_deps); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 152; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PySequence_List(__pyx_v_deps); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = __pyx_t_2; __Pyx_INCREF(__pyx_t_1); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   for (;;) {
     if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_COMPILING_IN_CPYTHON
-    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_2); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 152; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_2); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #else
-    __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 152; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_dep, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "peact/_peact.pyx":153
+    /* "peact/_peact.pyx":155
  * 
  *         for dep in list(deps):
  *             rolling = []             # <<<<<<<<<<<<<<
  *             toGrab = list(deps[dep])
  * 
  */
-    __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_XDECREF_SET(__pyx_v_rolling, ((PyObject*)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "peact/_peact.pyx":154
+    /* "peact/_peact.pyx":156
  *         for dep in list(deps):
  *             rolling = []
  *             toGrab = list(deps[dep])             # <<<<<<<<<<<<<<
  * 
  *             while toGrab:
  */
-    __pyx_t_2 = PyObject_GetItem(__pyx_v_deps, __pyx_v_dep); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_2 = PyObject_GetItem(__pyx_v_deps, __pyx_v_dep); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_6 = PySequence_List(__pyx_t_2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PySequence_List(__pyx_t_2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_XDECREF_SET(__pyx_v_toGrab, ((PyObject*)__pyx_t_6));
     __pyx_t_6 = 0;
 
-    /* "peact/_peact.pyx":156
+    /* "peact/_peact.pyx":158
  *             toGrab = list(deps[dep])
  * 
  *             while toGrab:             # <<<<<<<<<<<<<<
@@ -4084,53 +4138,53 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
       __pyx_t_14 = (__pyx_v_toGrab != Py_None) && (PyList_GET_SIZE(__pyx_v_toGrab) != 0);
       if (!__pyx_t_14) break;
 
-      /* "peact/_peact.pyx":157
+      /* "peact/_peact.pyx":159
  * 
  *             while toGrab:
  *                 val = toGrab.pop()             # <<<<<<<<<<<<<<
  *                 rolling.append(val)
  *                 toGrab.extend(deps[val])
  */
-      __pyx_t_6 = __Pyx_PyList_Pop(__pyx_v_toGrab); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 157; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = __Pyx_PyList_Pop(__pyx_v_toGrab); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_XDECREF_SET(__pyx_v_val, __pyx_t_6);
       __pyx_t_6 = 0;
 
-      /* "peact/_peact.pyx":158
+      /* "peact/_peact.pyx":160
  *             while toGrab:
  *                 val = toGrab.pop()
  *                 rolling.append(val)             # <<<<<<<<<<<<<<
  *                 toGrab.extend(deps[val])
  * 
  */
-      __pyx_t_5 = __Pyx_PyList_Append(__pyx_v_rolling, __pyx_v_val); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyList_Append(__pyx_v_rolling, __pyx_v_val); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 160; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "peact/_peact.pyx":159
+      /* "peact/_peact.pyx":161
  *                 val = toGrab.pop()
  *                 rolling.append(val)
  *                 toGrab.extend(deps[val])             # <<<<<<<<<<<<<<
  * 
  *             rollingDeps[dep] = set(rolling)
  */
-      __pyx_t_6 = PyObject_GetItem(__pyx_v_deps, __pyx_v_val); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_6 = PyObject_GetItem(__pyx_v_deps, __pyx_v_val); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 161; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_5 = __Pyx_PyList_Extend(__pyx_v_toGrab, __pyx_t_6); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyList_Extend(__pyx_v_toGrab, __pyx_t_6); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 161; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     }
 
-    /* "peact/_peact.pyx":161
+    /* "peact/_peact.pyx":163
  *                 toGrab.extend(deps[val])
  * 
  *             rollingDeps[dep] = set(rolling)             # <<<<<<<<<<<<<<
  * 
  *         for dep in list(revdeps):
  */
-    __pyx_t_6 = PySet_New(__pyx_v_rolling); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 161; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PySet_New(__pyx_v_rolling); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
-    if (unlikely(PyObject_SetItem(__pyx_v_rollingDeps, __pyx_v_dep, __pyx_t_6) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 161; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(PyObject_SetItem(__pyx_v_rollingDeps, __pyx_v_dep, __pyx_t_6) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "peact/_peact.pyx":152
+    /* "peact/_peact.pyx":154
  *         rollingRevdepNames = defaultdict(set)
  * 
  *         for dep in list(deps):             # <<<<<<<<<<<<<<
@@ -4140,56 +4194,56 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "peact/_peact.pyx":163
+  /* "peact/_peact.pyx":165
  *             rollingDeps[dep] = set(rolling)
  * 
  *         for dep in list(revdeps):             # <<<<<<<<<<<<<<
  *             rolling = []
  *             toGrab = list(revdeps[dep])
  */
-  __pyx_t_1 = PySequence_List(__pyx_v_revdeps); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PySequence_List(__pyx_v_revdeps); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 165; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_6 = __pyx_t_1; __Pyx_INCREF(__pyx_t_6); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
     if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_6)) break;
     #if CYTHON_COMPILING_IN_CPYTHON
-    __pyx_t_1 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 165; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #else
-    __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 165; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_dep, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "peact/_peact.pyx":164
+    /* "peact/_peact.pyx":166
  * 
  *         for dep in list(revdeps):
  *             rolling = []             # <<<<<<<<<<<<<<
  *             toGrab = list(revdeps[dep])
  * 
  */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 166; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_rolling, ((PyObject*)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "peact/_peact.pyx":165
+    /* "peact/_peact.pyx":167
  *         for dep in list(revdeps):
  *             rolling = []
  *             toGrab = list(revdeps[dep])             # <<<<<<<<<<<<<<
  * 
  *             while toGrab:
  */
-    __pyx_t_1 = PyObject_GetItem(__pyx_v_revdeps, __pyx_v_dep); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 165; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_1 = PyObject_GetItem(__pyx_v_revdeps, __pyx_v_dep); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PySequence_List(__pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 165; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PySequence_List(__pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_XDECREF_SET(__pyx_v_toGrab, ((PyObject*)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "peact/_peact.pyx":167
+    /* "peact/_peact.pyx":169
  *             toGrab = list(revdeps[dep])
  * 
  *             while toGrab:             # <<<<<<<<<<<<<<
@@ -4200,53 +4254,53 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
       __pyx_t_14 = (__pyx_v_toGrab != Py_None) && (PyList_GET_SIZE(__pyx_v_toGrab) != 0);
       if (!__pyx_t_14) break;
 
-      /* "peact/_peact.pyx":168
+      /* "peact/_peact.pyx":170
  * 
  *             while toGrab:
  *                 val = toGrab.pop()             # <<<<<<<<<<<<<<
  *                 rolling.append(val)
  *                 toGrab.extend(revdeps[val])
  */
-      __pyx_t_2 = __Pyx_PyList_Pop(__pyx_v_toGrab); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 168; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyList_Pop(__pyx_v_toGrab); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 170; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_XDECREF_SET(__pyx_v_val, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "peact/_peact.pyx":169
+      /* "peact/_peact.pyx":171
  *             while toGrab:
  *                 val = toGrab.pop()
  *                 rolling.append(val)             # <<<<<<<<<<<<<<
  *                 toGrab.extend(revdeps[val])
  * 
  */
-      __pyx_t_5 = __Pyx_PyList_Append(__pyx_v_rolling, __pyx_v_val); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 169; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyList_Append(__pyx_v_rolling, __pyx_v_val); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 171; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "peact/_peact.pyx":170
+      /* "peact/_peact.pyx":172
  *                 val = toGrab.pop()
  *                 rolling.append(val)
  *                 toGrab.extend(revdeps[val])             # <<<<<<<<<<<<<<
  * 
  *             rollingRevdeps[dep] = set(rolling)
  */
-      __pyx_t_2 = PyObject_GetItem(__pyx_v_revdeps, __pyx_v_val); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 170; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_2 = PyObject_GetItem(__pyx_v_revdeps, __pyx_v_val); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 172; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_5 = __Pyx_PyList_Extend(__pyx_v_toGrab, __pyx_t_2); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 170; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyList_Extend(__pyx_v_toGrab, __pyx_t_2); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
 
-    /* "peact/_peact.pyx":172
+    /* "peact/_peact.pyx":174
  *                 toGrab.extend(revdeps[val])
  * 
  *             rollingRevdeps[dep] = set(rolling)             # <<<<<<<<<<<<<<
  * 
  *         for mod in modules:
  */
-    __pyx_t_2 = PySet_New(__pyx_v_rolling); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PySet_New(__pyx_v_rolling); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 174; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    if (unlikely(PyObject_SetItem(__pyx_v_rollingRevdeps, __pyx_v_dep, __pyx_t_2) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(PyObject_SetItem(__pyx_v_rollingRevdeps, __pyx_v_dep, __pyx_t_2) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 174; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "peact/_peact.pyx":163
+    /* "peact/_peact.pyx":165
  *             rollingDeps[dep] = set(rolling)
  * 
  *         for dep in list(revdeps):             # <<<<<<<<<<<<<<
@@ -4256,7 +4310,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "peact/_peact.pyx":174
+  /* "peact/_peact.pyx":176
  *             rollingRevdeps[dep] = set(rolling)
  * 
  *         for mod in modules:             # <<<<<<<<<<<<<<
@@ -4267,30 +4321,30 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
   for (;;) {
     if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_6)) break;
     #if CYTHON_COMPILING_IN_CPYTHON
-    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_2); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 174; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_3); __Pyx_INCREF(__pyx_t_2); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #else
-    __pyx_t_2 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 174; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PySequence_ITEM(__pyx_t_6, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_mod, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "peact/_peact.pyx":175
+    /* "peact/_peact.pyx":177
  * 
  *         for mod in modules:
  *             for name in mod.outputs:             # <<<<<<<<<<<<<<
  *                 rollingDepNames[name] = rollingDeps[mod]
  *                 if not mod.as_needed:
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_mod, __pyx_n_s_outputs); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 175; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_mod, __pyx_n_s_outputs); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
       __pyx_t_1 = __pyx_t_2; __Pyx_INCREF(__pyx_t_1); __pyx_t_8 = 0;
       __pyx_t_4 = NULL;
     } else {
-      __pyx_t_8 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 175; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_8 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_4 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 175; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     for (;;) {
@@ -4298,17 +4352,17 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
         if (likely(PyList_CheckExact(__pyx_t_1))) {
           if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_2); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 175; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_2); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 175; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_2);
           #endif
         } else {
           if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_2); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 175; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_2); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 175; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_2);
           #endif
         }
@@ -4318,7 +4372,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 175; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           }
           break;
         }
@@ -4327,45 +4381,45 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
       __Pyx_XDECREF_SET(__pyx_v_name, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "peact/_peact.pyx":176
+      /* "peact/_peact.pyx":178
  *         for mod in modules:
  *             for name in mod.outputs:
  *                 rollingDepNames[name] = rollingDeps[mod]             # <<<<<<<<<<<<<<
  *                 if not mod.as_needed:
  *                     rollingRevdepNames[name] = rollingRevdeps[mod]
  */
-      __pyx_t_2 = PyObject_GetItem(__pyx_v_rollingDeps, __pyx_v_mod); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_2 = PyObject_GetItem(__pyx_v_rollingDeps, __pyx_v_mod); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
       __Pyx_GOTREF(__pyx_t_2);
-      if (unlikely(PyObject_SetItem(__pyx_v_rollingDepNames, __pyx_v_name, __pyx_t_2) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(PyObject_SetItem(__pyx_v_rollingDepNames, __pyx_v_name, __pyx_t_2) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "peact/_peact.pyx":177
+      /* "peact/_peact.pyx":179
  *             for name in mod.outputs:
  *                 rollingDepNames[name] = rollingDeps[mod]
  *                 if not mod.as_needed:             # <<<<<<<<<<<<<<
  *                     rollingRevdepNames[name] = rollingRevdeps[mod]
  * 
  */
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_mod, __pyx_n_s_as_needed); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_mod, __pyx_n_s_as_needed); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_14 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_14 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_14 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_14 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_13 = ((!__pyx_t_14) != 0);
       if (__pyx_t_13) {
 
-        /* "peact/_peact.pyx":178
+        /* "peact/_peact.pyx":180
  *                 rollingDepNames[name] = rollingDeps[mod]
  *                 if not mod.as_needed:
  *                     rollingRevdepNames[name] = rollingRevdeps[mod]             # <<<<<<<<<<<<<<
  * 
  *         for name in list(opendeps):
  */
-        __pyx_t_2 = PyObject_GetItem(__pyx_v_rollingRevdeps, __pyx_v_mod); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+        __pyx_t_2 = PyObject_GetItem(__pyx_v_rollingRevdeps, __pyx_v_mod); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
         __Pyx_GOTREF(__pyx_t_2);
-        if (unlikely(PyObject_SetItem(__pyx_v_rollingRevdepNames, __pyx_v_name, __pyx_t_2) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        if (unlikely(PyObject_SetItem(__pyx_v_rollingRevdepNames, __pyx_v_name, __pyx_t_2) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "peact/_peact.pyx":177
+        /* "peact/_peact.pyx":179
  *             for name in mod.outputs:
  *                 rollingDepNames[name] = rollingDeps[mod]
  *                 if not mod.as_needed:             # <<<<<<<<<<<<<<
@@ -4374,7 +4428,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
  */
       }
 
-      /* "peact/_peact.pyx":175
+      /* "peact/_peact.pyx":177
  * 
  *         for mod in modules:
  *             for name in mod.outputs:             # <<<<<<<<<<<<<<
@@ -4384,7 +4438,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "peact/_peact.pyx":174
+    /* "peact/_peact.pyx":176
  *             rollingRevdeps[dep] = set(rolling)
  * 
  *         for mod in modules:             # <<<<<<<<<<<<<<
@@ -4394,41 +4448,41 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "peact/_peact.pyx":180
+  /* "peact/_peact.pyx":182
  *                     rollingRevdepNames[name] = rollingRevdeps[mod]
  * 
  *         for name in list(opendeps):             # <<<<<<<<<<<<<<
  *             rollingRevdepNames[name].update(opendeps[name])
  *             for mod in opendeps[name]:
  */
-  __pyx_t_6 = PySequence_List(__pyx_v_opendeps); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = PySequence_List(__pyx_v_opendeps); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_t_1 = __pyx_t_6; __Pyx_INCREF(__pyx_t_1); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   for (;;) {
     if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_COMPILING_IN_CPYTHON
-    __pyx_t_6 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_6); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_6); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #else
-    __pyx_t_6 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_name, __pyx_t_6);
     __pyx_t_6 = 0;
 
-    /* "peact/_peact.pyx":181
+    /* "peact/_peact.pyx":183
  * 
  *         for name in list(opendeps):
  *             rollingRevdepNames[name].update(opendeps[name])             # <<<<<<<<<<<<<<
  *             for mod in opendeps[name]:
  *                 rollingRevdepNames[name].update(rollingRevdeps[mod])
  */
-    __pyx_t_2 = PyObject_GetItem(__pyx_v_rollingRevdepNames, __pyx_v_name); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_2 = PyObject_GetItem(__pyx_v_rollingRevdepNames, __pyx_v_name); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_update); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_update); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyObject_GetItem(__pyx_v_opendeps, __pyx_v_name); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_2 = PyObject_GetItem(__pyx_v_opendeps, __pyx_v_name); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_10 = NULL;
     if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_7))) {
@@ -4441,39 +4495,39 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
       }
     }
     if (!__pyx_t_10) {
-      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_GOTREF(__pyx_t_6);
     } else {
-      __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_10); __pyx_t_10 = NULL;
       __Pyx_GIVEREF(__pyx_t_2);
       PyTuple_SET_ITEM(__pyx_t_12, 0+1, __pyx_t_2);
       __pyx_t_2 = 0;
-      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_12, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_12, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     }
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "peact/_peact.pyx":182
+    /* "peact/_peact.pyx":184
  *         for name in list(opendeps):
  *             rollingRevdepNames[name].update(opendeps[name])
  *             for mod in opendeps[name]:             # <<<<<<<<<<<<<<
  *                 rollingRevdepNames[name].update(rollingRevdeps[mod])
  * 
  */
-    __pyx_t_6 = PyObject_GetItem(__pyx_v_opendeps, __pyx_v_name); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_6 = PyObject_GetItem(__pyx_v_opendeps, __pyx_v_name); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_6);
     if (likely(PyList_CheckExact(__pyx_t_6)) || PyTuple_CheckExact(__pyx_t_6)) {
       __pyx_t_7 = __pyx_t_6; __Pyx_INCREF(__pyx_t_7); __pyx_t_8 = 0;
       __pyx_t_4 = NULL;
     } else {
-      __pyx_t_8 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_8 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_4 = Py_TYPE(__pyx_t_7)->tp_iternext; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = Py_TYPE(__pyx_t_7)->tp_iternext; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     for (;;) {
@@ -4481,17 +4535,17 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
         if (likely(PyList_CheckExact(__pyx_t_7))) {
           if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_7)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_6 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_8); __Pyx_INCREF(__pyx_t_6); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_6 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_8); __Pyx_INCREF(__pyx_t_6); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_6 = PySequence_ITEM(__pyx_t_7, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_6 = PySequence_ITEM(__pyx_t_7, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_6);
           #endif
         } else {
           if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_7)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_8); __Pyx_INCREF(__pyx_t_6); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_8); __Pyx_INCREF(__pyx_t_6); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_6 = PySequence_ITEM(__pyx_t_7, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_6 = PySequence_ITEM(__pyx_t_7, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_6);
           #endif
         }
@@ -4501,7 +4555,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           }
           break;
         }
@@ -4510,19 +4564,19 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
       __Pyx_XDECREF_SET(__pyx_v_mod, __pyx_t_6);
       __pyx_t_6 = 0;
 
-      /* "peact/_peact.pyx":183
+      /* "peact/_peact.pyx":185
  *             rollingRevdepNames[name].update(opendeps[name])
  *             for mod in opendeps[name]:
  *                 rollingRevdepNames[name].update(rollingRevdeps[mod])             # <<<<<<<<<<<<<<
  * 
  *         self.deps = deps
  */
-      __pyx_t_12 = PyObject_GetItem(__pyx_v_rollingRevdepNames, __pyx_v_name); if (unlikely(__pyx_t_12 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_12 = PyObject_GetItem(__pyx_v_rollingRevdepNames, __pyx_v_name); if (unlikely(__pyx_t_12 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_update); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_update); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = PyObject_GetItem(__pyx_v_rollingRevdeps, __pyx_v_mod); if (unlikely(__pyx_t_12 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_12 = PyObject_GetItem(__pyx_v_rollingRevdeps, __pyx_v_mod); if (unlikely(__pyx_t_12 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
       __Pyx_GOTREF(__pyx_t_12);
       __pyx_t_10 = NULL;
       if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_2))) {
@@ -4535,24 +4589,24 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
         }
       }
       if (!__pyx_t_10) {
-        __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_12); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_12); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
         __Pyx_GOTREF(__pyx_t_6);
       } else {
-        __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_9);
         __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_10); __pyx_t_10 = NULL;
         __Pyx_GIVEREF(__pyx_t_12);
         PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_t_12);
         __pyx_t_12 = 0;
-        __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_9, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_9, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       }
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-      /* "peact/_peact.pyx":182
+      /* "peact/_peact.pyx":184
  *         for name in list(opendeps):
  *             rollingRevdepNames[name].update(opendeps[name])
  *             for mod in opendeps[name]:             # <<<<<<<<<<<<<<
@@ -4562,7 +4616,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
     }
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "peact/_peact.pyx":180
+    /* "peact/_peact.pyx":182
  *                     rollingRevdepNames[name] = rollingRevdeps[mod]
  * 
  *         for name in list(opendeps):             # <<<<<<<<<<<<<<
@@ -4572,74 +4626,74 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "peact/_peact.pyx":185
+  /* "peact/_peact.pyx":187
  *                 rollingRevdepNames[name].update(rollingRevdeps[mod])
  * 
  *         self.deps = deps             # <<<<<<<<<<<<<<
  *         self.revdeps = revdeps
  *         self.rollingDeps = rollingDepNames
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_deps, __pyx_v_deps) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_deps, __pyx_v_deps) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "peact/_peact.pyx":186
+  /* "peact/_peact.pyx":188
  * 
  *         self.deps = deps
  *         self.revdeps = revdeps             # <<<<<<<<<<<<<<
  *         self.rollingDeps = rollingDepNames
  *         self.rollingRevdeps = rollingRevdepNames
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_revdeps, __pyx_v_revdeps) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_revdeps, __pyx_v_revdeps) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 188; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "peact/_peact.pyx":187
+  /* "peact/_peact.pyx":189
  *         self.deps = deps
  *         self.revdeps = revdeps
  *         self.rollingDeps = rollingDepNames             # <<<<<<<<<<<<<<
  *         self.rollingRevdeps = rollingRevdepNames
  *         if any(mod.async for mod in modules):
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_rollingDeps, __pyx_v_rollingDepNames) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_rollingDeps, __pyx_v_rollingDepNames) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "peact/_peact.pyx":188
+  /* "peact/_peact.pyx":190
  *         self.revdeps = revdeps
  *         self.rollingDeps = rollingDepNames
  *         self.rollingRevdeps = rollingRevdepNames             # <<<<<<<<<<<<<<
  *         if any(mod.async for mod in modules):
  *             self.pool = Pool(1)
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_rollingRevdeps, __pyx_v_rollingRevdepNames) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 188; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_rollingRevdeps, __pyx_v_rollingRevdepNames) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 190; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "peact/_peact.pyx":189
+  /* "peact/_peact.pyx":191
  *         self.rollingDeps = rollingDepNames
  *         self.rollingRevdeps = rollingRevdepNames
  *         if any(mod.async for mod in modules):             # <<<<<<<<<<<<<<
  *             self.pool = Pool(1)
  *         else:
  */
-  __pyx_t_1 = __pyx_pf_5peact_6_peact_9CallGraph_7rebuild_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_pf_5peact_6_peact_9CallGraph_7rebuild_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __Pyx_Generator_Next(__pyx_t_1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_Generator_Next(__pyx_t_1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_13 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_13 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   if (__pyx_t_13) {
 
-    /* "peact/_peact.pyx":190
+    /* "peact/_peact.pyx":192
  *         self.rollingRevdeps = rollingRevdepNames
  *         if any(mod.async for mod in modules):
  *             self.pool = Pool(1)             # <<<<<<<<<<<<<<
  *         else:
  *             self.pool = None
  */
-    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_Pool); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 190; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_Pool); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 190; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_pool, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 190; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_pool, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "peact/_peact.pyx":189
+    /* "peact/_peact.pyx":191
  *         self.rollingDeps = rollingDepNames
  *         self.rollingRevdeps = rollingRevdepNames
  *         if any(mod.async for mod in modules):             # <<<<<<<<<<<<<<
@@ -4649,224 +4703,243 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
     goto __pyx_L31;
   }
 
-  /* "peact/_peact.pyx":192
+  /* "peact/_peact.pyx":194
  *             self.pool = Pool(1)
  *         else:
  *             self.pool = None             # <<<<<<<<<<<<<<
  *         self.modules = modules
- *         for mod in modules:
+ * 
  */
   /*else*/ {
-    if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_pool, Py_None) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_pool, Py_None) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 194; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __pyx_L31:;
 
-  /* "peact/_peact.pyx":193
+  /* "peact/_peact.pyx":195
  *         else:
  *             self.pool = None
  *         self.modules = modules             # <<<<<<<<<<<<<<
- *         for mod in modules:
- *             self.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])
+ * 
+ *         if mark_dirty:
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_modules, __pyx_cur_scope->__pyx_v_modules) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 193; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_modules, __pyx_cur_scope->__pyx_v_modules) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "peact/_peact.pyx":194
- *             self.pool = None
+  /* "peact/_peact.pyx":197
  *         self.modules = modules
- *         for mod in modules:             # <<<<<<<<<<<<<<
- *             self.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])
- *             self.dirty.update(mod.outputs)
+ * 
+ *         if mark_dirty:             # <<<<<<<<<<<<<<
+ *             for mod in modules:
+ *                 self.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])
  */
-  __pyx_t_1 = __pyx_cur_scope->__pyx_v_modules; __Pyx_INCREF(__pyx_t_1); __pyx_t_3 = 0;
-  for (;;) {
-    if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_1)) break;
-    #if CYTHON_COMPILING_IN_CPYTHON
-    __pyx_t_7 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 194; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    #else
-    __pyx_t_7 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 194; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_7);
-    #endif
-    __Pyx_XDECREF_SET(__pyx_v_mod, __pyx_t_7);
-    __pyx_t_7 = 0;
+  __pyx_t_13 = __Pyx_PyObject_IsTrue(__pyx_v_mark_dirty); if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__pyx_t_13) {
 
-    /* "peact/_peact.pyx":195
- *         self.modules = modules
- *         for mod in modules:
- *             self.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])             # <<<<<<<<<<<<<<
- *             self.dirty.update(mod.outputs)
+    /* "peact/_peact.pyx":198
+ * 
+ *         if mark_dirty:
+ *             for mod in modules:             # <<<<<<<<<<<<<<
+ *                 self.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])
+ *                 self.dirty.update(mod.outputs)
+ */
+    __pyx_t_1 = __pyx_cur_scope->__pyx_v_modules; __Pyx_INCREF(__pyx_t_1); __pyx_t_3 = 0;
+    for (;;) {
+      if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_1)) break;
+      #if CYTHON_COMPILING_IN_CPYTHON
+      __pyx_t_7 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 198; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      #else
+      __pyx_t_7 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 198; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_7);
+      #endif
+      __Pyx_XDECREF_SET(__pyx_v_mod, __pyx_t_7);
+      __pyx_t_7 = 0;
+
+      /* "peact/_peact.pyx":199
+ *         if mark_dirty:
+ *             for mod in modules:
+ *                 self.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])             # <<<<<<<<<<<<<<
+ *                 self.dirty.update(mod.outputs)
  * 
  */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_dirty); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_update); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_mod, __pyx_n_s_dependencies); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_9);
-    if (likely(PyList_CheckExact(__pyx_t_9)) || PyTuple_CheckExact(__pyx_t_9)) {
-      __pyx_t_12 = __pyx_t_9; __Pyx_INCREF(__pyx_t_12); __pyx_t_8 = 0;
-      __pyx_t_4 = NULL;
-    } else {
-      __pyx_t_8 = -1; __pyx_t_12 = PyObject_GetIter(__pyx_t_9); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_4 = Py_TYPE(__pyx_t_12)->tp_iternext; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    }
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    for (;;) {
-      if (likely(!__pyx_t_4)) {
-        if (likely(PyList_CheckExact(__pyx_t_12))) {
-          if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_12)) break;
-          #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_9 = PyList_GET_ITEM(__pyx_t_12, __pyx_t_8); __Pyx_INCREF(__pyx_t_9); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          #else
-          __pyx_t_9 = PySequence_ITEM(__pyx_t_12, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_9);
-          #endif
-        } else {
-          if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_12)) break;
-          #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_9 = PyTuple_GET_ITEM(__pyx_t_12, __pyx_t_8); __Pyx_INCREF(__pyx_t_9); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          #else
-          __pyx_t_9 = PySequence_ITEM(__pyx_t_12, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_9);
-          #endif
-        }
-      } else {
-        __pyx_t_9 = __pyx_t_4(__pyx_t_12);
-        if (unlikely(!__pyx_t_9)) {
-          PyObject* exc_type = PyErr_Occurred();
-          if (exc_type) {
-            if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          }
-          break;
-        }
-        __Pyx_GOTREF(__pyx_t_9);
-      }
-      __Pyx_XDECREF_SET(__pyx_v_d, __pyx_t_9);
-      __pyx_t_9 = 0;
-      __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_v_mod, __pyx_n_s_remap); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_10);
-      __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_get); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_15);
-      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      __pyx_t_10 = NULL;
-      __pyx_t_11 = 0;
-      if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_15))) {
-        __pyx_t_10 = PyMethod_GET_SELF(__pyx_t_15);
-        if (likely(__pyx_t_10)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_15);
-          __Pyx_INCREF(__pyx_t_10);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_15, function);
-          __pyx_t_11 = 1;
-        }
-      }
-      __pyx_t_16 = PyTuple_New(2+__pyx_t_11); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_16);
-      if (__pyx_t_10) {
-        __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_10); __pyx_t_10 = NULL;
-      }
-      __Pyx_INCREF(__pyx_v_d);
-      __Pyx_GIVEREF(__pyx_v_d);
-      PyTuple_SET_ITEM(__pyx_t_16, 0+__pyx_t_11, __pyx_v_d);
-      __Pyx_INCREF(__pyx_v_d);
-      __Pyx_GIVEREF(__pyx_v_d);
-      PyTuple_SET_ITEM(__pyx_t_16, 1+__pyx_t_11, __pyx_v_d);
-      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_15, __pyx_t_16, NULL); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_9);
-      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-      __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_6, (PyObject*)__pyx_t_9))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    }
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __pyx_t_12 = NULL;
-    if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_2))) {
-      __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_2);
-      if (likely(__pyx_t_12)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-        __Pyx_INCREF(__pyx_t_12);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_2, function);
-      }
-    }
-    if (!__pyx_t_12) {
-      __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_dirty); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_update); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_GOTREF(__pyx_t_7);
-    } else {
-      __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_mod, __pyx_n_s_dependencies); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_9);
-      __Pyx_GIVEREF(__pyx_t_12); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_12); __pyx_t_12 = NULL;
-      __Pyx_GIVEREF(__pyx_t_6);
-      PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_t_6);
-      __pyx_t_6 = 0;
-      __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_9, NULL); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_7);
+      if (likely(PyList_CheckExact(__pyx_t_9)) || PyTuple_CheckExact(__pyx_t_9)) {
+        __pyx_t_12 = __pyx_t_9; __Pyx_INCREF(__pyx_t_12); __pyx_t_8 = 0;
+        __pyx_t_4 = NULL;
+      } else {
+        __pyx_t_8 = -1; __pyx_t_12 = PyObject_GetIter(__pyx_t_9); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_12);
+        __pyx_t_4 = Py_TYPE(__pyx_t_12)->tp_iternext; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      }
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    }
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      for (;;) {
+        if (likely(!__pyx_t_4)) {
+          if (likely(PyList_CheckExact(__pyx_t_12))) {
+            if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_12)) break;
+            #if CYTHON_COMPILING_IN_CPYTHON
+            __pyx_t_9 = PyList_GET_ITEM(__pyx_t_12, __pyx_t_8); __Pyx_INCREF(__pyx_t_9); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            #else
+            __pyx_t_9 = PySequence_ITEM(__pyx_t_12, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            __Pyx_GOTREF(__pyx_t_9);
+            #endif
+          } else {
+            if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_12)) break;
+            #if CYTHON_COMPILING_IN_CPYTHON
+            __pyx_t_9 = PyTuple_GET_ITEM(__pyx_t_12, __pyx_t_8); __Pyx_INCREF(__pyx_t_9); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            #else
+            __pyx_t_9 = PySequence_ITEM(__pyx_t_12, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            __Pyx_GOTREF(__pyx_t_9);
+            #endif
+          }
+        } else {
+          __pyx_t_9 = __pyx_t_4(__pyx_t_12);
+          if (unlikely(!__pyx_t_9)) {
+            PyObject* exc_type = PyErr_Occurred();
+            if (exc_type) {
+              if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+              else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            }
+            break;
+          }
+          __Pyx_GOTREF(__pyx_t_9);
+        }
+        __Pyx_XDECREF_SET(__pyx_v_d, __pyx_t_9);
+        __pyx_t_9 = 0;
+        __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_v_mod, __pyx_n_s_remap); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_10);
+        __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_get); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_15);
+        __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+        __pyx_t_10 = NULL;
+        __pyx_t_11 = 0;
+        if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_15))) {
+          __pyx_t_10 = PyMethod_GET_SELF(__pyx_t_15);
+          if (likely(__pyx_t_10)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_15);
+            __Pyx_INCREF(__pyx_t_10);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_15, function);
+            __pyx_t_11 = 1;
+          }
+        }
+        __pyx_t_16 = PyTuple_New(2+__pyx_t_11); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_16);
+        if (__pyx_t_10) {
+          __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_10); __pyx_t_10 = NULL;
+        }
+        __Pyx_INCREF(__pyx_v_d);
+        __Pyx_GIVEREF(__pyx_v_d);
+        PyTuple_SET_ITEM(__pyx_t_16, 0+__pyx_t_11, __pyx_v_d);
+        __Pyx_INCREF(__pyx_v_d);
+        __Pyx_GIVEREF(__pyx_v_d);
+        PyTuple_SET_ITEM(__pyx_t_16, 1+__pyx_t_11, __pyx_v_d);
+        __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_15, __pyx_t_16, NULL); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_9);
+        __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+        __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_6, (PyObject*)__pyx_t_9))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+      }
+      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+      __pyx_t_12 = NULL;
+      if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_2))) {
+        __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_2);
+        if (likely(__pyx_t_12)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+          __Pyx_INCREF(__pyx_t_12);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_2, function);
+        }
+      }
+      if (!__pyx_t_12) {
+        __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+        __Pyx_GOTREF(__pyx_t_7);
+      } else {
+        __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_9);
+        __Pyx_GIVEREF(__pyx_t_12); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_12); __pyx_t_12 = NULL;
+        __Pyx_GIVEREF(__pyx_t_6);
+        PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_t_6);
+        __pyx_t_6 = 0;
+        __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_9, NULL); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 199; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_7);
+        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+      }
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "peact/_peact.pyx":196
- *         for mod in modules:
- *             self.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])
- *             self.dirty.update(mod.outputs)             # <<<<<<<<<<<<<<
+      /* "peact/_peact.pyx":200
+ *             for mod in modules:
+ *                 self.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])
+ *                 self.dirty.update(mod.outputs)             # <<<<<<<<<<<<<<
  * 
  *     def pump(self, names=None, async=False):
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_dirty); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 196; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_update); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 196; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_9);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_mod, __pyx_n_s_outputs); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 196; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_6 = NULL;
-    if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_9))) {
-      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_9);
-      if (likely(__pyx_t_6)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_9);
-        __Pyx_INCREF(__pyx_t_6);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_9, function);
-      }
-    }
-    if (!__pyx_t_6) {
-      __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_2); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 196; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_dirty); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 200; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_2);
+      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_update); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 200; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __Pyx_GOTREF(__pyx_t_7);
-    } else {
-      __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 196; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_12);
-      __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_6); __pyx_t_6 = NULL;
-      __Pyx_GIVEREF(__pyx_t_2);
-      PyTuple_SET_ITEM(__pyx_t_12, 0+1, __pyx_t_2);
-      __pyx_t_2 = 0;
-      __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_12, NULL); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 196; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    }
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_mod, __pyx_n_s_outputs); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 200; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_2);
+      __pyx_t_6 = NULL;
+      if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_9))) {
+        __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_9);
+        if (likely(__pyx_t_6)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_9);
+          __Pyx_INCREF(__pyx_t_6);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_9, function);
+        }
+      }
+      if (!__pyx_t_6) {
+        __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_2); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 200; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __Pyx_GOTREF(__pyx_t_7);
+      } else {
+        __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 200; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_12);
+        __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_6); __pyx_t_6 = NULL;
+        __Pyx_GIVEREF(__pyx_t_2);
+        PyTuple_SET_ITEM(__pyx_t_12, 0+1, __pyx_t_2);
+        __pyx_t_2 = 0;
+        __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_12, NULL); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 200; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_7);
+        __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+      }
+      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "peact/_peact.pyx":194
- *             self.pool = None
+      /* "peact/_peact.pyx":198
+ * 
+ *         if mark_dirty:
+ *             for mod in modules:             # <<<<<<<<<<<<<<
+ *                 self.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])
+ *                 self.dirty.update(mod.outputs)
+ */
+    }
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+    /* "peact/_peact.pyx":197
  *         self.modules = modules
- *         for mod in modules:             # <<<<<<<<<<<<<<
- *             self.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])
- *             self.dirty.update(mod.outputs)
+ * 
+ *         if mark_dirty:             # <<<<<<<<<<<<<<
+ *             for mod in modules:
+ *                 self.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])
  */
   }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "peact/_peact.pyx":115
  *         self.rebuild()
  * 
- *     def rebuild(self):             # <<<<<<<<<<<<<<
+ *     def rebuild(self, mark_dirty=True):             # <<<<<<<<<<<<<<
  *         """Build the dependency graph for all modules currently in the graph,
  *         as well as data structures for efficient dispatch of data.
  */
@@ -4912,8 +4985,8 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_12rebuild(CYTHON_UNUSED PyOb
 }
 static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineObject *__pyx_generator, PyObject *__pyx_sent_value); /* proto */
 
-/* "peact/_peact.pyx":198
- *             self.dirty.update(mod.outputs)
+/* "peact/_peact.pyx":202
+ *                 self.dirty.update(mod.outputs)
  * 
  *     def pump(self, names=None, async=False):             # <<<<<<<<<<<<<<
  *         """Step through the graph, calling all modules whose input has changed
@@ -4966,7 +5039,7 @@ static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_15pump(PyObject *__pyx_self,
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "pump") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 198; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "pump") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -4983,7 +5056,7 @@ static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_15pump(PyObject *__pyx_self,
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("pump", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 198; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("pump", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("peact._peact.CallGraph.pump", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5020,7 +5093,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_14pump(CYTHON_UNUSED PyObjec
   __Pyx_INCREF(__pyx_cur_scope->__pyx_v_async);
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_async);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_5peact_6_peact_9CallGraph_16generator, (PyObject *) __pyx_cur_scope, __pyx_n_s_pump, __pyx_n_s_CallGraph_pump); if (unlikely(!gen)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 198; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_5peact_6_peact_9CallGraph_16generator, (PyObject *) __pyx_cur_scope, __pyx_n_s_pump, __pyx_n_s_CallGraph_pump); if (unlikely(!gen)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -5075,9 +5148,9 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 198; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "peact/_peact.pyx":210
+  /* "peact/_peact.pyx":214
  *         :param async: If True, yield intermediate results whenever an asynchronous module is encountered
  *         """
  *         if names is None:             # <<<<<<<<<<<<<<
@@ -5088,16 +5161,16 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "peact/_peact.pyx":211
+    /* "peact/_peact.pyx":215
  *         """
  *         if names is None:
  *             names = list(self.dirty)             # <<<<<<<<<<<<<<
  * 
  *         allCalls = set()
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_dirty); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 211; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_dirty); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PySequence_List(__pyx_t_3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 211; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = PySequence_List(__pyx_t_3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_cur_scope->__pyx_v_names);
@@ -5105,7 +5178,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
     __Pyx_GIVEREF(__pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "peact/_peact.pyx":210
+    /* "peact/_peact.pyx":214
  *         :param async: If True, yield intermediate results whenever an asynchronous module is encountered
  *         """
  *         if names is None:             # <<<<<<<<<<<<<<
@@ -5114,20 +5187,20 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
  */
   }
 
-  /* "peact/_peact.pyx":213
+  /* "peact/_peact.pyx":217
  *             names = list(self.dirty)
  * 
  *         allCalls = set()             # <<<<<<<<<<<<<<
  *         for name in names:
  *             allCalls.update(self.rollingDeps[name])
  */
-  __pyx_t_4 = PySet_New(0); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 213; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = PySet_New(0); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 217; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_4);
   __pyx_cur_scope->__pyx_v_allCalls = ((PyObject*)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "peact/_peact.pyx":214
+  /* "peact/_peact.pyx":218
  * 
  *         allCalls = set()
  *         for name in names:             # <<<<<<<<<<<<<<
@@ -5138,26 +5211,26 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
     __pyx_t_4 = __pyx_cur_scope->__pyx_v_names; __Pyx_INCREF(__pyx_t_4); __pyx_t_5 = 0;
     __pyx_t_6 = NULL;
   } else {
-    __pyx_t_5 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_cur_scope->__pyx_v_names); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_cur_scope->__pyx_v_names); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_6 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   for (;;) {
     if (likely(!__pyx_t_6)) {
       if (likely(PyList_CheckExact(__pyx_t_4))) {
         if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_4)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_3);
         #endif
       } else {
         if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_4)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_3);
         #endif
       }
@@ -5167,7 +5240,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
@@ -5178,37 +5251,37 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
     __Pyx_GIVEREF(__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "peact/_peact.pyx":215
+    /* "peact/_peact.pyx":219
  *         allCalls = set()
  *         for name in names:
  *             allCalls.update(self.rollingDeps[name])             # <<<<<<<<<<<<<<
  *             allCalls.update(self.rollingRevdeps[name])
  *         computed = set()
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_rollingDeps); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_rollingDeps); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_7 = PyObject_GetItem(__pyx_t_3, __pyx_cur_scope->__pyx_v_name); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_7 = PyObject_GetItem(__pyx_t_3, __pyx_cur_scope->__pyx_v_name); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_8 = __Pyx_PySet_Update(__pyx_cur_scope->__pyx_v_allCalls, __pyx_t_7); if (unlikely(__pyx_t_8 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = __Pyx_PySet_Update(__pyx_cur_scope->__pyx_v_allCalls, __pyx_t_7); if (unlikely(__pyx_t_8 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "peact/_peact.pyx":216
+    /* "peact/_peact.pyx":220
  *         for name in names:
  *             allCalls.update(self.rollingDeps[name])
  *             allCalls.update(self.rollingRevdeps[name])             # <<<<<<<<<<<<<<
  *         computed = set()
  * 
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_rollingRevdeps); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 216; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_rollingRevdeps); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 220; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_3 = PyObject_GetItem(__pyx_t_7, __pyx_cur_scope->__pyx_v_name); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 216; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_3 = PyObject_GetItem(__pyx_t_7, __pyx_cur_scope->__pyx_v_name); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 220; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_8 = __Pyx_PySet_Update(__pyx_cur_scope->__pyx_v_allCalls, __pyx_t_3); if (unlikely(__pyx_t_8 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 216; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = __Pyx_PySet_Update(__pyx_cur_scope->__pyx_v_allCalls, __pyx_t_3); if (unlikely(__pyx_t_8 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 220; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "peact/_peact.pyx":214
+    /* "peact/_peact.pyx":218
  * 
  *         allCalls = set()
  *         for name in names:             # <<<<<<<<<<<<<<
@@ -5218,37 +5291,37 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "peact/_peact.pyx":217
+  /* "peact/_peact.pyx":221
  *             allCalls.update(self.rollingDeps[name])
  *             allCalls.update(self.rollingRevdeps[name])
  *         computed = set()             # <<<<<<<<<<<<<<
  * 
  *         for mod in [mod for mod in self.modules if mod in allCalls]:
  */
-  __pyx_t_4 = PySet_New(0); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 217; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = PySet_New(0); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 221; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_4);
   __pyx_cur_scope->__pyx_v_computed = ((PyObject*)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "peact/_peact.pyx":219
+  /* "peact/_peact.pyx":223
  *         computed = set()
  * 
  *         for mod in [mod for mod in self.modules if mod in allCalls]:             # <<<<<<<<<<<<<<
  *             kwargs = {dep: self.scope[mod.remap.get(dep, dep)]
  *                       for dep in mod.dependencies if mod.remap.get(dep, dep) in self.scope}
  */
-  __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_modules); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_modules); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   if (likely(PyList_CheckExact(__pyx_t_3)) || PyTuple_CheckExact(__pyx_t_3)) {
     __pyx_t_7 = __pyx_t_3; __Pyx_INCREF(__pyx_t_7); __pyx_t_5 = 0;
     __pyx_t_6 = NULL;
   } else {
-    __pyx_t_5 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_6 = Py_TYPE(__pyx_t_7)->tp_iternext; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = Py_TYPE(__pyx_t_7)->tp_iternext; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   for (;;) {
@@ -5256,17 +5329,17 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
       if (likely(PyList_CheckExact(__pyx_t_7))) {
         if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_7)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_7, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_7, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_3);
         #endif
       } else {
         if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_7)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_7, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_7, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_3);
         #endif
       }
@@ -5276,7 +5349,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
@@ -5286,10 +5359,10 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
     __Pyx_XDECREF_SET(__pyx_cur_scope->__pyx_v_mod, __pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_2 = (__Pyx_PySequence_ContainsTF(__pyx_cur_scope->__pyx_v_mod, __pyx_cur_scope->__pyx_v_allCalls, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = (__Pyx_PySequence_ContainsTF(__pyx_cur_scope->__pyx_v_mod, __pyx_cur_scope->__pyx_v_allCalls, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_t_1 = (__pyx_t_2 != 0);
     if (__pyx_t_1) {
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_cur_scope->__pyx_v_mod))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_cur_scope->__pyx_v_mod))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
   }
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -5298,9 +5371,9 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
   for (;;) {
     if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_7)) break;
     #if CYTHON_COMPILING_IN_CPYTHON
-    __pyx_t_4 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_5); __Pyx_INCREF(__pyx_t_4); __pyx_t_5++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_5); __Pyx_INCREF(__pyx_t_4); __pyx_t_5++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #else
-    __pyx_t_4 = PySequence_ITEM(__pyx_t_7, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = PySequence_ITEM(__pyx_t_7, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     #endif
     __Pyx_XGOTREF(__pyx_cur_scope->__pyx_v_mod);
@@ -5308,7 +5381,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
     __Pyx_GIVEREF(__pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "peact/_peact.pyx":220
+    /* "peact/_peact.pyx":224
  * 
  *         for mod in [mod for mod in self.modules if mod in allCalls]:
  *             kwargs = {dep: self.scope[mod.remap.get(dep, dep)]             # <<<<<<<<<<<<<<
@@ -5317,25 +5390,25 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
  */
     { /* enter inner scope */
       PyObject *__pyx_8genexpr1__pyx_v_dep = NULL;
-      __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 220; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+      __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
       __Pyx_GOTREF(__pyx_t_4);
 
-      /* "peact/_peact.pyx":221
+      /* "peact/_peact.pyx":225
  *         for mod in [mod for mod in self.modules if mod in allCalls]:
  *             kwargs = {dep: self.scope[mod.remap.get(dep, dep)]
  *                       for dep in mod.dependencies if mod.remap.get(dep, dep) in self.scope}             # <<<<<<<<<<<<<<
  * 
  *             try:
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_dependencies); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 221; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_dependencies); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
       __Pyx_GOTREF(__pyx_t_3);
       if (likely(PyList_CheckExact(__pyx_t_3)) || PyTuple_CheckExact(__pyx_t_3)) {
         __pyx_t_9 = __pyx_t_3; __Pyx_INCREF(__pyx_t_9); __pyx_t_10 = 0;
         __pyx_t_6 = NULL;
       } else {
-        __pyx_t_10 = -1; __pyx_t_9 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 221; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+        __pyx_t_10 = -1; __pyx_t_9 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
         __Pyx_GOTREF(__pyx_t_9);
-        __pyx_t_6 = Py_TYPE(__pyx_t_9)->tp_iternext; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 221; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+        __pyx_t_6 = Py_TYPE(__pyx_t_9)->tp_iternext; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
       }
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       for (;;) {
@@ -5343,17 +5416,17 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
           if (likely(PyList_CheckExact(__pyx_t_9))) {
             if (__pyx_t_10 >= PyList_GET_SIZE(__pyx_t_9)) break;
             #if CYTHON_COMPILING_IN_CPYTHON
-            __pyx_t_3 = PyList_GET_ITEM(__pyx_t_9, __pyx_t_10); __Pyx_INCREF(__pyx_t_3); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 221; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+            __pyx_t_3 = PyList_GET_ITEM(__pyx_t_9, __pyx_t_10); __Pyx_INCREF(__pyx_t_3); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
             #else
-            __pyx_t_3 = PySequence_ITEM(__pyx_t_9, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 221; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+            __pyx_t_3 = PySequence_ITEM(__pyx_t_9, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
             __Pyx_GOTREF(__pyx_t_3);
             #endif
           } else {
             if (__pyx_t_10 >= PyTuple_GET_SIZE(__pyx_t_9)) break;
             #if CYTHON_COMPILING_IN_CPYTHON
-            __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_9, __pyx_t_10); __Pyx_INCREF(__pyx_t_3); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 221; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+            __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_9, __pyx_t_10); __Pyx_INCREF(__pyx_t_3); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
             #else
-            __pyx_t_3 = PySequence_ITEM(__pyx_t_9, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 221; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+            __pyx_t_3 = PySequence_ITEM(__pyx_t_9, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
             __Pyx_GOTREF(__pyx_t_3);
             #endif
           }
@@ -5363,7 +5436,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
             PyObject* exc_type = PyErr_Occurred();
             if (exc_type) {
               if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-              else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 221; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+              else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
             }
             break;
           }
@@ -5371,9 +5444,9 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
         }
         __Pyx_XDECREF_SET(__pyx_8genexpr1__pyx_v_dep, __pyx_t_3);
         __pyx_t_3 = 0;
-        __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_remap); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 221; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+        __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_remap); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
         __Pyx_GOTREF(__pyx_t_11);
-        __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_get); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 221; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+        __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_get); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
         __Pyx_GOTREF(__pyx_t_12);
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
         __pyx_t_11 = NULL;
@@ -5388,7 +5461,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
             __pyx_t_13 = 1;
           }
         }
-        __pyx_t_14 = PyTuple_New(2+__pyx_t_13); if (unlikely(!__pyx_t_14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 221; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+        __pyx_t_14 = PyTuple_New(2+__pyx_t_13); if (unlikely(!__pyx_t_14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
         __Pyx_GOTREF(__pyx_t_14);
         if (__pyx_t_11) {
           __Pyx_GIVEREF(__pyx_t_11); PyTuple_SET_ITEM(__pyx_t_14, 0, __pyx_t_11); __pyx_t_11 = NULL;
@@ -5399,30 +5472,30 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
         __Pyx_INCREF(__pyx_8genexpr1__pyx_v_dep);
         __Pyx_GIVEREF(__pyx_8genexpr1__pyx_v_dep);
         PyTuple_SET_ITEM(__pyx_t_14, 1+__pyx_t_13, __pyx_8genexpr1__pyx_v_dep);
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_14, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 221; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_14, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-        __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_scope); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 221; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+        __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_scope); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
         __Pyx_GOTREF(__pyx_t_12);
-        __pyx_t_1 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_t_12, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 221; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+        __pyx_t_1 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_t_12, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
         __pyx_t_2 = (__pyx_t_1 != 0);
         if (__pyx_t_2) {
 
-          /* "peact/_peact.pyx":220
+          /* "peact/_peact.pyx":224
  * 
  *         for mod in [mod for mod in self.modules if mod in allCalls]:
  *             kwargs = {dep: self.scope[mod.remap.get(dep, dep)]             # <<<<<<<<<<<<<<
  *                       for dep in mod.dependencies if mod.remap.get(dep, dep) in self.scope}
  * 
  */
-          __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_scope); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 220; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+          __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_scope); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
           __Pyx_GOTREF(__pyx_t_12);
-          __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_remap); if (unlikely(!__pyx_t_14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 220; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+          __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_remap); if (unlikely(!__pyx_t_14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
           __Pyx_GOTREF(__pyx_t_14);
-          __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_get); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 220; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+          __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_get); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
           __Pyx_GOTREF(__pyx_t_11);
           __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
           __pyx_t_14 = NULL;
@@ -5437,7 +5510,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
               __pyx_t_13 = 1;
             }
           }
-          __pyx_t_15 = PyTuple_New(2+__pyx_t_13); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 220; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+          __pyx_t_15 = PyTuple_New(2+__pyx_t_13); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
           __Pyx_GOTREF(__pyx_t_15);
           if (__pyx_t_14) {
             __Pyx_GIVEREF(__pyx_t_14); PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_14); __pyx_t_14 = NULL;
@@ -5448,18 +5521,18 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
           __Pyx_INCREF(__pyx_8genexpr1__pyx_v_dep);
           __Pyx_GIVEREF(__pyx_8genexpr1__pyx_v_dep);
           PyTuple_SET_ITEM(__pyx_t_15, 1+__pyx_t_13, __pyx_8genexpr1__pyx_v_dep);
-          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_15, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 220; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_15, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-          __pyx_t_11 = PyObject_GetItem(__pyx_t_12, __pyx_t_3); if (unlikely(__pyx_t_11 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 220; __pyx_clineno = __LINE__; goto __pyx_L14_error;};
+          __pyx_t_11 = PyObject_GetItem(__pyx_t_12, __pyx_t_3); if (unlikely(__pyx_t_11 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L14_error;};
           __Pyx_GOTREF(__pyx_t_11);
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-          if (unlikely(PyDict_SetItem(__pyx_t_4, (PyObject*)__pyx_8genexpr1__pyx_v_dep, (PyObject*)__pyx_t_11))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 220; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
+          if (unlikely(PyDict_SetItem(__pyx_t_4, (PyObject*)__pyx_8genexpr1__pyx_v_dep, (PyObject*)__pyx_t_11))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L14_error;}
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-          /* "peact/_peact.pyx":221
+          /* "peact/_peact.pyx":225
  *         for mod in [mod for mod in self.modules if mod in allCalls]:
  *             kwargs = {dep: self.scope[mod.remap.get(dep, dep)]
  *                       for dep in mod.dependencies if mod.remap.get(dep, dep) in self.scope}             # <<<<<<<<<<<<<<
@@ -5481,7 +5554,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
     __Pyx_GIVEREF(__pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "peact/_peact.pyx":223
+    /* "peact/_peact.pyx":227
  *                       for dep in mod.dependencies if mod.remap.get(dep, dep) in self.scope}
  * 
  *             try:             # <<<<<<<<<<<<<<
@@ -5495,40 +5568,40 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
       __Pyx_XGOTREF(__pyx_t_18);
       /*try:*/ {
 
-        /* "peact/_peact.pyx":224
+        /* "peact/_peact.pyx":228
  * 
  *             try:
  *                 if async and mod.async:             # <<<<<<<<<<<<<<
  *                     thunk = self.pool.apply_async(mod.function, (), kwargs)
  *                     yield thunk
  */
-        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_cur_scope->__pyx_v_async); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_cur_scope->__pyx_v_async); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 228; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
         if (__pyx_t_1) {
         } else {
           __pyx_t_2 = __pyx_t_1;
           goto __pyx_L28_bool_binop_done;
         }
-        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_async); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_async); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 228; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
         __Pyx_GOTREF(__pyx_t_4);
-        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 228; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __pyx_t_2 = __pyx_t_1;
         __pyx_L28_bool_binop_done:;
         if (__pyx_t_2) {
 
-          /* "peact/_peact.pyx":225
+          /* "peact/_peact.pyx":229
  *             try:
  *                 if async and mod.async:
  *                     thunk = self.pool.apply_async(mod.function, (), kwargs)             # <<<<<<<<<<<<<<
  *                     yield thunk
  *                     while not thunk.ready():
  */
-          __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_pool); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+          __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_pool); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 229; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
           __Pyx_GOTREF(__pyx_t_9);
-          __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_apply_async); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+          __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_apply_async); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 229; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
           __Pyx_GOTREF(__pyx_t_11);
           __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-          __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_function); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+          __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_function); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 229; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
           __Pyx_GOTREF(__pyx_t_9);
           __pyx_t_3 = NULL;
           __pyx_t_10 = 0;
@@ -5542,7 +5615,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
               __pyx_t_10 = 1;
             }
           }
-          __pyx_t_12 = PyTuple_New(3+__pyx_t_10); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+          __pyx_t_12 = PyTuple_New(3+__pyx_t_10); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 229; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
           __Pyx_GOTREF(__pyx_t_12);
           if (__pyx_t_3) {
             __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_3); __pyx_t_3 = NULL;
@@ -5556,7 +5629,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
           __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_kwargs);
           PyTuple_SET_ITEM(__pyx_t_12, 2+__pyx_t_10, __pyx_cur_scope->__pyx_v_kwargs);
           __pyx_t_9 = 0;
-          __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_12, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+          __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_12, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 229; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
@@ -5565,7 +5638,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
           __Pyx_GIVEREF(__pyx_t_4);
           __pyx_t_4 = 0;
 
-          /* "peact/_peact.pyx":226
+          /* "peact/_peact.pyx":230
  *                 if async and mod.async:
  *                     thunk = self.pool.apply_async(mod.function, (), kwargs)
  *                     yield thunk             # <<<<<<<<<<<<<<
@@ -5602,9 +5675,9 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
           __pyx_t_18 = __pyx_cur_scope->__pyx_t_4;
           __pyx_cur_scope->__pyx_t_4 = 0;
           __Pyx_XGOTREF(__pyx_t_18);
-          if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 226; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+          if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
 
-          /* "peact/_peact.pyx":227
+          /* "peact/_peact.pyx":231
  *                     thunk = self.pool.apply_async(mod.function, (), kwargs)
  *                     yield thunk
  *                     while not thunk.ready():             # <<<<<<<<<<<<<<
@@ -5612,7 +5685,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
  *                     outs = thunk.get()
  */
           while (1) {
-            __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_thunk, __pyx_n_s_ready); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 227; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+            __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_thunk, __pyx_n_s_ready); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
             __Pyx_GOTREF(__pyx_t_11);
             __pyx_t_12 = NULL;
             if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_11))) {
@@ -5625,19 +5698,19 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
               }
             }
             if (__pyx_t_12) {
-              __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_12); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 227; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+              __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_12); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
               __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
             } else {
-              __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_11); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 227; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+              __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_11); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
             }
             __Pyx_GOTREF(__pyx_t_4);
             __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-            __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 227; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+            __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
             __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
             __pyx_t_1 = ((!__pyx_t_2) != 0);
             if (!__pyx_t_1) break;
 
-            /* "peact/_peact.pyx":228
+            /* "peact/_peact.pyx":232
  *                     yield thunk
  *                     while not thunk.ready():
  *                         yield thunk             # <<<<<<<<<<<<<<
@@ -5674,17 +5747,17 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
             __pyx_t_18 = __pyx_cur_scope->__pyx_t_4;
             __pyx_cur_scope->__pyx_t_4 = 0;
             __Pyx_XGOTREF(__pyx_t_18);
-            if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 228; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+            if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 232; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
           }
 
-          /* "peact/_peact.pyx":229
+          /* "peact/_peact.pyx":233
  *                     while not thunk.ready():
  *                         yield thunk
  *                     outs = thunk.get()             # <<<<<<<<<<<<<<
  *                 else:
  *                     outs = mod.function(**kwargs)
  */
-          __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_thunk, __pyx_n_s_get); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 229; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+          __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_thunk, __pyx_n_s_get); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 233; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
           __Pyx_GOTREF(__pyx_t_11);
           __pyx_t_12 = NULL;
           if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_11))) {
@@ -5697,10 +5770,10 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
             }
           }
           if (__pyx_t_12) {
-            __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_12); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 229; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+            __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_12); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 233; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
             __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
           } else {
-            __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_11); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 229; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+            __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_11); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 233; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
           }
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
@@ -5709,7 +5782,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
           __Pyx_GIVEREF(__pyx_t_4);
           __pyx_t_4 = 0;
 
-          /* "peact/_peact.pyx":224
+          /* "peact/_peact.pyx":228
  * 
  *             try:
  *                 if async and mod.async:             # <<<<<<<<<<<<<<
@@ -5719,7 +5792,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
           goto __pyx_L27;
         }
 
-        /* "peact/_peact.pyx":231
+        /* "peact/_peact.pyx":235
  *                     outs = thunk.get()
  *                 else:
  *                     outs = mod.function(**kwargs)             # <<<<<<<<<<<<<<
@@ -5727,9 +5800,9 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
  *                 if str(e) not in self.printedExceptions:
  */
         /*else*/ {
-          __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_function); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+          __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_function); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 235; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
           __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_empty_tuple, __pyx_cur_scope->__pyx_v_kwargs); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
+          __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_empty_tuple, __pyx_cur_scope->__pyx_v_kwargs); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 235; __pyx_clineno = __LINE__; goto __pyx_L19_error;}
           __Pyx_GOTREF(__pyx_t_11);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_XGOTREF(__pyx_cur_scope->__pyx_v_outs);
@@ -5739,7 +5812,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
         }
         __pyx_L27:;
 
-        /* "peact/_peact.pyx":223
+        /* "peact/_peact.pyx":227
  *                       for dep in mod.dependencies if mod.remap.get(dep, dep) in self.scope}
  * 
  *             try:             # <<<<<<<<<<<<<<
@@ -5760,7 +5833,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-      /* "peact/_peact.pyx":232
+      /* "peact/_peact.pyx":236
  *                 else:
  *                     outs = mod.function(**kwargs)
  *             except Exception as e:             # <<<<<<<<<<<<<<
@@ -5770,7 +5843,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
       __pyx_t_19 = PyErr_ExceptionMatches(__pyx_builtin_Exception);
       if (__pyx_t_19) {
         __Pyx_AddTraceback("peact._peact.CallGraph.pump", __pyx_clineno, __pyx_lineno, __pyx_filename);
-        if (__Pyx_GetException(&__pyx_t_11, &__pyx_t_4, &__pyx_t_12) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 232; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
+        if (__Pyx_GetException(&__pyx_t_11, &__pyx_t_4, &__pyx_t_12) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
         __Pyx_GOTREF(__pyx_t_11);
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_GOTREF(__pyx_t_12);
@@ -5779,47 +5852,47 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
         __Pyx_XDECREF_SET(__pyx_cur_scope->__pyx_v_e, __pyx_t_4);
         __Pyx_GIVEREF(__pyx_t_4);
 
-        /* "peact/_peact.pyx":233
+        /* "peact/_peact.pyx":237
  *                     outs = mod.function(**kwargs)
  *             except Exception as e:
  *                 if str(e) not in self.printedExceptions:             # <<<<<<<<<<<<<<
  *                     self.printedExceptions.add(str(e))
  *                     raise
  */
-        __pyx_t_9 = PyTuple_New(1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 233; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
+        __pyx_t_9 = PyTuple_New(1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 237; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
         __Pyx_GOTREF(__pyx_t_9);
         __Pyx_INCREF(__pyx_cur_scope->__pyx_v_e);
         __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_e);
         PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_cur_scope->__pyx_v_e);
-        __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_9, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 233; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
+        __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_9, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 237; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-        __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_printedExceptions); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 233; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
+        __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_printedExceptions); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 237; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
         __Pyx_GOTREF(__pyx_t_9);
-        __pyx_t_1 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_t_9, Py_NE)); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 233; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
+        __pyx_t_1 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_t_9, Py_NE)); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 237; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         __pyx_t_2 = (__pyx_t_1 != 0);
         if (__pyx_t_2) {
 
-          /* "peact/_peact.pyx":234
+          /* "peact/_peact.pyx":238
  *             except Exception as e:
  *                 if str(e) not in self.printedExceptions:
  *                     self.printedExceptions.add(str(e))             # <<<<<<<<<<<<<<
  *                     raise
  *                 else:
  */
-          __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_printedExceptions); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 234; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
+          __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_printedExceptions); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 238; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
           __Pyx_GOTREF(__pyx_t_3);
-          __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_add); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 234; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
+          __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_add); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 238; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
           __Pyx_GOTREF(__pyx_t_15);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-          __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 234; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
+          __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 238; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_INCREF(__pyx_cur_scope->__pyx_v_e);
           __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_e);
           PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_cur_scope->__pyx_v_e);
-          __pyx_t_14 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_3, NULL); if (unlikely(!__pyx_t_14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 234; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
+          __pyx_t_14 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_3, NULL); if (unlikely(!__pyx_t_14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 238; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
           __Pyx_GOTREF(__pyx_t_14);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           __pyx_t_3 = NULL;
@@ -5833,24 +5906,24 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
             }
           }
           if (!__pyx_t_3) {
-            __pyx_t_9 = __Pyx_PyObject_CallOneArg(__pyx_t_15, __pyx_t_14); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 234; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
+            __pyx_t_9 = __Pyx_PyObject_CallOneArg(__pyx_t_15, __pyx_t_14); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 238; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
             __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
             __Pyx_GOTREF(__pyx_t_9);
           } else {
-            __pyx_t_20 = PyTuple_New(1+1); if (unlikely(!__pyx_t_20)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 234; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
+            __pyx_t_20 = PyTuple_New(1+1); if (unlikely(!__pyx_t_20)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 238; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
             __Pyx_GOTREF(__pyx_t_20);
             __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_20, 0, __pyx_t_3); __pyx_t_3 = NULL;
             __Pyx_GIVEREF(__pyx_t_14);
             PyTuple_SET_ITEM(__pyx_t_20, 0+1, __pyx_t_14);
             __pyx_t_14 = 0;
-            __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_15, __pyx_t_20, NULL); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 234; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
+            __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_15, __pyx_t_20, NULL); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 238; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
             __Pyx_GOTREF(__pyx_t_9);
             __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
           }
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
           __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-          /* "peact/_peact.pyx":235
+          /* "peact/_peact.pyx":239
  *                 if str(e) not in self.printedExceptions:
  *                     self.printedExceptions.add(str(e))
  *                     raise             # <<<<<<<<<<<<<<
@@ -5862,9 +5935,9 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
           __Pyx_XGIVEREF(__pyx_t_12);
           __Pyx_ErrRestore(__pyx_t_11, __pyx_t_4, __pyx_t_12);
           __pyx_t_11 = 0; __pyx_t_4 = 0; __pyx_t_12 = 0; 
-          {__pyx_filename = __pyx_f[0]; __pyx_lineno = 235; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
+          {__pyx_filename = __pyx_f[0]; __pyx_lineno = 239; __pyx_clineno = __LINE__; goto __pyx_L21_except_error;}
 
-          /* "peact/_peact.pyx":233
+          /* "peact/_peact.pyx":237
  *                     outs = mod.function(**kwargs)
  *             except Exception as e:
  *                 if str(e) not in self.printedExceptions:             # <<<<<<<<<<<<<<
@@ -5873,7 +5946,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
  */
         }
 
-        /* "peact/_peact.pyx":237
+        /* "peact/_peact.pyx":241
  *                     raise
  *                 else:
  *                     continue             # <<<<<<<<<<<<<<
@@ -5892,7 +5965,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
       goto __pyx_L21_except_error;
       __pyx_L21_except_error:;
 
-      /* "peact/_peact.pyx":223
+      /* "peact/_peact.pyx":227
  *                       for dep in mod.dependencies if mod.remap.get(dep, dep) in self.scope}
  * 
  *             try:             # <<<<<<<<<<<<<<
@@ -5913,30 +5986,30 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
       __pyx_L26_try_end:;
     }
 
-    /* "peact/_peact.pyx":239
+    /* "peact/_peact.pyx":243
  *                     continue
  * 
  *             if len(mod.outputs) > 1:             # <<<<<<<<<<<<<<
  *                 for (retname, val) in zip(mod.outputs, outs):
  *                     self.scope[retname] = val
  */
-    __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_outputs); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 239; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_outputs); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 243; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_10 = PyObject_Length(__pyx_t_12); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 239; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = PyObject_Length(__pyx_t_12); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 243; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     __pyx_t_2 = ((__pyx_t_10 > 1) != 0);
     if (__pyx_t_2) {
 
-      /* "peact/_peact.pyx":240
+      /* "peact/_peact.pyx":244
  * 
  *             if len(mod.outputs) > 1:
  *                 for (retname, val) in zip(mod.outputs, outs):             # <<<<<<<<<<<<<<
  *                     self.scope[retname] = val
  *             elif len(mod.outputs):
  */
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_outputs); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_outputs); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_12);
       PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_12);
@@ -5944,16 +6017,16 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
       __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_outs);
       PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_cur_scope->__pyx_v_outs);
       __pyx_t_12 = 0;
-      __pyx_t_12 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_4, NULL); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_12 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_4, NULL); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       if (likely(PyList_CheckExact(__pyx_t_12)) || PyTuple_CheckExact(__pyx_t_12)) {
         __pyx_t_4 = __pyx_t_12; __Pyx_INCREF(__pyx_t_4); __pyx_t_10 = 0;
         __pyx_t_6 = NULL;
       } else {
-        __pyx_t_10 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_12); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_10 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_12); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_4);
-        __pyx_t_6 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_6 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       for (;;) {
@@ -5961,17 +6034,17 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
           if (likely(PyList_CheckExact(__pyx_t_4))) {
             if (__pyx_t_10 >= PyList_GET_SIZE(__pyx_t_4)) break;
             #if CYTHON_COMPILING_IN_CPYTHON
-            __pyx_t_12 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_10); __Pyx_INCREF(__pyx_t_12); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            __pyx_t_12 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_10); __Pyx_INCREF(__pyx_t_12); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
             #else
-            __pyx_t_12 = PySequence_ITEM(__pyx_t_4, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            __pyx_t_12 = PySequence_ITEM(__pyx_t_4, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
             __Pyx_GOTREF(__pyx_t_12);
             #endif
           } else {
             if (__pyx_t_10 >= PyTuple_GET_SIZE(__pyx_t_4)) break;
             #if CYTHON_COMPILING_IN_CPYTHON
-            __pyx_t_12 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_10); __Pyx_INCREF(__pyx_t_12); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            __pyx_t_12 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_10); __Pyx_INCREF(__pyx_t_12); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
             #else
-            __pyx_t_12 = PySequence_ITEM(__pyx_t_4, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            __pyx_t_12 = PySequence_ITEM(__pyx_t_4, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
             __Pyx_GOTREF(__pyx_t_12);
             #endif
           }
@@ -5981,7 +6054,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
             PyObject* exc_type = PyErr_Occurred();
             if (exc_type) {
               if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-              else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+              else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
             }
             break;
           }
@@ -5997,7 +6070,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
           if (unlikely(size != 2)) {
             if (size > 2) __Pyx_RaiseTooManyValuesError(2);
             else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-            {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           }
           #if CYTHON_COMPILING_IN_CPYTHON
           if (likely(PyTuple_CheckExact(sequence))) {
@@ -6010,15 +6083,15 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
           __Pyx_INCREF(__pyx_t_11);
           __Pyx_INCREF(__pyx_t_9);
           #else
-          __pyx_t_11 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_11 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_11);
-          __pyx_t_9 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_9 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_9);
           #endif
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
         } else {
           Py_ssize_t index = -1;
-          __pyx_t_15 = PyObject_GetIter(__pyx_t_12); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_15 = PyObject_GetIter(__pyx_t_12); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_15);
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
           __pyx_t_21 = Py_TYPE(__pyx_t_15)->tp_iternext;
@@ -6026,7 +6099,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
           __Pyx_GOTREF(__pyx_t_11);
           index = 1; __pyx_t_9 = __pyx_t_21(__pyx_t_15); if (unlikely(!__pyx_t_9)) goto __pyx_L40_unpacking_failed;
           __Pyx_GOTREF(__pyx_t_9);
-          if (__Pyx_IternextUnpackEndCheck(__pyx_t_21(__pyx_t_15), 2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          if (__Pyx_IternextUnpackEndCheck(__pyx_t_21(__pyx_t_15), 2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __pyx_t_21 = NULL;
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
           goto __pyx_L41_unpacking_done;
@@ -6034,7 +6107,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
           __pyx_t_21 = NULL;
           if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-          {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __pyx_L41_unpacking_done:;
         }
         __Pyx_XGOTREF(__pyx_cur_scope->__pyx_v_retname);
@@ -6046,19 +6119,19 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
         __Pyx_GIVEREF(__pyx_t_9);
         __pyx_t_9 = 0;
 
-        /* "peact/_peact.pyx":241
+        /* "peact/_peact.pyx":245
  *             if len(mod.outputs) > 1:
  *                 for (retname, val) in zip(mod.outputs, outs):
  *                     self.scope[retname] = val             # <<<<<<<<<<<<<<
  *             elif len(mod.outputs):
  *                 self.scope[mod.outputs[0]] = outs
  */
-        __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_scope); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 241; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_scope); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 245; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_12);
-        if (unlikely(PyObject_SetItem(__pyx_t_12, __pyx_cur_scope->__pyx_v_retname, __pyx_cur_scope->__pyx_v_val) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 241; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        if (unlikely(PyObject_SetItem(__pyx_t_12, __pyx_cur_scope->__pyx_v_retname, __pyx_cur_scope->__pyx_v_val) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 245; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
 
-        /* "peact/_peact.pyx":240
+        /* "peact/_peact.pyx":244
  * 
  *             if len(mod.outputs) > 1:
  *                 for (retname, val) in zip(mod.outputs, outs):             # <<<<<<<<<<<<<<
@@ -6068,7 +6141,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
       }
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-      /* "peact/_peact.pyx":239
+      /* "peact/_peact.pyx":243
  *                     continue
  * 
  *             if len(mod.outputs) > 1:             # <<<<<<<<<<<<<<
@@ -6078,39 +6151,39 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
       goto __pyx_L37;
     }
 
-    /* "peact/_peact.pyx":242
+    /* "peact/_peact.pyx":246
  *                 for (retname, val) in zip(mod.outputs, outs):
  *                     self.scope[retname] = val
  *             elif len(mod.outputs):             # <<<<<<<<<<<<<<
  *                 self.scope[mod.outputs[0]] = outs
  * 
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_outputs); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 242; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_outputs); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 246; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_10 = PyObject_Length(__pyx_t_4); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 242; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = PyObject_Length(__pyx_t_4); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 246; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_2 = (__pyx_t_10 != 0);
     if (__pyx_t_2) {
 
-      /* "peact/_peact.pyx":243
+      /* "peact/_peact.pyx":247
  *                     self.scope[retname] = val
  *             elif len(mod.outputs):
  *                 self.scope[mod.outputs[0]] = outs             # <<<<<<<<<<<<<<
  * 
  *             computed.update(mod.outputs)
  */
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_scope); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 243; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_scope); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_outputs); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 243; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_outputs); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_9 = __Pyx_GetItemInt(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(__pyx_t_9 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 243; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_9 = __Pyx_GetItemInt(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(__pyx_t_9 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      if (unlikely(PyObject_SetItem(__pyx_t_4, __pyx_t_9, __pyx_cur_scope->__pyx_v_outs) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 243; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(PyObject_SetItem(__pyx_t_4, __pyx_t_9, __pyx_cur_scope->__pyx_v_outs) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-      /* "peact/_peact.pyx":242
+      /* "peact/_peact.pyx":246
  *                 for (retname, val) in zip(mod.outputs, outs):
  *                     self.scope[retname] = val
  *             elif len(mod.outputs):             # <<<<<<<<<<<<<<
@@ -6120,19 +6193,19 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
     }
     __pyx_L37:;
 
-    /* "peact/_peact.pyx":245
+    /* "peact/_peact.pyx":249
  *                 self.scope[mod.outputs[0]] = outs
  * 
  *             computed.update(mod.outputs)             # <<<<<<<<<<<<<<
  * 
  *         for name in names:
  */
-    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_outputs); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 245; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_mod, __pyx_n_s_outputs); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 249; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_8 = __Pyx_PySet_Update(__pyx_cur_scope->__pyx_v_computed, __pyx_t_9); if (unlikely(__pyx_t_8 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 245; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = __Pyx_PySet_Update(__pyx_cur_scope->__pyx_v_computed, __pyx_t_9); if (unlikely(__pyx_t_8 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 249; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-    /* "peact/_peact.pyx":219
+    /* "peact/_peact.pyx":223
  *         computed = set()
  * 
  *         for mod in [mod for mod in self.modules if mod in allCalls]:             # <<<<<<<<<<<<<<
@@ -6143,7 +6216,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
   }
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "peact/_peact.pyx":247
+  /* "peact/_peact.pyx":251
  *             computed.update(mod.outputs)
  * 
  *         for name in names:             # <<<<<<<<<<<<<<
@@ -6154,26 +6227,26 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
     __pyx_t_7 = __pyx_cur_scope->__pyx_v_names; __Pyx_INCREF(__pyx_t_7); __pyx_t_5 = 0;
     __pyx_t_6 = NULL;
   } else {
-    __pyx_t_5 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_cur_scope->__pyx_v_names); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_cur_scope->__pyx_v_names); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_6 = Py_TYPE(__pyx_t_7)->tp_iternext; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = Py_TYPE(__pyx_t_7)->tp_iternext; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   for (;;) {
     if (likely(!__pyx_t_6)) {
       if (likely(PyList_CheckExact(__pyx_t_7))) {
         if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_7)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_9 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_5); __Pyx_INCREF(__pyx_t_9); __pyx_t_5++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_9 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_5); __Pyx_INCREF(__pyx_t_9); __pyx_t_5++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_9 = PySequence_ITEM(__pyx_t_7, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_9 = PySequence_ITEM(__pyx_t_7, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_9);
         #endif
       } else {
         if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_7)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_9 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_5); __Pyx_INCREF(__pyx_t_9); __pyx_t_5++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_9 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_5); __Pyx_INCREF(__pyx_t_9); __pyx_t_5++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_9 = PySequence_ITEM(__pyx_t_7, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_9 = PySequence_ITEM(__pyx_t_7, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_9);
         #endif
       }
@@ -6183,7 +6256,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
@@ -6194,16 +6267,16 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
     __Pyx_GIVEREF(__pyx_t_9);
     __pyx_t_9 = 0;
 
-    /* "peact/_peact.pyx":248
+    /* "peact/_peact.pyx":252
  * 
  *         for name in names:
  *             self.dirty.discard(name)             # <<<<<<<<<<<<<<
  * 
  *     def pump_tick(self):
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_dirty); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 248; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self, __pyx_n_s_dirty); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 252; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_discard); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 248; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_discard); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 252; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_12);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_4 = NULL;
@@ -6217,23 +6290,23 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
       }
     }
     if (!__pyx_t_4) {
-      __pyx_t_9 = __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_cur_scope->__pyx_v_name); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 248; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_cur_scope->__pyx_v_name); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 252; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_9);
     } else {
-      __pyx_t_11 = PyTuple_New(1+1); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 248; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_11 = PyTuple_New(1+1); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 252; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_4); __pyx_t_4 = NULL;
       __Pyx_INCREF(__pyx_cur_scope->__pyx_v_name);
       __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_name);
       PyTuple_SET_ITEM(__pyx_t_11, 0+1, __pyx_cur_scope->__pyx_v_name);
-      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_11, NULL); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 248; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_11, NULL); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 252; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     }
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-    /* "peact/_peact.pyx":247
+    /* "peact/_peact.pyx":251
  *             computed.update(mod.outputs)
  * 
  *         for name in names:             # <<<<<<<<<<<<<<
@@ -6243,8 +6316,8 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
   }
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "peact/_peact.pyx":198
- *             self.dirty.update(mod.outputs)
+  /* "peact/_peact.pyx":202
+ *                 self.dirty.update(mod.outputs)
  * 
  *     def pump(self, names=None, async=False):             # <<<<<<<<<<<<<<
  *         """Step through the graph, calling all modules whose input has changed
@@ -6273,7 +6346,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
   return __pyx_r;
 }
 
-/* "peact/_peact.pyx":250
+/* "peact/_peact.pyx":254
  *             self.dirty.discard(name)
  * 
  *     def pump_tick(self):             # <<<<<<<<<<<<<<
@@ -6313,40 +6386,40 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_17pump_tick(CYTHON_UNUSED Py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("pump_tick", 0);
 
-  /* "peact/_peact.pyx":255
+  /* "peact/_peact.pyx":259
  *         event loop.
  *         """
  *         if self.pumping is None:             # <<<<<<<<<<<<<<
  *             self.pumping = self.pump(async=True)
  *         else:
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_pumping); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 255; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_pumping); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 259; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = (__pyx_t_1 == Py_None);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "peact/_peact.pyx":256
+    /* "peact/_peact.pyx":260
  *         """
  *         if self.pumping is None:
  *             self.pumping = self.pump(async=True)             # <<<<<<<<<<<<<<
  *         else:
  *             try:
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_pump); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 256; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_pump); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 260; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 256; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 260; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_async, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 256; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 256; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_async, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 260; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 260; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_pumping, __pyx_t_5) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 256; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_pumping, __pyx_t_5) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 260; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "peact/_peact.pyx":255
+    /* "peact/_peact.pyx":259
  *         event loop.
  *         """
  *         if self.pumping is None:             # <<<<<<<<<<<<<<
@@ -6356,7 +6429,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_17pump_tick(CYTHON_UNUSED Py
     goto __pyx_L3;
   }
 
-  /* "peact/_peact.pyx":258
+  /* "peact/_peact.pyx":262
  *             self.pumping = self.pump(async=True)
  *         else:
  *             try:             # <<<<<<<<<<<<<<
@@ -6371,21 +6444,21 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_17pump_tick(CYTHON_UNUSED Py
       __Pyx_XGOTREF(__pyx_t_8);
       /*try:*/ {
 
-        /* "peact/_peact.pyx":259
+        /* "peact/_peact.pyx":263
  *         else:
  *             try:
  *                 next(self.pumping)             # <<<<<<<<<<<<<<
  *             except StopIteration:
  *                 self.pumping = None
  */
-        __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_pumping); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 259; __pyx_clineno = __LINE__; goto __pyx_L4_error;}
+        __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_pumping); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 263; __pyx_clineno = __LINE__; goto __pyx_L4_error;}
         __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_4 = __Pyx_PyIter_Next(__pyx_t_5); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 259; __pyx_clineno = __LINE__; goto __pyx_L4_error;}
+        __pyx_t_4 = __Pyx_PyIter_Next(__pyx_t_5); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 263; __pyx_clineno = __LINE__; goto __pyx_L4_error;}
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-        /* "peact/_peact.pyx":258
+        /* "peact/_peact.pyx":262
  *             self.pumping = self.pump(async=True)
  *         else:
  *             try:             # <<<<<<<<<<<<<<
@@ -6402,7 +6475,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_17pump_tick(CYTHON_UNUSED Py
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-      /* "peact/_peact.pyx":260
+      /* "peact/_peact.pyx":264
  *             try:
  *                 next(self.pumping)
  *             except StopIteration:             # <<<<<<<<<<<<<<
@@ -6412,19 +6485,19 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_17pump_tick(CYTHON_UNUSED Py
       __pyx_t_9 = PyErr_ExceptionMatches(__pyx_builtin_StopIteration);
       if (__pyx_t_9) {
         __Pyx_AddTraceback("peact._peact.CallGraph.pump_tick", __pyx_clineno, __pyx_lineno, __pyx_filename);
-        if (__Pyx_GetException(&__pyx_t_4, &__pyx_t_5, &__pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 260; __pyx_clineno = __LINE__; goto __pyx_L6_except_error;}
+        if (__Pyx_GetException(&__pyx_t_4, &__pyx_t_5, &__pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 264; __pyx_clineno = __LINE__; goto __pyx_L6_except_error;}
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_GOTREF(__pyx_t_1);
 
-        /* "peact/_peact.pyx":261
+        /* "peact/_peact.pyx":265
  *                 next(self.pumping)
  *             except StopIteration:
  *                 self.pumping = None             # <<<<<<<<<<<<<<
  * 
  *     def pump_restore(self, names=None, async=False, kwargs={}):
  */
-        if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_pumping, Py_None) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 261; __pyx_clineno = __LINE__; goto __pyx_L6_except_error;}
+        if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_pumping, Py_None) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 265; __pyx_clineno = __LINE__; goto __pyx_L6_except_error;}
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -6433,7 +6506,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_17pump_tick(CYTHON_UNUSED Py
       goto __pyx_L6_except_error;
       __pyx_L6_except_error:;
 
-      /* "peact/_peact.pyx":258
+      /* "peact/_peact.pyx":262
  *             self.pumping = self.pump(async=True)
  *         else:
  *             try:             # <<<<<<<<<<<<<<
@@ -6455,7 +6528,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_17pump_tick(CYTHON_UNUSED Py
   }
   __pyx_L3:;
 
-  /* "peact/_peact.pyx":250
+  /* "peact/_peact.pyx":254
  *             self.dirty.discard(name)
  * 
  *     def pump_tick(self):             # <<<<<<<<<<<<<<
@@ -6478,7 +6551,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_17pump_tick(CYTHON_UNUSED Py
   return __pyx_r;
 }
 
-/* "peact/_peact.pyx":263
+/* "peact/_peact.pyx":267
  *                 self.pumping = None
  * 
  *     def pump_restore(self, names=None, async=False, kwargs={}):             # <<<<<<<<<<<<<<
@@ -6496,7 +6569,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_27__defaults__(CYTHON_UNUSED
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__defaults__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 263; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 267; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(((PyObject *)Py_None));
   __Pyx_GIVEREF(((PyObject *)Py_None));
@@ -6507,7 +6580,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_27__defaults__(CYTHON_UNUSED
   __Pyx_INCREF(__Pyx_CyFunction_Defaults(__pyx_defaults1, __pyx_self)->__pyx_arg_kwargs);
   __Pyx_GIVEREF(__Pyx_CyFunction_Defaults(__pyx_defaults1, __pyx_self)->__pyx_arg_kwargs);
   PyTuple_SET_ITEM(__pyx_t_1, 2, __Pyx_CyFunction_Defaults(__pyx_defaults1, __pyx_self)->__pyx_arg_kwargs);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 263; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 267; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
@@ -6586,7 +6659,7 @@ static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_20pump_restore(PyObject *__p
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "pump_restore") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 263; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "pump_restore") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 267; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -6605,7 +6678,7 @@ static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_20pump_restore(PyObject *__p
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("pump_restore", 0, 1, 4, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 263; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("pump_restore", 0, 1, 4, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 267; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("peact._peact.CallGraph.pump_restore", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6633,60 +6706,60 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_19pump_restore(CYTHON_UNUSED
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("pump_restore", 0);
 
-  /* "peact/_peact.pyx":271
+  /* "peact/_peact.pyx":275
  *         :param kwargs: List of quantities to inject into the scope before computing
  *         """
  *         scope = dict(self.scope)             # <<<<<<<<<<<<<<
  *         self.inject(**kwargs)
  *         self.pump(names, async)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_scope); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 271; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_scope); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 275; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 271; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 275; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)(&PyDict_Type)), __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 271; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)(&PyDict_Type)), __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 275; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_scope = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "peact/_peact.pyx":272
+  /* "peact/_peact.pyx":276
  *         """
  *         scope = dict(self.scope)
  *         self.inject(**kwargs)             # <<<<<<<<<<<<<<
  *         self.pump(names, async)
  *         result, self.scope = self.scope, scope
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_inject); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 272; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_inject); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 276; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   if (unlikely(__pyx_v_kwargs == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "argument after ** must be a mapping, not NoneType");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 272; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 276; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   if (likely(PyDict_CheckExact(__pyx_v_kwargs))) {
-    __pyx_t_2 = PyDict_Copy(__pyx_v_kwargs); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 272; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PyDict_Copy(__pyx_v_kwargs); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 276; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
   } else {
-    __pyx_t_2 = PyObject_CallFunctionObjArgs((PyObject*)&PyDict_Type, __pyx_v_kwargs, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 272; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PyObject_CallFunctionObjArgs((PyObject*)&PyDict_Type, __pyx_v_kwargs, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 276; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
   }
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 272; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 276; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "peact/_peact.pyx":273
+  /* "peact/_peact.pyx":277
  *         scope = dict(self.scope)
  *         self.inject(**kwargs)
  *         self.pump(names, async)             # <<<<<<<<<<<<<<
  *         result, self.scope = self.scope, scope
  *         return result
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_pump); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 273; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_pump); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 277; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = NULL;
   __pyx_t_4 = 0;
@@ -6700,7 +6773,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_19pump_restore(CYTHON_UNUSED
       __pyx_t_4 = 1;
     }
   }
-  __pyx_t_5 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 273; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 277; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
   if (__pyx_t_1) {
     __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1); __pyx_t_1 = NULL;
@@ -6711,29 +6784,29 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_19pump_restore(CYTHON_UNUSED
   __Pyx_INCREF(__pyx_v_async);
   __Pyx_GIVEREF(__pyx_v_async);
   PyTuple_SET_ITEM(__pyx_t_5, 1+__pyx_t_4, __pyx_v_async);
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 273; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 277; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "peact/_peact.pyx":274
+  /* "peact/_peact.pyx":278
  *         self.inject(**kwargs)
  *         self.pump(names, async)
  *         result, self.scope = self.scope, scope             # <<<<<<<<<<<<<<
  *         return result
  * 
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_scope); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 274; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_scope); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 278; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_2 = __pyx_v_scope;
   __Pyx_INCREF(__pyx_t_2);
   __pyx_v_result = __pyx_t_3;
   __pyx_t_3 = 0;
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_scope, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 274; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_scope, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 278; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":275
+  /* "peact/_peact.pyx":279
  *         self.pump(names, async)
  *         result, self.scope = self.scope, scope
  *         return result             # <<<<<<<<<<<<<<
@@ -6745,7 +6818,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_19pump_restore(CYTHON_UNUSED
   __pyx_r = __pyx_v_result;
   goto __pyx_L0;
 
-  /* "peact/_peact.pyx":263
+  /* "peact/_peact.pyx":267
  *                 self.pumping = None
  * 
  *     def pump_restore(self, names=None, async=False, kwargs={}):             # <<<<<<<<<<<<<<
@@ -6769,7 +6842,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_19pump_restore(CYTHON_UNUSED
   return __pyx_r;
 }
 
-/* "peact/_peact.pyx":277
+/* "peact/_peact.pyx":281
  *         return result
  * 
  *     def mark(self, *args):             # <<<<<<<<<<<<<<
@@ -6819,7 +6892,7 @@ static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_22mark(PyObject *__pyx_self,
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t used_pos_args = (pos_args < 1) ? pos_args : 1;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, used_pos_args, "mark") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 277; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, used_pos_args, "mark") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 281; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) < 1) {
       goto __pyx_L5_argtuple_error;
@@ -6830,7 +6903,7 @@ static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_22mark(PyObject *__pyx_self,
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("mark", 0, 1, 1, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 277; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("mark", 0, 1, 1, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 281; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_args); __pyx_v_args = 0;
   __Pyx_AddTraceback("peact._peact.CallGraph.mark", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -6857,16 +6930,16 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_21mark(CYTHON_UNUSED PyObjec
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mark", 0);
 
-  /* "peact/_peact.pyx":279
+  /* "peact/_peact.pyx":283
  *     def mark(self, *args):
  *         """Marks a quantity for recomputation"""
  *         self.dirty.update(args)             # <<<<<<<<<<<<<<
  * 
  *     def unmark(self, *args):
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_dirty); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 279; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_dirty); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 283; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_update); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 279; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_update); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 283; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -6880,23 +6953,23 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_21mark(CYTHON_UNUSED PyObjec
     }
   }
   if (!__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_args); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 279; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_args); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 283; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
   } else {
-    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 279; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 283; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2); __pyx_t_2 = NULL;
     __Pyx_INCREF(__pyx_v_args);
     __Pyx_GIVEREF(__pyx_v_args);
     PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_args);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 279; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 283; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "peact/_peact.pyx":277
+  /* "peact/_peact.pyx":281
  *         return result
  * 
  *     def mark(self, *args):             # <<<<<<<<<<<<<<
@@ -6920,7 +6993,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_21mark(CYTHON_UNUSED PyObjec
   return __pyx_r;
 }
 
-/* "peact/_peact.pyx":281
+/* "peact/_peact.pyx":285
  *         self.dirty.update(args)
  * 
  *     def unmark(self, *args):             # <<<<<<<<<<<<<<
@@ -6970,7 +7043,7 @@ static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_24unmark(PyObject *__pyx_sel
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t used_pos_args = (pos_args < 1) ? pos_args : 1;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, used_pos_args, "unmark") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 281; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, used_pos_args, "unmark") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 285; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) < 1) {
       goto __pyx_L5_argtuple_error;
@@ -6981,7 +7054,7 @@ static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_24unmark(PyObject *__pyx_sel
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("unmark", 0, 1, 1, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 281; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("unmark", 0, 1, 1, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 285; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_args); __pyx_v_args = 0;
   __Pyx_AddTraceback("peact._peact.CallGraph.unmark", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -7011,7 +7084,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_23unmark(CYTHON_UNUSED PyObj
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("unmark", 0);
 
-  /* "peact/_peact.pyx":283
+  /* "peact/_peact.pyx":287
  *     def unmark(self, *args):
  *         """Voids a recomputation request for a quantity."""
  *         for arg in args:             # <<<<<<<<<<<<<<
@@ -7022,24 +7095,24 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_23unmark(CYTHON_UNUSED PyObj
   for (;;) {
     if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_COMPILING_IN_CPYTHON
-    __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 283; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 287; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 283; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 287; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_arg, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "peact/_peact.pyx":284
+    /* "peact/_peact.pyx":288
  *         """Voids a recomputation request for a quantity."""
  *         for arg in args:
  *             self.dirty.remove(arg)             # <<<<<<<<<<<<<<
  * 
  *     def inject(self, *args, **kwargs):
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_dirty); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 284; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_dirty); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 288; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_remove); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 284; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_remove); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 288; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_4 = NULL;
@@ -7053,23 +7126,23 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_23unmark(CYTHON_UNUSED PyObj
       }
     }
     if (!__pyx_t_4) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_arg); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 284; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_arg); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 288; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
     } else {
-      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 284; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 288; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
       __Pyx_INCREF(__pyx_v_arg);
       __Pyx_GIVEREF(__pyx_v_arg);
       PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_v_arg);
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 284; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 288; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "peact/_peact.pyx":283
+    /* "peact/_peact.pyx":287
  *     def unmark(self, *args):
  *         """Voids a recomputation request for a quantity."""
  *         for arg in args:             # <<<<<<<<<<<<<<
@@ -7079,7 +7152,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_23unmark(CYTHON_UNUSED PyObj
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "peact/_peact.pyx":281
+  /* "peact/_peact.pyx":285
  *         self.dirty.update(args)
  * 
  *     def unmark(self, *args):             # <<<<<<<<<<<<<<
@@ -7105,7 +7178,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_23unmark(CYTHON_UNUSED PyObj
   return __pyx_r;
 }
 
-/* "peact/_peact.pyx":286
+/* "peact/_peact.pyx":290
  *             self.dirty.remove(arg)
  * 
  *     def inject(self, *args, **kwargs):             # <<<<<<<<<<<<<<
@@ -7159,7 +7232,7 @@ static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_26inject(PyObject *__pyx_sel
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t used_pos_args = (pos_args < 1) ? pos_args : 1;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, used_pos_args, "inject") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 286; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, used_pos_args, "inject") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 290; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) < 1) {
       goto __pyx_L5_argtuple_error;
@@ -7170,7 +7243,7 @@ static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_26inject(PyObject *__pyx_sel
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("inject", 0, 1, 1, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 286; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("inject", 0, 1, 1, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 290; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_args); __pyx_v_args = 0;
   __Pyx_DECREF(__pyx_v_kwargs); __pyx_v_kwargs = 0;
@@ -7206,21 +7279,21 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_25inject(CYTHON_UNUSED PyObj
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("inject", 0);
 
-  /* "peact/_peact.pyx":290
+  /* "peact/_peact.pyx":294
  *         and marks it as having changed.
  *         """
  *         for arg in list(args) + [kwargs]:             # <<<<<<<<<<<<<<
  *             self.scope.update(arg)
  *             self.dirty.update([key for key in arg])
  */
-  __pyx_t_1 = PySequence_List(__pyx_v_args); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 290; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PySequence_List(__pyx_v_args); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 294; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 290; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 294; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_kwargs);
   __Pyx_GIVEREF(__pyx_v_kwargs);
   PyList_SET_ITEM(__pyx_t_2, 0, __pyx_v_kwargs);
-  __pyx_t_3 = PyNumber_Add(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 290; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyNumber_Add(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 294; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -7229,23 +7302,23 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_25inject(CYTHON_UNUSED PyObj
   for (;;) {
     if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_2)) break;
     #if CYTHON_COMPILING_IN_CPYTHON
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 290; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 294; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 290; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 294; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_arg, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "peact/_peact.pyx":291
+    /* "peact/_peact.pyx":295
  *         """
  *         for arg in list(args) + [kwargs]:
  *             self.scope.update(arg)             # <<<<<<<<<<<<<<
  *             self.dirty.update([key for key in arg])
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_scope); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 291; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_scope); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 295; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_update); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 291; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_update); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 295; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_1 = NULL;
@@ -7259,58 +7332,58 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_25inject(CYTHON_UNUSED PyObj
       }
     }
     if (!__pyx_t_1) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_arg); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 291; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_arg); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 295; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
     } else {
-      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 291; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 295; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1); __pyx_t_1 = NULL;
       __Pyx_INCREF(__pyx_v_arg);
       __Pyx_GIVEREF(__pyx_v_arg);
       PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_v_arg);
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 291; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 295; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "peact/_peact.pyx":292
+    /* "peact/_peact.pyx":296
  *         for arg in list(args) + [kwargs]:
  *             self.scope.update(arg)
  *             self.dirty.update([key for key in arg])             # <<<<<<<<<<<<<<
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_dirty); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 292; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_dirty); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_update); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 292; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_update); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = PyList_New(0); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 292; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = PyList_New(0); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     if (likely(PyList_CheckExact(__pyx_v_arg)) || PyTuple_CheckExact(__pyx_v_arg)) {
       __pyx_t_1 = __pyx_v_arg; __Pyx_INCREF(__pyx_t_1); __pyx_t_7 = 0;
       __pyx_t_8 = NULL;
     } else {
-      __pyx_t_7 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_arg); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 292; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_arg); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_8 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 292; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_8 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     for (;;) {
       if (likely(!__pyx_t_8)) {
         if (likely(PyList_CheckExact(__pyx_t_1))) {
           if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_9 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_7); __Pyx_INCREF(__pyx_t_9); __pyx_t_7++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 292; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_9 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_7); __Pyx_INCREF(__pyx_t_9); __pyx_t_7++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_9 = PySequence_ITEM(__pyx_t_1, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 292; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_9 = PySequence_ITEM(__pyx_t_1, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_9);
           #endif
         } else {
           if (__pyx_t_7 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_9 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_7); __Pyx_INCREF(__pyx_t_9); __pyx_t_7++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 292; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_9 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_7); __Pyx_INCREF(__pyx_t_9); __pyx_t_7++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_9 = PySequence_ITEM(__pyx_t_1, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 292; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_9 = PySequence_ITEM(__pyx_t_1, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_9);
           #endif
         }
@@ -7320,7 +7393,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_25inject(CYTHON_UNUSED PyObj
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 292; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           }
           break;
         }
@@ -7328,7 +7401,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_25inject(CYTHON_UNUSED PyObj
       }
       __Pyx_XDECREF_SET(__pyx_v_key, __pyx_t_9);
       __pyx_t_9 = 0;
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_5, (PyObject*)__pyx_v_key))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 292; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_5, (PyObject*)__pyx_v_key))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_1 = NULL;
@@ -7342,24 +7415,24 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_25inject(CYTHON_UNUSED PyObj
       }
     }
     if (!__pyx_t_1) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 292; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_3);
     } else {
-      __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 292; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_1); __pyx_t_1 = NULL;
       __Pyx_GIVEREF(__pyx_t_5);
       PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_t_5);
       __pyx_t_5 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 292; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     }
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "peact/_peact.pyx":290
+    /* "peact/_peact.pyx":294
  *         and marks it as having changed.
  *         """
  *         for arg in list(args) + [kwargs]:             # <<<<<<<<<<<<<<
@@ -7369,7 +7442,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_25inject(CYTHON_UNUSED PyObj
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":286
+  /* "peact/_peact.pyx":290
  *             self.dirty.remove(arg)
  * 
  *     def inject(self, *args, **kwargs):             # <<<<<<<<<<<<<<
@@ -7912,6 +7985,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_kwargs, __pyx_k_kwargs, sizeof(__pyx_k_kwargs), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_mark, __pyx_k_mark, sizeof(__pyx_k_mark), 0, 0, 1, 1},
+  {&__pyx_n_s_mark_dirty, __pyx_k_mark_dirty, sizeof(__pyx_k_mark_dirty), 0, 0, 1, 1},
   {&__pyx_n_s_metaclass, __pyx_k_metaclass, sizeof(__pyx_k_metaclass), 0, 0, 1, 1},
   {&__pyx_n_s_mod, __pyx_k_mod, sizeof(__pyx_k_mod), 0, 0, 1, 1},
   {&__pyx_n_s_mods, __pyx_k_mods, sizeof(__pyx_k_mods), 0, 0, 1, 1},
@@ -7975,9 +8049,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 91; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_builtin_Exception = __Pyx_GetBuiltinName(__pyx_n_s_Exception); if (!__pyx_builtin_Exception) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 232; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_builtin_StopIteration = __Pyx_GetBuiltinName(__pyx_n_s_StopIteration); if (!__pyx_builtin_StopIteration) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 260; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_Exception = __Pyx_GetBuiltinName(__pyx_n_s_Exception); if (!__pyx_builtin_Exception) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_StopIteration = __Pyx_GetBuiltinName(__pyx_n_s_StopIteration); if (!__pyx_builtin_StopIteration) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 264; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -7987,14 +8061,14 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "peact/_peact.pyx":190
+  /* "peact/_peact.pyx":192
  *         self.rollingRevdeps = rollingRevdepNames
  *         if any(mod.async for mod in modules):
  *             self.pool = Pool(1)             # <<<<<<<<<<<<<<
  *         else:
  *             self.pool = None
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_int_1); if (unlikely(!__pyx_tuple_)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 190; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_int_1); if (unlikely(!__pyx_tuple_)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
@@ -8103,89 +8177,92 @@ static int __Pyx_InitCachedConstants(void) {
   /* "peact/_peact.pyx":115
  *         self.rebuild()
  * 
- *     def rebuild(self):             # <<<<<<<<<<<<<<
+ *     def rebuild(self, mark_dirty=True):             # <<<<<<<<<<<<<<
  *         """Build the dependency graph for all modules currently in the graph,
  *         as well as data structures for efficient dispatch of data.
  */
-  __pyx_tuple__20 = PyTuple_Pack(22, __pyx_n_s_self, __pyx_n_s_outputs, __pyx_n_s_modules, __pyx_n_s_mods, __pyx_n_s_deps, __pyx_n_s_revdeps, __pyx_n_s_opendeps, __pyx_n_s_providers, __pyx_n_s_mod, __pyx_n_s_dep, __pyx_n_s_out, __pyx_n_s_rollingDeps, __pyx_n_s_rollingRevdeps, __pyx_n_s_rollingDepNames, __pyx_n_s_rollingRevdepNames, __pyx_n_s_rolling, __pyx_n_s_toGrab, __pyx_n_s_val, __pyx_n_s_name_2, __pyx_n_s_d, __pyx_n_s_genexpr, __pyx_n_s_genexpr); if (unlikely(!__pyx_tuple__20)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__20 = PyTuple_Pack(23, __pyx_n_s_self, __pyx_n_s_mark_dirty, __pyx_n_s_outputs, __pyx_n_s_modules, __pyx_n_s_mods, __pyx_n_s_deps, __pyx_n_s_revdeps, __pyx_n_s_opendeps, __pyx_n_s_providers, __pyx_n_s_mod, __pyx_n_s_dep, __pyx_n_s_out, __pyx_n_s_rollingDeps, __pyx_n_s_rollingRevdeps, __pyx_n_s_rollingDepNames, __pyx_n_s_rollingRevdepNames, __pyx_n_s_rolling, __pyx_n_s_toGrab, __pyx_n_s_val, __pyx_n_s_name_2, __pyx_n_s_d, __pyx_n_s_genexpr, __pyx_n_s_genexpr); if (unlikely(!__pyx_tuple__20)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__20);
   __Pyx_GIVEREF(__pyx_tuple__20);
-  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(1, 0, 22, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_matthew_dev_peact_peact__p, __pyx_n_s_rebuild, 115, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(2, 0, 23, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_matthew_dev_peact_peact__p, __pyx_n_s_rebuild, 115, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__22 = PyTuple_Pack(1, ((PyObject *)Py_True)); if (unlikely(!__pyx_tuple__22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_tuple__22);
+  __Pyx_GIVEREF(__pyx_tuple__22);
 
-  /* "peact/_peact.pyx":198
- *             self.dirty.update(mod.outputs)
+  /* "peact/_peact.pyx":202
+ *                 self.dirty.update(mod.outputs)
  * 
  *     def pump(self, names=None, async=False):             # <<<<<<<<<<<<<<
  *         """Step through the graph, calling all modules whose input has changed
  *         or output is required.
  */
-  __pyx_tuple__22 = PyTuple_Pack(13, __pyx_n_s_self, __pyx_n_s_names, __pyx_n_s_async, __pyx_n_s_allCalls, __pyx_n_s_name_2, __pyx_n_s_computed, __pyx_n_s_mod, __pyx_n_s_kwargs, __pyx_n_s_thunk, __pyx_n_s_outs, __pyx_n_s_e, __pyx_n_s_retname, __pyx_n_s_val); if (unlikely(!__pyx_tuple__22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 198; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_tuple__22);
-  __Pyx_GIVEREF(__pyx_tuple__22);
-  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(3, 0, 13, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_matthew_dev_peact_peact__p, __pyx_n_s_pump, 198, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 198; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_tuple__24 = PyTuple_Pack(2, ((PyObject *)Py_None), ((PyObject *)Py_False)); if (unlikely(!__pyx_tuple__24)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 198; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_tuple__24);
-  __Pyx_GIVEREF(__pyx_tuple__24);
+  __pyx_tuple__23 = PyTuple_Pack(13, __pyx_n_s_self, __pyx_n_s_names, __pyx_n_s_async, __pyx_n_s_allCalls, __pyx_n_s_name_2, __pyx_n_s_computed, __pyx_n_s_mod, __pyx_n_s_kwargs, __pyx_n_s_thunk, __pyx_n_s_outs, __pyx_n_s_e, __pyx_n_s_retname, __pyx_n_s_val); if (unlikely(!__pyx_tuple__23)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_tuple__23);
+  __Pyx_GIVEREF(__pyx_tuple__23);
+  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(3, 0, 13, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_matthew_dev_peact_peact__p, __pyx_n_s_pump, 202, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__25 = PyTuple_Pack(2, ((PyObject *)Py_None), ((PyObject *)Py_False)); if (unlikely(!__pyx_tuple__25)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_tuple__25);
+  __Pyx_GIVEREF(__pyx_tuple__25);
 
-  /* "peact/_peact.pyx":250
+  /* "peact/_peact.pyx":254
  *             self.dirty.discard(name)
  * 
  *     def pump_tick(self):             # <<<<<<<<<<<<<<
  *         """Perform a single element of work every time it is called. Intended
  *         for embedding :py:meth:`peact.CallNode.pump` into another
  */
-  __pyx_tuple__25 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__25)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 250; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_tuple__25);
-  __Pyx_GIVEREF(__pyx_tuple__25);
-  __pyx_codeobj__26 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__25, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_matthew_dev_peact_peact__p, __pyx_n_s_pump_tick, 250, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__26)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 250; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__26 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__26)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 254; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_tuple__26);
+  __Pyx_GIVEREF(__pyx_tuple__26);
+  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_matthew_dev_peact_peact__p, __pyx_n_s_pump_tick, 254, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 254; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "peact/_peact.pyx":263
+  /* "peact/_peact.pyx":267
  *                 self.pumping = None
  * 
  *     def pump_restore(self, names=None, async=False, kwargs={}):             # <<<<<<<<<<<<<<
  *         """Evaluate the graph for a set of given names. Restores the current
  *         state afterward.
  */
-  __pyx_tuple__27 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_names, __pyx_n_s_async, __pyx_n_s_kwargs, __pyx_n_s_scope, __pyx_n_s_result); if (unlikely(!__pyx_tuple__27)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 263; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_tuple__27);
-  __Pyx_GIVEREF(__pyx_tuple__27);
-  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(4, 0, 6, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_matthew_dev_peact_peact__p, __pyx_n_s_pump_restore, 263, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 263; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__28 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_names, __pyx_n_s_async, __pyx_n_s_kwargs, __pyx_n_s_scope, __pyx_n_s_result); if (unlikely(!__pyx_tuple__28)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 267; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_tuple__28);
+  __Pyx_GIVEREF(__pyx_tuple__28);
+  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(4, 0, 6, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_matthew_dev_peact_peact__p, __pyx_n_s_pump_restore, 267, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 267; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "peact/_peact.pyx":277
+  /* "peact/_peact.pyx":281
  *         return result
  * 
  *     def mark(self, *args):             # <<<<<<<<<<<<<<
  *         """Marks a quantity for recomputation"""
  *         self.dirty.update(args)
  */
-  __pyx_tuple__29 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_args); if (unlikely(!__pyx_tuple__29)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 277; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_tuple__29);
-  __Pyx_GIVEREF(__pyx_tuple__29);
-  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_VARARGS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_matthew_dev_peact_peact__p, __pyx_n_s_mark, 277, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 277; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__30 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_args); if (unlikely(!__pyx_tuple__30)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 281; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_tuple__30);
+  __Pyx_GIVEREF(__pyx_tuple__30);
+  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_VARARGS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_matthew_dev_peact_peact__p, __pyx_n_s_mark, 281, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 281; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "peact/_peact.pyx":281
+  /* "peact/_peact.pyx":285
  *         self.dirty.update(args)
  * 
  *     def unmark(self, *args):             # <<<<<<<<<<<<<<
  *         """Voids a recomputation request for a quantity."""
  *         for arg in args:
  */
-  __pyx_tuple__31 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_args, __pyx_n_s_arg); if (unlikely(!__pyx_tuple__31)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 281; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_tuple__31);
-  __Pyx_GIVEREF(__pyx_tuple__31);
-  __pyx_codeobj__32 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, CO_VARARGS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__31, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_matthew_dev_peact_peact__p, __pyx_n_s_unmark, 281, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__32)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 281; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__32 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_args, __pyx_n_s_arg); if (unlikely(!__pyx_tuple__32)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 285; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_tuple__32);
+  __Pyx_GIVEREF(__pyx_tuple__32);
+  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, CO_VARARGS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_matthew_dev_peact_peact__p, __pyx_n_s_unmark, 285, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 285; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "peact/_peact.pyx":286
+  /* "peact/_peact.pyx":290
  *             self.dirty.remove(arg)
  * 
  *     def inject(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         """Puts a value or set of values into the list of stored quantities
  *         and marks it as having changed.
  */
-  __pyx_tuple__33 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_args, __pyx_n_s_kwargs, __pyx_n_s_arg, __pyx_n_s_key); if (unlikely(!__pyx_tuple__33)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 286; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_tuple__33);
-  __Pyx_GIVEREF(__pyx_tuple__33);
-  __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(1, 0, 5, 0, CO_VARARGS|CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_matthew_dev_peact_peact__p, __pyx_n_s_inject, 286, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 286; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__34 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_args, __pyx_n_s_kwargs, __pyx_n_s_arg, __pyx_n_s_key); if (unlikely(!__pyx_tuple__34)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 290; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_tuple__34);
+  __Pyx_GIVEREF(__pyx_tuple__34);
+  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(1, 0, 5, 0, CO_VARARGS|CO_VARKEYWORDS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__34, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_matthew_dev_peact_peact__p, __pyx_n_s_inject, 290, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 290; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -8295,10 +8372,10 @@ PyMODINIT_FUNC PyInit__peact(void)
   if (PyType_Ready(&__pyx_type_5peact_6_peact___pyx_scope_struct__rebuild) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type_5peact_6_peact___pyx_scope_struct__rebuild.tp_print = 0;
   __pyx_ptype_5peact_6_peact___pyx_scope_struct__rebuild = &__pyx_type_5peact_6_peact___pyx_scope_struct__rebuild;
-  if (PyType_Ready(&__pyx_type_5peact_6_peact___pyx_scope_struct_1_genexpr) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyType_Ready(&__pyx_type_5peact_6_peact___pyx_scope_struct_1_genexpr) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type_5peact_6_peact___pyx_scope_struct_1_genexpr.tp_print = 0;
   __pyx_ptype_5peact_6_peact___pyx_scope_struct_1_genexpr = &__pyx_type_5peact_6_peact___pyx_scope_struct_1_genexpr;
-  if (PyType_Ready(&__pyx_type_5peact_6_peact___pyx_scope_struct_2_pump) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 198; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyType_Ready(&__pyx_type_5peact_6_peact___pyx_scope_struct_2_pump) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type_5peact_6_peact___pyx_scope_struct_2_pump.tp_print = 0;
   __pyx_ptype_5peact_6_peact___pyx_scope_struct_2_pump = &__pyx_type_5peact_6_peact___pyx_scope_struct_2_pump;
   /*--- Type import code ---*/
@@ -8512,93 +8589,94 @@ PyMODINIT_FUNC PyInit__peact(void)
   /* "peact/_peact.pyx":115
  *         self.rebuild()
  * 
- *     def rebuild(self):             # <<<<<<<<<<<<<<
+ *     def rebuild(self, mark_dirty=True):             # <<<<<<<<<<<<<<
  *         """Build the dependency graph for all modules currently in the graph,
  *         as well as data structures for efficient dispatch of data.
  */
   __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5peact_6_peact_9CallGraph_13rebuild, 0, __pyx_n_s_CallGraph_rebuild, NULL, __pyx_n_s_peact__peact, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_tuple__22);
   if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_rebuild, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":198
- *             self.dirty.update(mod.outputs)
+  /* "peact/_peact.pyx":202
+ *                 self.dirty.update(mod.outputs)
  * 
  *     def pump(self, names=None, async=False):             # <<<<<<<<<<<<<<
  *         """Step through the graph, calling all modules whose input has changed
  *         or output is required.
  */
-  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5peact_6_peact_9CallGraph_15pump, 0, __pyx_n_s_CallGraph_pump, NULL, __pyx_n_s_peact__peact, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 198; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5peact_6_peact_9CallGraph_15pump, 0, __pyx_n_s_CallGraph_pump, NULL, __pyx_n_s_peact__peact, __pyx_d, ((PyObject *)__pyx_codeobj__24)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_tuple__24);
-  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_pump, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 198; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_tuple__25);
+  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_pump, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":250
+  /* "peact/_peact.pyx":254
  *             self.dirty.discard(name)
  * 
  *     def pump_tick(self):             # <<<<<<<<<<<<<<
  *         """Perform a single element of work every time it is called. Intended
  *         for embedding :py:meth:`peact.CallNode.pump` into another
  */
-  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5peact_6_peact_9CallGraph_18pump_tick, 0, __pyx_n_s_CallGraph_pump_tick, NULL, __pyx_n_s_peact__peact, __pyx_d, ((PyObject *)__pyx_codeobj__26)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 250; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5peact_6_peact_9CallGraph_18pump_tick, 0, __pyx_n_s_CallGraph_pump_tick, NULL, __pyx_n_s_peact__peact, __pyx_d, ((PyObject *)__pyx_codeobj__27)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 254; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_pump_tick, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 250; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_pump_tick, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 254; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":263
+  /* "peact/_peact.pyx":267
  *                 self.pumping = None
  * 
  *     def pump_restore(self, names=None, async=False, kwargs={}):             # <<<<<<<<<<<<<<
  *         """Evaluate the graph for a set of given names. Restores the current
  *         state afterward.
  */
-  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5peact_6_peact_9CallGraph_20pump_restore, 0, __pyx_n_s_CallGraph_pump_restore, NULL, __pyx_n_s_peact__peact, __pyx_d, ((PyObject *)__pyx_codeobj__28)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 263; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5peact_6_peact_9CallGraph_20pump_restore, 0, __pyx_n_s_CallGraph_pump_restore, NULL, __pyx_n_s_peact__peact, __pyx_d, ((PyObject *)__pyx_codeobj__29)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 267; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_2, sizeof(__pyx_defaults1), 1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 263; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 263; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_2, sizeof(__pyx_defaults1), 1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 267; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 267; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_CyFunction_Defaults(__pyx_defaults1, __pyx_t_2)->__pyx_arg_kwargs = __pyx_t_3;
   __Pyx_GIVEREF(__pyx_t_3);
   __pyx_t_3 = 0;
   __Pyx_CyFunction_SetDefaultsGetter(__pyx_t_2, __pyx_pf_5peact_6_peact_9CallGraph_27__defaults__);
-  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_pump_restore, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 263; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_pump_restore, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 267; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":277
+  /* "peact/_peact.pyx":281
  *         return result
  * 
  *     def mark(self, *args):             # <<<<<<<<<<<<<<
  *         """Marks a quantity for recomputation"""
  *         self.dirty.update(args)
  */
-  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5peact_6_peact_9CallGraph_22mark, 0, __pyx_n_s_CallGraph_mark, NULL, __pyx_n_s_peact__peact, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 277; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5peact_6_peact_9CallGraph_22mark, 0, __pyx_n_s_CallGraph_mark, NULL, __pyx_n_s_peact__peact, __pyx_d, ((PyObject *)__pyx_codeobj__31)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 281; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_mark, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 277; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_mark, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 281; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":281
+  /* "peact/_peact.pyx":285
  *         self.dirty.update(args)
  * 
  *     def unmark(self, *args):             # <<<<<<<<<<<<<<
  *         """Voids a recomputation request for a quantity."""
  *         for arg in args:
  */
-  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5peact_6_peact_9CallGraph_24unmark, 0, __pyx_n_s_CallGraph_unmark, NULL, __pyx_n_s_peact__peact, __pyx_d, ((PyObject *)__pyx_codeobj__32)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 281; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5peact_6_peact_9CallGraph_24unmark, 0, __pyx_n_s_CallGraph_unmark, NULL, __pyx_n_s_peact__peact, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 285; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_unmark, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 281; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_unmark, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 285; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":286
+  /* "peact/_peact.pyx":290
  *             self.dirty.remove(arg)
  * 
  *     def inject(self, *args, **kwargs):             # <<<<<<<<<<<<<<
  *         """Puts a value or set of values into the list of stored quantities
  *         and marks it as having changed.
  */
-  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5peact_6_peact_9CallGraph_26inject, 0, __pyx_n_s_CallGraph_inject, NULL, __pyx_n_s_peact__peact, __pyx_d, ((PyObject *)__pyx_codeobj__34)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 286; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5peact_6_peact_9CallGraph_26inject, 0, __pyx_n_s_CallGraph_inject, NULL, __pyx_n_s_peact__peact, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 290; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_inject, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 286; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_inject, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 290; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "peact/_peact.pyx":39

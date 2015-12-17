@@ -112,9 +112,11 @@ class CallGraph:
         self.moduleLists = []
         self.rebuild()
 
-    def rebuild(self):
+    def rebuild(self, mark_dirty=True):
         """Build the dependency graph for all modules currently in the graph,
         as well as data structures for efficient dispatch of data.
+
+        :param mark_dirty: If True, mark all properties in the graph as needing a recomputation
         """
         outputs = set()
         modules = []
@@ -191,9 +193,11 @@ class CallGraph:
         else:
             self.pool = None
         self.modules = modules
-        for mod in modules:
-            self.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])
-            self.dirty.update(mod.outputs)
+
+        if mark_dirty:
+            for mod in modules:
+                self.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])
+                self.dirty.update(mod.outputs)
 
     def pump(self, names=None, async=False):
         """Step through the graph, calling all modules whose input has changed
