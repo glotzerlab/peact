@@ -220,6 +220,10 @@ class CallGraph:
             allCalls.update(self.rollingRevdeps[name])
         computed = set()
 
+        # if len(names) and "RDF.RDFValues" in names:
+        #     print(allCalls)
+        print(names)
+
         for mod in [mod for mod in self.modules if mod in allCalls]:
             kwargs = {dep: self.scope[mod.remap.get(dep, dep)]
                       for dep in mod.dependencies if mod.remap.get(dep, dep) in self.scope}
@@ -273,9 +277,18 @@ class CallGraph:
         :param kwargs: List of quantities to inject into the scope before computing
         """
         scope = dict(self.scope)
+        saved_pumping = self.pumping
+        self.pumping = None
+        try:
+            print("peact: {}".format(kwargs["frame"]))
+            print(names)
+        except:
+            pass
         self.inject(**kwargs)
-        self.pump(names, async)
+        for _ in self.pump(names, async):
+            pass
         result, self.scope = self.scope, scope
+        self.pumping = saved_pumping
         return result
 
     def mark(self, *args):
