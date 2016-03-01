@@ -36,6 +36,31 @@ class CallNode:
     def __repr__(self):
         return 'CallNode({}, output={}, async={}, remap={}, as_needed={})'.format(self.function, self.outputs, self.async, self.remap, self.as_needed)
 
+class CallGraphState:
+    """Internal class for keeping track of call graph state"""
+
+    def __init__(self, scope={}):
+        self.scope = dict(scope)
+        self.dirty = set()
+        self.pumping = None
+
+    def mark(self, *args):
+        """Marks a quantity for recomputation"""
+        self.dirty.update(args)
+
+    def unmark(self, *args):
+        """Voids a recomputation request for a quantity."""
+        for arg in args:
+            self.dirty.remove(arg)
+
+    def inject(self, *args, **kwargs):
+        """Puts a value or set of values into the list of stored quantities
+        and marks it as having changed.
+        """
+        for arg in list(args) + [kwargs]:
+            self.scope.update(arg)
+            self.dirty.update([key for key in arg])
+
 class CallGraph:
     """Handles the reactivity for a set of :py:class:`CallNode` objects.
 
@@ -56,9 +81,7 @@ class CallGraph:
         # map property name -> modules that depend on it, even transiently
         self.rollingRevdeps = defaultdict(set)
         self.pool = None
-        self.scope = {}
-        self.dirty = set()
-        self.pumping = None
+        self.state = CallGraphState()
         self.printedExceptions = set()
 
     def register(self, function, *args, **kwargs):
@@ -112,7 +135,7 @@ class CallGraph:
         self.moduleLists = []
         self.rebuild()
 
-    def rebuild(self, mark_dirty=True):
+    def rebuild(self, state=None, mark_dirty=False):
         """Build the dependency graph for all modules currently in the graph,
         as well as data structures for efficient dispatch of data.
 
@@ -196,23 +219,23 @@ class CallGraph:
 
         if mark_dirty:
             for mod in modules:
-                self.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])
-                self.dirty.update(mod.outputs)
+                state.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])
+                state.dirty.update(mod.outputs)
 
-    def pump(self, names=None, async=False):
+    def pump(self, state, names=None, async=False):
         """Step through the graph, calling all modules whose input has changed
         or output is required.
 
         Example::
 
-           for _ in graph.pump():
+           for _ in graph.pump(state):
                pass
 
         :param names: iterable of names to force computation of; if None, default to the set of "dirty" quantities
         :param async: If True, yield intermediate results whenever an asynchronous module is encountered
         """
         if names is None:
-            names = list(self.dirty)
+            names = list(state.dirty)
 
         allCalls = set()
         for name in names:
@@ -221,8 +244,8 @@ class CallGraph:
         computed = set()
 
         for mod in [mod for mod in self.modules if mod in allCalls]:
-            kwargs = {dep: self.scope[mod.remap.get(dep, dep)]
-                      for dep in mod.dependencies if mod.remap.get(dep, dep) in self.scope}
+            kwargs = {dep: state.scope[mod.remap.get(dep, dep)]
+                      for dep in mod.dependencies if mod.remap.get(dep, dep) in state.scope}
 
             try:
                 if async and mod.async:
@@ -242,55 +265,36 @@ class CallGraph:
 
             if len(mod.outputs) > 1:
                 for (retname, val) in zip(mod.outputs, outs):
-                    self.scope[retname] = val
+                    state.scope[retname] = val
             elif len(mod.outputs):
-                self.scope[mod.outputs[0]] = outs
+                state.scope[mod.outputs[0]] = outs
 
             computed.update(mod.outputs)
 
         for name in names:
-            self.dirty.discard(name)
+            state.dirty.discard(name)
 
-    def pump_tick(self):
+    def pump_tick(self, state):
         """Perform a single element of work every time it is called. Intended
         for embedding :py:meth:`peact.CallNode.pump` into another
         event loop.
         """
-        if self.pumping is None:
-            self.pumping = self.pump(async=True)
+        if state.pumping is None:
+            state.pumping = self.pump(async=True)
         else:
             try:
-                next(self.pumping)
+                next(state.pumping)
             except StopIteration:
-                self.pumping = None
+                state.pumping = None
 
-    def pump_restore(self, names=None, async=False, kwargs={}):
-        """Evaluate the graph for a set of given names. Restores the current
-        state afterward.
+    def pump_restore(self, state, names=None, async=False, kwargs={}):
+        """Evaluate the graph for a set of given names.
 
         :param names: List of quantity names to compute
         :param async: If True, compute asynchronously
         :param kwargs: List of quantities to inject into the scope before computing
         """
-        scope = dict(self.scope)
-        self.inject(**kwargs)
-        self.pump(names, async)
-        result, self.scope = self.scope, scope
-        return result
-
-    def mark(self, *args):
-        """Marks a quantity for recomputation"""
-        self.dirty.update(args)
-
-    def unmark(self, *args):
-        """Voids a recomputation request for a quantity."""
-        for arg in args:
-            self.dirty.remove(arg)
-
-    def inject(self, *args, **kwargs):
-        """Puts a value or set of values into the list of stored quantities
-        and marks it as having changed.
-        """
-        for arg in list(args) + [kwargs]:
-            self.scope.update(arg)
-            self.dirty.update([key for key in arg])
+        tempState = CallGraphState(scope=state.scope)
+        tempState.inject(**kwargs)
+        self.pump(tempState, names, async)
+        return tempState.state

@@ -5,7 +5,7 @@ import json
 import os
 import tempfile
 
-from .. import CallGraph
+from .. import CallGraph, CallGraphState
 
 def loadModuleFromDesc(desc):
     """Attempt to load a peact :py:class:`Module` from a dictionary
@@ -45,6 +45,7 @@ class ModuleList:
         self.modules = []
         self.metadata = []
         self.graph = CallGraph()
+        self.state = CallGraphState()
 
     def add(self, desc):
         cls = loadModuleFromDesc(desc)
@@ -52,7 +53,7 @@ class ModuleList:
             raise RuntimeError('Failed to understand module description')
         module = cls(self.graph)
         if 'state' in desc:
-            module.deserialize(desc['state'])
+            module.deserialize(desc['state'], self.state.scope)
 
         self.modules.append(module)
         self.metadata.append(desc)
@@ -85,7 +86,7 @@ class ModuleList:
     def save(self, fname):
         for (module, metadata) in zip(self.modules, self.metadata):
             try:
-                module.serialize(metadata.setdefault('state', {}))
+                module.serialize(metadata.setdefault('state', {}), self.state.scope)
             except Exception as e:
                 print(traceback.format_exc(3))
         json.dump(self.metadata, open(fname, 'w'))
@@ -117,11 +118,11 @@ class Module:
         while self.deferredCalls:
             self.deferredCalls.pop()
 
-    def serialize(self, target):
-        self._autoserialize(self.graph.scope, target)
+    def serialize(self, target, scope):
+        self._autoserialize(scope, target)
 
-    def deserialize(self, target):
-        self._autoserialize(target, self.graph.scope)
+    def deserialize(self, target, scope):
+        self._autoserialize(target, scope)
 
     def register(self, *args, **kwargs):
         self.registeredCalls.append(self.graph.register(*args, **kwargs))
