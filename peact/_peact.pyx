@@ -88,9 +88,12 @@ class CallGraph:
         :param function: The function which should be removed
         :param rebuild: If True, immediately rebuild the call graph
         """
-        index = [i for (i, mod) in enumerate(self.moduleLists)
-                 if len(mod) == 1 and mod[0].function == function][0]
-        del self.modules[index]
+        try:
+            index = [i for (i, mod) in enumerate(self.moduleLists)
+                     if len(mod) == 1 and mod[0].function == function][0]
+            del self.modules[index]
+        except IndexError:
+            pass
         if rebuild:
             self.rebuild()
 

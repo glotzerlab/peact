@@ -61,9 +61,18 @@ class ModuleList:
         return module
 
     def remove(self, index=-1):
-        module = self.modules.pop(index)
+        module = None
+        try:
+            module = self.modules.pop(index)
+            module.cleanup()
+        except:
+            if module is not None:
+                if index < 0:
+                    self.modules.insert(len(self.modules) + 1 + index, module)
+                else:
+                    self.modules.insert(index, module)
+            raise
         metadata = self.metadata.pop(index)
-        module.cleanup()
         self.graph.rebuild()
 
         return (module, metadata)
