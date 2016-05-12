@@ -104,8 +104,12 @@ class CallGraph:
         :param rebuild: If True, immediately rebuild the call graph
         """
 
-        index = [i for (i, mod) in enumerate(self.moduleLists)
-                 if mod is target][0]
+        try:
+            index = [i for (i, mod) in enumerate(self.moduleLists)
+                     if mod is target][0]
+            del self.modules[index]
+        except IndexError:
+            pass
         del self.modules[index]
         if rebuild:
             self.rebuild()
