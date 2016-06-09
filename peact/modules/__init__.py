@@ -7,9 +7,12 @@ import tempfile
 
 from .. import CallGraph
 
+_modulesLoaded = 0
+
 def loadModuleFromDesc(desc):
     """Attempt to load a peact :py:class:`Module` from a dictionary
     description. Returns None if there is an error."""
+    global _modulesLoaded
 
     try:
         modFile = None
@@ -24,7 +27,9 @@ def loadModuleFromDesc(desc):
                 modFile = desc['file']
                 modSource = open(modFile, 'r').read()
 
-            newMod = importlib.machinery.SourceFileLoader('peact_modules', modFile).load_module()
+            newMod = importlib.machinery.SourceFileLoader(
+                'peact_modules{}'.format(_modulesLoaded), modFile).load_module()
+            _modulesLoaded += 1
             # newMod = imp.new_module('testModule')
             # exec(modSource, newMod.__dict__)
             result = newMod.Module
