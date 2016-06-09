@@ -241,8 +241,9 @@ class CallGraph:
                 else:
                     outs = mod.function(**kwargs)
             except Exception as e:
-                if str(e) not in self.printedExceptions:
-                    self.printedExceptions.add(str(e))
+                exception_str = str(e)
+                if exception_str not in self.printedExceptions:
+                    self.printedExceptions.add(exception_str)
                     raise
                 else:
                     continue
