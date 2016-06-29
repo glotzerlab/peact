@@ -6201,7 +6201,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
  *                 else:
  *                     continue             # <<<<<<<<<<<<<<
  * 
- *             if len(mod.outputs) > 1:
+ *             if len(mod.outputs) > 1 and outs:
  */
         /*else*/ {
           goto __pyx_L35_except_continue;
@@ -6241,7 +6241,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
     /* "peact/_peact.pyx":251
  *                     continue
  * 
- *             if len(mod.outputs) > 1:             # <<<<<<<<<<<<<<
+ *             if len(mod.outputs) > 1 and outs:             # <<<<<<<<<<<<<<
  *                 for (retname, val) in zip(mod.outputs, outs):
  *                     self.scope[retname] = val
  */
@@ -6249,12 +6249,20 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
     __Pyx_GOTREF(__pyx_t_12);
     __pyx_t_10 = PyObject_Length(__pyx_t_12); if (unlikely(__pyx_t_10 == -1)) __PYX_ERR(0, 251, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __pyx_t_2 = ((__pyx_t_10 > 1) != 0);
+    __pyx_t_1 = ((__pyx_t_10 > 1) != 0);
+    if (__pyx_t_1) {
+    } else {
+      __pyx_t_2 = __pyx_t_1;
+      goto __pyx_L38_bool_binop_done;
+    }
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_cur_scope->__pyx_v_outs); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 251, __pyx_L1_error)
+    __pyx_t_2 = __pyx_t_1;
+    __pyx_L38_bool_binop_done:;
     if (__pyx_t_2) {
 
       /* "peact/_peact.pyx":252
  * 
- *             if len(mod.outputs) > 1:
+ *             if len(mod.outputs) > 1 and outs:
  *                 for (retname, val) in zip(mod.outputs, outs):             # <<<<<<<<<<<<<<
  *                     self.scope[retname] = val
  *             elif len(mod.outputs):
@@ -6347,20 +6355,20 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
           __Pyx_GOTREF(__pyx_t_15);
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
           __pyx_t_20 = Py_TYPE(__pyx_t_15)->tp_iternext;
-          index = 0; __pyx_t_11 = __pyx_t_20(__pyx_t_15); if (unlikely(!__pyx_t_11)) goto __pyx_L40_unpacking_failed;
+          index = 0; __pyx_t_11 = __pyx_t_20(__pyx_t_15); if (unlikely(!__pyx_t_11)) goto __pyx_L42_unpacking_failed;
           __Pyx_GOTREF(__pyx_t_11);
-          index = 1; __pyx_t_3 = __pyx_t_20(__pyx_t_15); if (unlikely(!__pyx_t_3)) goto __pyx_L40_unpacking_failed;
+          index = 1; __pyx_t_3 = __pyx_t_20(__pyx_t_15); if (unlikely(!__pyx_t_3)) goto __pyx_L42_unpacking_failed;
           __Pyx_GOTREF(__pyx_t_3);
           if (__Pyx_IternextUnpackEndCheck(__pyx_t_20(__pyx_t_15), 2) < 0) __PYX_ERR(0, 252, __pyx_L1_error)
           __pyx_t_20 = NULL;
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-          goto __pyx_L41_unpacking_done;
-          __pyx_L40_unpacking_failed:;
+          goto __pyx_L43_unpacking_done;
+          __pyx_L42_unpacking_failed:;
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
           __pyx_t_20 = NULL;
           if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
           __PYX_ERR(0, 252, __pyx_L1_error)
-          __pyx_L41_unpacking_done:;
+          __pyx_L43_unpacking_done:;
         }
         __Pyx_XGOTREF(__pyx_cur_scope->__pyx_v_retname);
         __Pyx_XDECREF_SET(__pyx_cur_scope->__pyx_v_retname, __pyx_t_11);
@@ -6372,7 +6380,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
         __pyx_t_3 = 0;
 
         /* "peact/_peact.pyx":253
- *             if len(mod.outputs) > 1:
+ *             if len(mod.outputs) > 1 and outs:
  *                 for (retname, val) in zip(mod.outputs, outs):
  *                     self.scope[retname] = val             # <<<<<<<<<<<<<<
  *             elif len(mod.outputs):
@@ -6385,7 +6393,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
 
         /* "peact/_peact.pyx":252
  * 
- *             if len(mod.outputs) > 1:
+ *             if len(mod.outputs) > 1 and outs:
  *                 for (retname, val) in zip(mod.outputs, outs):             # <<<<<<<<<<<<<<
  *                     self.scope[retname] = val
  *             elif len(mod.outputs):
@@ -6396,7 +6404,7 @@ static PyObject *__pyx_gb_5peact_6_peact_9CallGraph_16generator(__pyx_CoroutineO
       /* "peact/_peact.pyx":251
  *                     continue
  * 
- *             if len(mod.outputs) > 1:             # <<<<<<<<<<<<<<
+ *             if len(mod.outputs) > 1 and outs:             # <<<<<<<<<<<<<<
  *                 for (retname, val) in zip(mod.outputs, outs):
  *                     self.scope[retname] = val
  */

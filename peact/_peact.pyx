@@ -248,7 +248,7 @@ class CallGraph:
                 else:
                     continue
 
-            if len(mod.outputs) > 1:
+            if len(mod.outputs) > 1 and outs:
                 for (retname, val) in zip(mod.outputs, outs):
                     self.scope[retname] = val
             elif len(mod.outputs):
