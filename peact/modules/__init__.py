@@ -32,7 +32,10 @@ def loadModuleFromDesc(desc):
             _modulesLoaded += 1
             # newMod = imp.new_module('testModule')
             # exec(modSource, newMod.__dict__)
-            result = newMod.Module
+            if hasattr(newMod, 'Module'):
+                result = newMod.Module
+            else:
+                result = None
         else:
             result = None
     finally:
