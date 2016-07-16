@@ -298,6 +298,11 @@ class CallGraph:
     def inject(self, *args, **kwargs):
         """Puts a value or set of values into the list of stored quantities
         and marks it as having changed.
+
+        Example::
+
+            graph.inject(temperature=1.5)
+            graph.inject({'namespace.value': 13})
         """
         for arg in list(args) + [kwargs]:
             self.scope.update(arg)
