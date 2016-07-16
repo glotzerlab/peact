@@ -8,6 +8,19 @@ Welcome to peact's documentation!
 
 **Peact** is a library for reactive programming in python.
 
+Installation
+------------
+
+Installation works using distutils, for example::
+
+  python setup.py install --user
+
+peact uses cython to build a C extension. If you update
+`peact/_peact.pyx`, you can trigger the cython code to rebuild with
+`--cython`::
+
+  python setup.py install --user --cython
+
 Introduction
 ------------
 
