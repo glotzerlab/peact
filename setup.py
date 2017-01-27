@@ -18,6 +18,6 @@ setup(name='peact',
       author='Matthew Spellings',
       author_email='mspells@umich.edu',
       url='',
-      packages=['peact', 'peact.modules'],
+      packages=['peact', 'peact.modules', 'peact.export'],
       ext_modules=modules
 )
