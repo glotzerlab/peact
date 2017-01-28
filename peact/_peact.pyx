@@ -71,6 +71,24 @@ class CallGraph:
         self.moduleLists.append([node])
         return function
 
+    def register_last(self, function, *args, **kwargs):
+        """Register a function as part of this graph, after the last function
+        that supplies any quantity of the same name. Takes the same
+        parameters as :py:class:`peact.CallNode`.
+
+        :return: The given function
+
+        """
+        node = CallNode(function, *args, **kwargs)
+        node_names = set(node.outputs)
+
+        for (i, list_) in enumerate(self.moduleLists[::-1]):
+            if any(node_names.intersection(other.outputs) for other in list_):
+                self.moduleLists.insert(-i, [node])
+                break
+
+        return function
+
     def register_deferred(self, target):
         """Registers a list object. This list should contain
         :py:class:`peact.CallNode` objects and will be consulted
