@@ -1025,9 +1025,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
 #define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
 #endif
 
-/* None.proto */
-static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname);
-
 /* ListExtend.proto */
 static CYTHON_INLINE int __Pyx_PyList_Extend(PyObject* L, PyObject* v) {
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -3614,7 +3611,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_8unregister(CYTHON_UNUSED Py
  *         """
  *         try:             # <<<<<<<<<<<<<<
  *             index = [i for (i, mod) in enumerate(self.moduleLists)
- *                      if len(mod) == 1 and mod[0].function == function][0]
+ *                      if len(mod) == 1 and
  */
   {
     __Pyx_PyThreadState_declare
@@ -3629,8 +3626,8 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_8unregister(CYTHON_UNUSED Py
  *         """
  *         try:
  *             index = [i for (i, mod) in enumerate(self.moduleLists)             # <<<<<<<<<<<<<<
- *                      if len(mod) == 1 and mod[0].function == function][0]
- *             del self.modules[index]
+ *                      if len(mod) == 1 and
+ *                      (function == mod or mod[0].function == function)][0]
  */
       __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_4);
@@ -3691,9 +3688,9 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_8unregister(CYTHON_UNUSED Py
         /* "peact/_peact.pyx":111
  *         try:
  *             index = [i for (i, mod) in enumerate(self.moduleLists)
- *                      if len(mod) == 1 and mod[0].function == function][0]             # <<<<<<<<<<<<<<
- *             del self.modules[index]
- *         except IndexError:
+ *                      if len(mod) == 1 and             # <<<<<<<<<<<<<<
+ *                      (function == mod or mod[0].function == function)][0]
+ *             del self.moduleLists[index]
  */
         __pyx_t_11 = PyObject_Length(__pyx_v_mod); if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 111, __pyx_L3_error)
         __pyx_t_12 = ((__pyx_t_11 == 1) != 0);
@@ -3702,34 +3699,58 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_8unregister(CYTHON_UNUSED Py
           __pyx_t_10 = __pyx_t_12;
           goto __pyx_L14_bool_binop_done;
         }
-        __pyx_t_6 = __Pyx_GetItemInt(__pyx_v_mod, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 111, __pyx_L3_error)
+
+        /* "peact/_peact.pyx":112
+ *             index = [i for (i, mod) in enumerate(self.moduleLists)
+ *                      if len(mod) == 1 and
+ *                      (function == mod or mod[0].function == function)][0]             # <<<<<<<<<<<<<<
+ *             del self.moduleLists[index]
+ *         except IndexError:
+ */
+        __pyx_t_6 = PyObject_RichCompare(__pyx_v_function, __pyx_v_mod, Py_EQ); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 112, __pyx_L3_error)
+        __pyx_t_12 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(0, 112, __pyx_L3_error)
+        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+        if (!__pyx_t_12) {
+        } else {
+          __pyx_t_10 = __pyx_t_12;
+          goto __pyx_L14_bool_binop_done;
+        }
+        __pyx_t_6 = __Pyx_GetItemInt(__pyx_v_mod, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 112, __pyx_L3_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_function); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 111, __pyx_L3_error)
+        __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_function); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 112, __pyx_L3_error)
         __Pyx_GOTREF(__pyx_t_13);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-        __pyx_t_6 = PyObject_RichCompare(__pyx_t_13, __pyx_v_function, Py_EQ); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 111, __pyx_L3_error)
+        __pyx_t_6 = PyObject_RichCompare(__pyx_t_13, __pyx_v_function, Py_EQ); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 112, __pyx_L3_error)
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-        __pyx_t_12 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(0, 111, __pyx_L3_error)
+        __pyx_t_12 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(0, 112, __pyx_L3_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __pyx_t_10 = __pyx_t_12;
         __pyx_L14_bool_binop_done:;
+
+        /* "peact/_peact.pyx":111
+ *         try:
+ *             index = [i for (i, mod) in enumerate(self.moduleLists)
+ *                      if len(mod) == 1 and             # <<<<<<<<<<<<<<
+ *                      (function == mod or mod[0].function == function)][0]
+ *             del self.moduleLists[index]
+ */
         if (__pyx_t_10) {
 
           /* "peact/_peact.pyx":110
  *         """
  *         try:
  *             index = [i for (i, mod) in enumerate(self.moduleLists)             # <<<<<<<<<<<<<<
- *                      if len(mod) == 1 and mod[0].function == function][0]
- *             del self.modules[index]
+ *                      if len(mod) == 1 and
+ *                      (function == mod or mod[0].function == function)][0]
  */
           if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_v_i))) __PYX_ERR(0, 110, __pyx_L3_error)
 
           /* "peact/_peact.pyx":111
  *         try:
  *             index = [i for (i, mod) in enumerate(self.moduleLists)
- *                      if len(mod) == 1 and mod[0].function == function][0]             # <<<<<<<<<<<<<<
- *             del self.modules[index]
- *         except IndexError:
+ *                      if len(mod) == 1 and             # <<<<<<<<<<<<<<
+ *                      (function == mod or mod[0].function == function)][0]
+ *             del self.moduleLists[index]
  */
         }
 
@@ -3737,36 +3758,36 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_8unregister(CYTHON_UNUSED Py
  *         """
  *         try:
  *             index = [i for (i, mod) in enumerate(self.moduleLists)             # <<<<<<<<<<<<<<
- *                      if len(mod) == 1 and mod[0].function == function][0]
- *             del self.modules[index]
+ *                      if len(mod) == 1 and
+ *                      (function == mod or mod[0].function == function)][0]
  */
       }
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-      /* "peact/_peact.pyx":111
- *         try:
+      /* "peact/_peact.pyx":112
  *             index = [i for (i, mod) in enumerate(self.moduleLists)
- *                      if len(mod) == 1 and mod[0].function == function][0]             # <<<<<<<<<<<<<<
- *             del self.modules[index]
+ *                      if len(mod) == 1 and
+ *                      (function == mod or mod[0].function == function)][0]             # <<<<<<<<<<<<<<
+ *             del self.moduleLists[index]
  *         except IndexError:
  */
-      __pyx_t_5 = __Pyx_GetItemInt_List(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 111, __pyx_L3_error)
+      __pyx_t_5 = __Pyx_GetItemInt_List(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 112, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_v_index = __pyx_t_5;
       __pyx_t_5 = 0;
 
-      /* "peact/_peact.pyx":112
- *             index = [i for (i, mod) in enumerate(self.moduleLists)
- *                      if len(mod) == 1 and mod[0].function == function][0]
- *             del self.modules[index]             # <<<<<<<<<<<<<<
+      /* "peact/_peact.pyx":113
+ *                      if len(mod) == 1 and
+ *                      (function == mod or mod[0].function == function)][0]
+ *             del self.moduleLists[index]             # <<<<<<<<<<<<<<
  *         except IndexError:
  *             pass
  */
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_modules); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 112, __pyx_L3_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_moduleLists); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 113, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
-      if (unlikely(PyObject_DelItem(__pyx_t_5, __pyx_v_index) < 0)) __PYX_ERR(0, 112, __pyx_L3_error)
+      if (unlikely(PyObject_DelItem(__pyx_t_5, __pyx_v_index) < 0)) __PYX_ERR(0, 113, __pyx_L3_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
       /* "peact/_peact.pyx":109
@@ -3774,7 +3795,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_8unregister(CYTHON_UNUSED Py
  *         """
  *         try:             # <<<<<<<<<<<<<<
  *             index = [i for (i, mod) in enumerate(self.moduleLists)
- *                      if len(mod) == 1 and mod[0].function == function][0]
+ *                      if len(mod) == 1 and
  */
     }
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -3789,9 +3810,9 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_8unregister(CYTHON_UNUSED Py
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "peact/_peact.pyx":113
- *                      if len(mod) == 1 and mod[0].function == function][0]
- *             del self.modules[index]
+    /* "peact/_peact.pyx":114
+ *                      (function == mod or mod[0].function == function)][0]
+ *             del self.moduleLists[index]
  *         except IndexError:             # <<<<<<<<<<<<<<
  *             pass
  *         if rebuild:
@@ -3809,7 +3830,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_8unregister(CYTHON_UNUSED Py
  *         """
  *         try:             # <<<<<<<<<<<<<<
  *             index = [i for (i, mod) in enumerate(self.moduleLists)
- *                      if len(mod) == 1 and mod[0].function == function][0]
+ *                      if len(mod) == 1 and
  */
     __Pyx_PyThreadState_assign
     __Pyx_XGIVEREF(__pyx_t_1);
@@ -3826,24 +3847,24 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_8unregister(CYTHON_UNUSED Py
     __pyx_L10_try_end:;
   }
 
-  /* "peact/_peact.pyx":115
+  /* "peact/_peact.pyx":116
  *         except IndexError:
  *             pass
  *         if rebuild:             # <<<<<<<<<<<<<<
  *             self.rebuild()
  * 
  */
-  __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_v_rebuild); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_v_rebuild); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 116, __pyx_L1_error)
   if (__pyx_t_10) {
 
-    /* "peact/_peact.pyx":116
+    /* "peact/_peact.pyx":117
  *             pass
  *         if rebuild:
  *             self.rebuild()             # <<<<<<<<<<<<<<
  * 
  *     def unregister_deferred(self, target, rebuild=True):
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_rebuild); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_rebuild); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 117, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_7 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -3856,16 +3877,16 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_8unregister(CYTHON_UNUSED Py
       }
     }
     if (__pyx_t_7) {
-      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 116, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 117, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     } else {
-      __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 116, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 117, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "peact/_peact.pyx":115
+    /* "peact/_peact.pyx":116
  *         except IndexError:
  *             pass
  *         if rebuild:             # <<<<<<<<<<<<<<
@@ -3902,7 +3923,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_8unregister(CYTHON_UNUSED Py
   return __pyx_r;
 }
 
-/* "peact/_peact.pyx":118
+/* "peact/_peact.pyx":119
  *             self.rebuild()
  * 
  *     def unregister_deferred(self, target, rebuild=True):             # <<<<<<<<<<<<<<
@@ -3943,7 +3964,7 @@ static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_11unregister_deferred(PyObje
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_target)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("unregister_deferred", 0, 2, 3, 1); __PYX_ERR(0, 118, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("unregister_deferred", 0, 2, 3, 1); __PYX_ERR(0, 119, __pyx_L3_error)
         }
         case  2:
         if (kw_args > 0) {
@@ -3952,7 +3973,7 @@ static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_11unregister_deferred(PyObje
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "unregister_deferred") < 0)) __PYX_ERR(0, 118, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "unregister_deferred") < 0)) __PYX_ERR(0, 119, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3969,7 +3990,7 @@ static PyObject *__pyx_pw_5peact_6_peact_9CallGraph_11unregister_deferred(PyObje
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("unregister_deferred", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 118, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("unregister_deferred", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 119, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("peact._peact.CallGraph.unregister_deferred", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4002,7 +4023,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_10unregister_deferred(CYTHON
   int __pyx_t_12;
   __Pyx_RefNannySetupContext("unregister_deferred", 0);
 
-  /* "peact/_peact.pyx":125
+  /* "peact/_peact.pyx":126
  *         """
  * 
  *         try:             # <<<<<<<<<<<<<<
@@ -4018,26 +4039,26 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_10unregister_deferred(CYTHON
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "peact/_peact.pyx":126
+      /* "peact/_peact.pyx":127
  * 
  *         try:
  *             index = [i for (i, mod) in enumerate(self.moduleLists)             # <<<<<<<<<<<<<<
  *                      if mod is target][0]
- *             del self.modules[index]
+ *             del self.moduleLists[index]
  */
-      __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 126, __pyx_L3_error)
+      __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 127, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_int_0);
       __pyx_t_5 = __pyx_int_0;
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_moduleLists); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 126, __pyx_L3_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_moduleLists); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 127, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_6);
       if (likely(PyList_CheckExact(__pyx_t_6)) || PyTuple_CheckExact(__pyx_t_6)) {
         __pyx_t_7 = __pyx_t_6; __Pyx_INCREF(__pyx_t_7); __pyx_t_8 = 0;
         __pyx_t_9 = NULL;
       } else {
-        __pyx_t_8 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 126, __pyx_L3_error)
+        __pyx_t_8 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 127, __pyx_L3_error)
         __Pyx_GOTREF(__pyx_t_7);
-        __pyx_t_9 = Py_TYPE(__pyx_t_7)->tp_iternext; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 126, __pyx_L3_error)
+        __pyx_t_9 = Py_TYPE(__pyx_t_7)->tp_iternext; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 127, __pyx_L3_error)
       }
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       for (;;) {
@@ -4045,17 +4066,17 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_10unregister_deferred(CYTHON
           if (likely(PyList_CheckExact(__pyx_t_7))) {
             if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_7)) break;
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_6 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_8); __Pyx_INCREF(__pyx_t_6); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 126, __pyx_L3_error)
+            __pyx_t_6 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_8); __Pyx_INCREF(__pyx_t_6); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 127, __pyx_L3_error)
             #else
-            __pyx_t_6 = PySequence_ITEM(__pyx_t_7, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 126, __pyx_L3_error)
+            __pyx_t_6 = PySequence_ITEM(__pyx_t_7, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 127, __pyx_L3_error)
             __Pyx_GOTREF(__pyx_t_6);
             #endif
           } else {
             if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_7)) break;
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_8); __Pyx_INCREF(__pyx_t_6); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 126, __pyx_L3_error)
+            __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_8); __Pyx_INCREF(__pyx_t_6); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 127, __pyx_L3_error)
             #else
-            __pyx_t_6 = PySequence_ITEM(__pyx_t_7, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 126, __pyx_L3_error)
+            __pyx_t_6 = PySequence_ITEM(__pyx_t_7, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 127, __pyx_L3_error)
             __Pyx_GOTREF(__pyx_t_6);
             #endif
           }
@@ -4065,7 +4086,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_10unregister_deferred(CYTHON
             PyObject* exc_type = PyErr_Occurred();
             if (exc_type) {
               if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-              else __PYX_ERR(0, 126, __pyx_L3_error)
+              else __PYX_ERR(0, 127, __pyx_L3_error)
             }
             break;
           }
@@ -4075,78 +4096,78 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_10unregister_deferred(CYTHON
         __pyx_t_6 = 0;
         __Pyx_INCREF(__pyx_t_5);
         __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_5);
-        __pyx_t_6 = __Pyx_PyInt_AddObjC(__pyx_t_5, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 126, __pyx_L3_error)
+        __pyx_t_6 = __Pyx_PyInt_AddObjC(__pyx_t_5, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 127, __pyx_L3_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_5);
         __pyx_t_5 = __pyx_t_6;
         __pyx_t_6 = 0;
 
-        /* "peact/_peact.pyx":127
+        /* "peact/_peact.pyx":128
  *         try:
  *             index = [i for (i, mod) in enumerate(self.moduleLists)
  *                      if mod is target][0]             # <<<<<<<<<<<<<<
- *             del self.modules[index]
+ *             del self.moduleLists[index]
  *         except IndexError:
  */
         __pyx_t_10 = (__pyx_v_mod == __pyx_v_target);
         __pyx_t_11 = (__pyx_t_10 != 0);
         if (__pyx_t_11) {
 
-          /* "peact/_peact.pyx":126
+          /* "peact/_peact.pyx":127
  * 
  *         try:
  *             index = [i for (i, mod) in enumerate(self.moduleLists)             # <<<<<<<<<<<<<<
  *                      if mod is target][0]
- *             del self.modules[index]
+ *             del self.moduleLists[index]
  */
-          if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_v_i))) __PYX_ERR(0, 126, __pyx_L3_error)
+          if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_v_i))) __PYX_ERR(0, 127, __pyx_L3_error)
 
-          /* "peact/_peact.pyx":127
+          /* "peact/_peact.pyx":128
  *         try:
  *             index = [i for (i, mod) in enumerate(self.moduleLists)
  *                      if mod is target][0]             # <<<<<<<<<<<<<<
- *             del self.modules[index]
+ *             del self.moduleLists[index]
  *         except IndexError:
  */
         }
 
-        /* "peact/_peact.pyx":126
+        /* "peact/_peact.pyx":127
  * 
  *         try:
  *             index = [i for (i, mod) in enumerate(self.moduleLists)             # <<<<<<<<<<<<<<
  *                      if mod is target][0]
- *             del self.modules[index]
+ *             del self.moduleLists[index]
  */
       }
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-      /* "peact/_peact.pyx":127
+      /* "peact/_peact.pyx":128
  *         try:
  *             index = [i for (i, mod) in enumerate(self.moduleLists)
  *                      if mod is target][0]             # <<<<<<<<<<<<<<
- *             del self.modules[index]
+ *             del self.moduleLists[index]
  *         except IndexError:
  */
-      __pyx_t_5 = __Pyx_GetItemInt_List(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 127, __pyx_L3_error)
+      __pyx_t_5 = __Pyx_GetItemInt_List(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 128, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_v_index = __pyx_t_5;
       __pyx_t_5 = 0;
 
-      /* "peact/_peact.pyx":128
+      /* "peact/_peact.pyx":129
  *             index = [i for (i, mod) in enumerate(self.moduleLists)
  *                      if mod is target][0]
- *             del self.modules[index]             # <<<<<<<<<<<<<<
+ *             del self.moduleLists[index]             # <<<<<<<<<<<<<<
  *         except IndexError:
  *             pass
  */
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_modules); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 128, __pyx_L3_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_moduleLists); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 129, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
-      if (unlikely(PyObject_DelItem(__pyx_t_5, __pyx_v_index) < 0)) __PYX_ERR(0, 128, __pyx_L3_error)
+      if (unlikely(PyObject_DelItem(__pyx_t_5, __pyx_v_index) < 0)) __PYX_ERR(0, 129, __pyx_L3_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-      /* "peact/_peact.pyx":125
+      /* "peact/_peact.pyx":126
  *         """
  * 
  *         try:             # <<<<<<<<<<<<<<
@@ -4165,12 +4186,12 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_10unregister_deferred(CYTHON
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "peact/_peact.pyx":129
+    /* "peact/_peact.pyx":130
  *                      if mod is target][0]
- *             del self.modules[index]
+ *             del self.moduleLists[index]
  *         except IndexError:             # <<<<<<<<<<<<<<
  *             pass
- *         del self.modules[index]
+ *         if rebuild:
  */
     __pyx_t_12 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_IndexError);
     if (__pyx_t_12) {
@@ -4180,7 +4201,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_10unregister_deferred(CYTHON
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "peact/_peact.pyx":125
+    /* "peact/_peact.pyx":126
  *         """
  * 
  *         try:             # <<<<<<<<<<<<<<
@@ -4202,22 +4223,9 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_10unregister_deferred(CYTHON
     __pyx_L10_try_end:;
   }
 
-  /* "peact/_peact.pyx":131
+  /* "peact/_peact.pyx":132
  *         except IndexError:
  *             pass
- *         del self.modules[index]             # <<<<<<<<<<<<<<
- *         if rebuild:
- *             self.rebuild()
- */
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_modules); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 131, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  if (unlikely(!__pyx_v_index)) { __Pyx_RaiseUnboundLocalError("index"); __PYX_ERR(0, 131, __pyx_L1_error) }
-  if (unlikely(PyObject_DelItem(__pyx_t_5, __pyx_v_index) < 0)) __PYX_ERR(0, 131, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-
-  /* "peact/_peact.pyx":132
- *             pass
- *         del self.modules[index]
  *         if rebuild:             # <<<<<<<<<<<<<<
  *             self.rebuild()
  * 
@@ -4226,7 +4234,7 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_10unregister_deferred(CYTHON
   if (__pyx_t_11) {
 
     /* "peact/_peact.pyx":133
- *         del self.modules[index]
+ *             pass
  *         if rebuild:
  *             self.rebuild()             # <<<<<<<<<<<<<<
  * 
@@ -4255,15 +4263,15 @@ static PyObject *__pyx_pf_5peact_6_peact_9CallGraph_10unregister_deferred(CYTHON
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
     /* "peact/_peact.pyx":132
+ *         except IndexError:
  *             pass
- *         del self.modules[index]
  *         if rebuild:             # <<<<<<<<<<<<<<
  *             self.rebuild()
  * 
  */
   }
 
-  /* "peact/_peact.pyx":118
+  /* "peact/_peact.pyx":119
  *             self.rebuild()
  * 
  *     def unregister_deferred(self, target, rebuild=True):             # <<<<<<<<<<<<<<
@@ -9886,7 +9894,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 85, __pyx_L1_error)
-  __pyx_builtin_IndexError = __Pyx_GetBuiltinName(__pyx_n_s_IndexError); if (!__pyx_builtin_IndexError) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_builtin_IndexError = __Pyx_GetBuiltinName(__pyx_n_s_IndexError); if (!__pyx_builtin_IndexError) __PYX_ERR(0, 114, __pyx_L1_error)
   __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(0, 270, __pyx_L1_error)
   __pyx_builtin_StopIteration = __Pyx_GetBuiltinName(__pyx_n_s_StopIteration); if (!__pyx_builtin_StopIteration) __PYX_ERR(0, 290, __pyx_L1_error)
   return 0;
@@ -10007,18 +10015,18 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__17);
   __Pyx_GIVEREF(__pyx_tuple__17);
 
-  /* "peact/_peact.pyx":118
+  /* "peact/_peact.pyx":119
  *             self.rebuild()
  * 
  *     def unregister_deferred(self, target, rebuild=True):             # <<<<<<<<<<<<<<
  *         """Remove the given dynamic `CallNode` provider from the graph.
  * 
  */
-  __pyx_tuple__18 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_target, __pyx_n_s_rebuild, __pyx_n_s_index, __pyx_n_s_i, __pyx_n_s_mod); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_tuple__18 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_target, __pyx_n_s_rebuild, __pyx_n_s_index, __pyx_n_s_i, __pyx_n_s_mod); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__18);
   __Pyx_GIVEREF(__pyx_tuple__18);
-  __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(3, 0, 6, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_matthew_dev_peact_peact__p, __pyx_n_s_unregister_deferred, 118, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 118, __pyx_L1_error)
-  __pyx_tuple__20 = PyTuple_Pack(1, ((PyObject *)Py_True)); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(3, 0, 6, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_matthew_dev_peact_peact__p, __pyx_n_s_unregister_deferred, 119, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_tuple__20 = PyTuple_Pack(1, ((PyObject *)Py_True)); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__20);
   __Pyx_GIVEREF(__pyx_tuple__20);
 
@@ -10438,17 +10446,17 @@ PyMODINIT_FUNC PyInit__peact(void)
   if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_unregister, __pyx_t_2) < 0) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "peact/_peact.pyx":118
+  /* "peact/_peact.pyx":119
  *             self.rebuild()
  * 
  *     def unregister_deferred(self, target, rebuild=True):             # <<<<<<<<<<<<<<
  *         """Remove the given dynamic `CallNode` provider from the graph.
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5peact_6_peact_9CallGraph_11unregister_deferred, 0, __pyx_n_s_CallGraph_unregister_deferred, NULL, __pyx_n_s_peact__peact, __pyx_d, ((PyObject *)__pyx_codeobj__19)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_NewEx(&__pyx_mdef_5peact_6_peact_9CallGraph_11unregister_deferred, 0, __pyx_n_s_CallGraph_unregister_deferred, NULL, __pyx_n_s_peact__peact, __pyx_d, ((PyObject *)__pyx_codeobj__19)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_tuple__20);
-  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_unregister_deferred, __pyx_t_2) < 0) __PYX_ERR(0, 118, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_unregister_deferred, __pyx_t_2) < 0) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "peact/_peact.pyx":135
@@ -11356,11 +11364,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
     return __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL);
 }
 #endif
-
-/* None */
-      static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname) {
-    PyErr_Format(PyExc_UnboundLocalError, "local variable '%s' referenced before assignment", varname);
-}
 
 /* PyObjectCallMethod0 */
       static PyObject* __Pyx_PyObject_CallMethod0(PyObject* obj, PyObject* method_name) {

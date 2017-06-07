@@ -108,8 +108,9 @@ class CallGraph:
         """
         try:
             index = [i for (i, mod) in enumerate(self.moduleLists)
-                     if len(mod) == 1 and mod[0].function == function][0]
-            del self.modules[index]
+                     if len(mod) == 1 and
+                     (function == mod or mod[0].function == function)][0]
+            del self.moduleLists[index]
         except IndexError:
             pass
         if rebuild:
@@ -125,10 +126,9 @@ class CallGraph:
         try:
             index = [i for (i, mod) in enumerate(self.moduleLists)
                      if mod is target][0]
-            del self.modules[index]
+            del self.moduleLists[index]
         except IndexError:
             pass
-        del self.modules[index]
         if rebuild:
             self.rebuild()
 
