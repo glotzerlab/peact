@@ -131,6 +131,8 @@ class Module:
         while self.registeredCalls:
             self.graph.unregister(self.registeredCalls.pop())
 
+        self.graph.unregister_deferred(self.deferredCalls)
+
         while self.deferredCalls:
             self.deferredCalls.pop()
 
