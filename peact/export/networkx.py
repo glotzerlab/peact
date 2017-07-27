@@ -8,7 +8,10 @@ def export_networkx(callGraph):
     modules = sum(callGraph.moduleLists, [])
     for node in modules:
         nxGraph.add_node(node)
-        node_labels[node] = node.function.__name__
+        try:
+            node_labels[node] = node.function.__name__
+        except AttributeError: # functools.partial instances
+            node_labels[node] = node.function.func.__name__
 
     for src in callGraph.revdeps:
         for target in callGraph.revdeps[src]:
