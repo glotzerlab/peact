@@ -51,13 +51,14 @@ class CallGraph:
         self.deps = defaultdict(list)
         # map module -> modules that depend on it
         self.revdeps = defaultdict(list)
-        # map property name -> modules that it depends on, even transiently
-        self.rollingDeps = defaultdict(set)
-        # map property name -> modules that depend on it, even transiently
+        # map property name -> farthest module that provides the property and all of its (transient) revdeps
+        self.rollingOutputDeps = defaultdict(set)
+        # map property name -> modules that depend on it as inputs, even transiently
         self.rollingRevdeps = defaultdict(set)
         self.pool = None
         self.scope = {}
-        self.dirty = set()
+        self.dirty_inputs = set()
+        self.dirty_outputs = set()
         self.pumping = None
         self.printedExceptions = set()
 
@@ -149,7 +150,9 @@ class CallGraph:
         for mods in self.moduleLists:
             modules.extend(mods)
 
-        # build the dependency graph
+        # build the dependency graph. deps is indexed by module,
+        # revdeps is indexed by quantity name. Both map to lists of
+        # CallNode objects.
         deps = defaultdict(list)
         revdeps = defaultdict(list)
         # opendeps[name] is a list of modules which depend on name
@@ -168,39 +171,43 @@ class CallGraph:
             for out in mod.outputs:
                 providers[out] = mod
 
-        # rollingDeps and rollingRevdeps are indexed by module id
+        # rollingDeps is indexed by module, rollingRevdeps is indexed
+        # by quantity name
         rollingDeps = defaultdict(set)
         rollingRevdeps = defaultdict(set)
-        # rollingDepNames and rollingRevdepNames are indexed by output
-        # name, not module id
-        rollingDepNames = defaultdict(set)
+        # rollingOutputDepNames is indexed by dependency name and maps each name to
+        # a set of CallNode objects
+        rollingOutputDepNames = defaultdict(set)
+        # rollingRevdepNames is indexed by output name, not module
+        # id. It maps to sets of CallNode objects.
         rollingRevdepNames = defaultdict(set)
 
-        for dep in list(deps):
+        for mod in list(deps):
             rolling = []
-            toGrab = list(deps[dep])
+            toGrab = list(deps[mod])
 
             while toGrab:
                 val = toGrab.pop()
                 rolling.append(val)
                 toGrab.extend(deps[val])
 
-            rollingDeps[dep] = set(rolling)
+            rollingDeps[mod] = set(rolling)
 
-        for dep in list(revdeps):
+        for depname in list(revdeps):
             rolling = []
-            toGrab = list(revdeps[dep])
+            toGrab = list(revdeps[depname])
 
             while toGrab:
                 val = toGrab.pop()
                 rolling.append(val)
                 toGrab.extend(revdeps[val])
 
-            rollingRevdeps[dep] = set(rolling)
+            rollingRevdeps[depname] = set(rolling)
 
         for mod in modules:
             for name in mod.outputs:
-                rollingDepNames[name] = rollingDeps[mod]
+                rollingOutputDepNames[name].add(mod)
+                rollingOutputDepNames[name].update(rollingRevdeps[mod])
                 if not mod.as_needed:
                     rollingRevdepNames[name] = rollingRevdeps[mod]
 
@@ -208,10 +215,11 @@ class CallGraph:
             rollingRevdepNames[name].update(opendeps[name])
             for mod in opendeps[name]:
                 rollingRevdepNames[name].update(rollingRevdeps[mod])
+            rollingOutputDepNames[name].update(rollingRevdepNames[name])
 
         self.deps = deps
         self.revdeps = revdeps
-        self.rollingDeps = rollingDepNames
+        self.rollingOutputDeps = rollingOutputDepNames
         self.rollingRevdeps = rollingRevdepNames
         if any(mod.async for mod in modules):
             self.pool = Pool(1)
@@ -221,28 +229,31 @@ class CallGraph:
 
         if mark_dirty:
             for mod in modules:
-                self.dirty.update([mod.remap.get(d, d) for d in mod.dependencies])
-                self.dirty.update(mod.outputs)
+                self.dirty_outputs.update(mod.outputs)
 
-    def pump(self, names=None, async=False):
-        """Step through the graph, calling all modules whose input has changed
-        or output is required.
+    def pump(self, input_names=None, output_names=None, async=False):
+        """Step through the graph, calling module functions whose input has
+        changed or output is required.
 
         Example::
 
            for _ in graph.pump():
                pass
 
-        :param names: iterable of names to force computation of; if None, default to the set of "dirty" quantities
+        :param input_names: iterable of names for values that have changed; nodes that depend on these quantities will be re-evaluated. If None, default to the set of marked "dirty" inputs
+        :param output_names: iterable of names to force computation of; nodes that provide these quantities will be re-evaluated. If None, default to the set of marked "dirty" outputs
         :param async: If True, yield intermediate results whenever an asynchronous module is encountered
         """
-        if names is None:
-            names = list(self.dirty)
+        if input_names is None:
+            input_names = list(self.dirty_inputs)
+        if output_names is None:
+            output_names = list(self.dirty_outputs)
 
         allCalls = set()
-        for name in names:
-            allCalls.update(self.rollingDeps[name])
+        for name in input_names:
             allCalls.update(self.rollingRevdeps[name])
+        for name in output_names:
+            allCalls.update(self.rollingOutputDeps[name])
         computed = set()
 
         for mod in [mod for mod in self.modules if mod in allCalls]:
@@ -274,8 +285,10 @@ class CallGraph:
 
             computed.update(mod.outputs)
 
-        for name in names:
-            self.dirty.discard(name)
+        for name in input_names:
+            self.dirty_inputs.discard(name)
+        for name in output_names:
+            self.dirty_outputs.discard(name)
 
     def pump_tick(self):
         """Perform a single element of work every time it is called. Intended
@@ -300,18 +313,31 @@ class CallGraph:
         """
         scope = dict(self.scope)
         self.inject(**kwargs)
-        self.pump(names, async)
+        self.pump(output_names=names, async=async)
         result, self.scope = self.scope, scope
         return result
 
-    def mark(self, *args):
-        """Marks a quantity for recomputation"""
-        self.dirty.update(args)
+    def mark_input(self, *args):
+        """Marks a quantity for everything that depends on it to be recomputed"""
+        self.dirty_inputs.update(args)
 
-    def unmark(self, *args):
+    def unmark_input(self, *args):
         """Voids a recomputation request for a quantity."""
         for arg in args:
-            self.dirty.remove(arg)
+            self.dirty_inputs.remove(arg)
+
+    mark = mark_input
+
+    unmark = unmark_input
+
+    def mark_output(self, *args):
+        """Marks a quantity for the last node that computes it to be re-run"""
+        self.dirty_outputs.update(args)
+
+    def unmark_output(self, *args):
+        """Voids a recomputation request for a quantity."""
+        for arg in args:
+            self.dirty_outputs.remove(arg)
 
     def inject(self, *args, **kwargs):
         """Puts a value or set of values into the list of stored quantities
@@ -324,4 +350,4 @@ class CallGraph:
         """
         for arg in list(args) + [kwargs]:
             self.scope.update(arg)
-            self.dirty.update([key for key in arg])
+            self.dirty_inputs.update([key for key in arg])
