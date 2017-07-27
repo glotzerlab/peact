@@ -206,8 +206,8 @@ class CallGraph:
 
         for mod in modules:
             for name in mod.outputs:
+                rollingOutputDepNames[name] = set(rollingRevdeps[mod])
                 rollingOutputDepNames[name].add(mod)
-                rollingOutputDepNames[name].update(rollingRevdeps[mod])
                 if not mod.as_needed:
                     rollingRevdepNames[name] = rollingRevdeps[mod]
 

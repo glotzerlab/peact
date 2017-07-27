@@ -113,4 +113,20 @@ class BasicTest(unittest.TestCase):
             for _ in graph.pump():
                 pass
 
+    def test_overwritten(self):
+        graph = peact.CallGraph()
+
+        def throws(bad_arg):
+            assert False
+
+        graph.register(throws, ['a'])
+        graph.register((lambda x: True), ['a'])
+
+        graph.mark_output('a')
+        graph.rebuild(False)
+        graph.inject(x=3)
+
+        for _ in graph.pump():
+            pass
+
 if __name__ == '__main__': unittest.main()
