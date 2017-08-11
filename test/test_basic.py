@@ -75,9 +75,9 @@ class BasicTest(unittest.TestCase):
         # and y here) don't count toward these counts
         for key in 'abfgxy':
             # everything but x and y simply includes its own node in
-            # the count, so it is count + 1 for rollingOutputDeps
+            # the count, so it is count + 1 for rollingOutputRevdeps
             self.assertEqual(len(graph.rollingRevdeps[key]) + (key not in 'xy'),
-                             len(graph.rollingOutputDeps[key]))
+                             len(graph.rollingOutputRevdeps[key]))
 
     def test_not_marked(self):
         graph = peact.CallGraph()
@@ -105,9 +105,33 @@ class BasicTest(unittest.TestCase):
         graph.register((lambda x: True), ['a'])
         graph.register((lambda throws: True), ['takes_throws'])
 
+        graph.inject(x=3)
+        graph.rebuild(False)
+        # test that 'a' value gets set and throws doesn't get called
+        for _ in graph.pump():
+            pass
+
+        self.assertEqual(graph.scope.get('a', None), True)
+
+        graph.inject(bad=10)
+        with self.assertRaises(AssertionError):
+            for _ in graph.pump():
+                pass
+
+    def test_rolling_as_needed(self):
+        graph = peact.CallGraph()
+
+        def throws(bad):
+            assert False
+
+        graph.register(throws, as_needed=True)
+        graph.register(throws, output=['throws2'], remap=dict(bad='throws'), as_needed=True)
+        graph.register((lambda x: True), ['a'])
+        graph.register((lambda throws2: True), ['takes_throws2'])
+
         graph.mark_output('a')
         graph.rebuild()
-        graph.inject(bad=10)
+        graph.inject(bad=10, x=1)
 
         with self.assertRaises(AssertionError):
             for _ in graph.pump():
