@@ -333,7 +333,8 @@ class CallGraph:
             dict(self.state.scope), set(self.state.dirty_inputs),
             set(self.state.dirty_outputs), set(self.state.dirty_as_needed))
         self.inject(**kwargs)
-        self.pump(output_names=names, async=async)
+        for tick in self.pump(output_names=names, async=async):
+            pass
         new_state, self.state = self.state, old_state
         return new_state.scope
 
