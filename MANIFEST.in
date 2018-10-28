@@ -1,0 +1,4 @@
+include setup.py LICENSE.txt
+recursive-include peact *.py *.pyx *.cpp
+include doc/Makefile
+recursive-include doc/source *.py *.rst
