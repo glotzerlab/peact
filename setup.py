@@ -16,11 +16,19 @@ else:
     modules = [Extension('peact._peact', sources=sources)]
 
 setup(name='peact',
-      version=__version__,
-      description='Python reactive library',
       author='Matthew Spellings',
       author_email='mspells@umich.edu',
-      url='',
+      classifiers=[
+          'Development Status :: 3 - Alpha',
+          'License :: OSI Approved :: BSD License',
+      ],
+      description='Python reactive library',
+      ext_modules=modules,
+      license='BSD',
       packages=['peact', 'peact.modules', 'peact.export'],
-      ext_modules=modules
+      project_urls={
+          'Documentation': 'http://peact.readthedocs.io/',
+          'Source': 'https://bitbucket.org/glotzer/peact'
+          },
+      version=__version__,
 )
