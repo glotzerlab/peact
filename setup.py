@@ -28,7 +28,7 @@ setup(name='peact',
       packages=['peact', 'peact.modules', 'peact.export'],
       project_urls={
           'Documentation': 'http://peact.readthedocs.io/',
-          'Source': 'https://bitbucket.org/glotzer/peact'
+          'Source': 'https://github.com/glotzerlab/peact'
           },
       version=__version__,
 )
